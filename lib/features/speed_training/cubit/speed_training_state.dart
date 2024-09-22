@@ -1,35 +1,45 @@
 part of 'speed_training_cubit.dart';
 
+enum AnswerStatus { correct, incorrect, waiting }
+
 @immutable
-sealed class SpeedTrainingState {}
+sealed class SpeedTrainingState {
+  final int totalTasksNumber;
 
-final class SpeedTrainingInitial extends SpeedTrainingState {}
+  const SpeedTrainingState({required this.totalTasksNumber});
+}
 
-final class SpeedTrainingStartCount extends SpeedTrainingState {
-  final int startCount;
-
-  SpeedTrainingStartCount({required this.startCount});
+final class SpeedTrainingInitial extends SpeedTrainingState {
+  const SpeedTrainingInitial({required super.totalTasksNumber});
 }
 
 final class SpeedTrainingRunning extends SpeedTrainingState {
-  final Stopwatch stopwatch;
+  final String currentTaskText;
+  final AnswerStatus answerStatus;
   final int currentTaskIndex;
-  final int totalTasksNumber;
 
-  SpeedTrainingRunning(
-      {required this.currentTaskIndex,
-      required this.totalTasksNumber,
-      required this.stopwatch});
+  const SpeedTrainingRunning({
+    required this.answerStatus,
+    required this.currentTaskText,
+    required this.currentTaskIndex,
+    required super.totalTasksNumber,
+  });
 
   SpeedTrainingRunning copywith({
+    AnswerStatus? answerStatus,
+    String? currentTaskText,
     int? currentTaskIndex,
     int? totalTasksNumber,
-    Stopwatch? stopwatch,
   }) {
     return SpeedTrainingRunning(
+      answerStatus: answerStatus ?? this.answerStatus,
+      currentTaskText: currentTaskText ?? this.currentTaskText,
       currentTaskIndex: currentTaskIndex ?? this.currentTaskIndex,
       totalTasksNumber: totalTasksNumber ?? this.totalTasksNumber,
-      stopwatch: stopwatch ?? this.stopwatch,
     );
   }
+}
+
+final class SpeedTrainingFinished extends SpeedTrainingState {
+  const SpeedTrainingFinished({required super.totalTasksNumber});
 }

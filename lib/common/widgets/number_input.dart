@@ -1,16 +1,31 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 
 class NumberInputController with ChangeNotifier {
   String value = '';
+  bool clearScheduled = false;
+
+  void delayedClear(Duration delay) async {
+    clearScheduled = true;
+    Future.delayed(delay, () {
+      if (clearScheduled) {
+        value = '';
+        notifyListeners();
+      }
+    });
+  }
+
   void clear() {
     value = '';
     notifyListeners();
   }
 
-  void setValue(String value) {
-    this.value = value;
+  void add(String value) {
+    if (clearScheduled) {
+      clearScheduled = false;
+      this.value = value;
+    } else {
+      this.value += value;
+    }
     notifyListeners();
   }
 }
@@ -23,26 +38,20 @@ class NumberInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
+      padding: const EdgeInsets.only(left: 30, right: 20, bottom: 20),
       child: AspectRatio(
-        aspectRatio: 1,
+        aspectRatio: 1.1,
         child: Column(
           children: [
             Flexible(
               child: Row(
                 children: [
                   NumberInputButton(
-                      text: '1',
-                      onTap: () =>
-                          {_controller.setValue('${_controller.value}1')}),
+                      text: '1', onTap: () => _controller.add('1')),
                   NumberInputButton(
-                      text: '2',
-                      onTap: () =>
-                          {_controller.setValue('${_controller.value}2')}),
+                      text: '2', onTap: () => _controller.add('2')),
                   NumberInputButton(
-                      text: '3',
-                      onTap: () =>
-                          {_controller.setValue('${_controller.value}3')}),
+                      text: '3', onTap: () => _controller.add('3')),
                 ],
               ),
             ),
@@ -50,20 +59,11 @@ class NumberInput extends StatelessWidget {
               child: Row(
                 children: [
                   NumberInputButton(
-                      text: '4',
-                      onTap: () => {
-                            {_controller.setValue('${_controller.value}4')}
-                          }),
+                      text: '4', onTap: () => _controller.add('4')),
                   NumberInputButton(
-                      text: '5',
-                      onTap: () => {
-                            {_controller.setValue('${_controller.value}5')}
-                          }),
+                      text: '5', onTap: () => _controller.add('5')),
                   NumberInputButton(
-                      text: '6',
-                      onTap: () => {
-                            {_controller.setValue('${_controller.value}6')}
-                          }),
+                      text: '6', onTap: () => _controller.add('6')),
                 ],
               ),
             ),
@@ -71,20 +71,11 @@ class NumberInput extends StatelessWidget {
               child: Row(
                 children: [
                   NumberInputButton(
-                      text: '7',
-                      onTap: () => {
-                            {_controller.setValue('${_controller.value}7')}
-                          }),
+                      text: '7', onTap: () => _controller.add('7')),
                   NumberInputButton(
-                      text: '8',
-                      onTap: () => {
-                            {_controller.setValue('${_controller.value}8')}
-                          }),
+                      text: '8', onTap: () => _controller.add('8')),
                   NumberInputButton(
-                      text: '9',
-                      onTap: () => {
-                            {_controller.setValue('${_controller.value}9')}
-                          }),
+                      text: '9', onTap: () => _controller.add('9')),
                 ],
               ),
             ),
@@ -92,17 +83,11 @@ class NumberInput extends StatelessWidget {
               child: Row(
                 children: [
                   NumberInputButton(
-                      text: 'C', onTap: () => {_controller.clear()}),
+                      text: 'C', onTap: () => _controller.clear()),
                   NumberInputButton(
-                      text: '0',
-                      onTap: () => {
-                            {_controller.setValue('${_controller.value}0')}
-                          }),
+                      text: '0', onTap: () => _controller.add('0')),
                   NumberInputButton(
-                      text: '.',
-                      onTap: () => {
-                            {_controller.setValue('${_controller.value}.')}
-                          }),
+                      text: '.', onTap: () => _controller.add('.')),
                 ],
               ),
             ),
@@ -121,40 +106,41 @@ class NumberInputButton extends StatefulWidget {
       {super.key,
       required this.text,
       required this.onTap,
-      this.textColor = const Color.fromARGB(255, 66, 66, 66)});
+      this.textColor = Colors.black});
 
   @override
   State<NumberInputButton> createState() => _NumberInputButtonState();
 }
 
 class _NumberInputButtonState extends State<NumberInputButton> {
-  Color _color = const Color.fromARGB(255, 255, 255, 255);
-  double _fontSize = 42;
+  Color _color = Colors.transparent;
+  double _fontSize = 35;
   int _duration = 150;
 
   @override
   Widget build(BuildContext context) {
     return Flexible(
       child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
         onTap: widget.onTap,
         onTapDown: (_) => {
           setState(() {
-            _color = const Color.fromARGB(255, 238, 238, 238);
-            _fontSize = 34;
+            _color = const Color.fromARGB(19, 0, 0, 0);
+            _fontSize = 28;
             _duration = 0;
           })
         },
         onTapUp: (_) => {
           setState(() {
-            _color = const Color.fromARGB(255, 255, 255, 255);
-            _fontSize = 42;
+            _color = Colors.transparent;
+            _fontSize = 35;
             _duration = 150;
           })
         },
         onTapCancel: () => {
           setState(() {
-            _color = const Color.fromARGB(255, 255, 255, 255);
-            _fontSize = 42;
+            _color = Colors.transparent;
+            _fontSize = 35;
             _duration = 150;
           })
         },
@@ -202,15 +188,7 @@ class _NumberInputValueDisplayerState extends State<NumberInputValueDisplayer> {
   late final GlobalKey _textKey = GlobalKey();
   double _targetWidth = 40;
 
-  @override
-  void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _getWidgetSize();
-    });
-    super.initState();
-  }
-
-  double _getWidgetSize() {
+  void _updateTargetSize() {
     final RenderBox renderBox =
         _textKey.currentContext!.findRenderObject() as RenderBox;
     if (_targetWidth != renderBox.size.width) {
@@ -218,8 +196,6 @@ class _NumberInputValueDisplayerState extends State<NumberInputValueDisplayer> {
         _targetWidth = renderBox.size.width;
       });
     }
-
-    return _targetWidth;
   }
 
   @override
@@ -231,15 +207,15 @@ class _NumberInputValueDisplayerState extends State<NumberInputValueDisplayer> {
           listenable: widget._numberInputController,
           builder: (context, child) {
             WidgetsBinding.instance.addPostFrameCallback((_) {
-              _getWidgetSize();
+              _updateTargetSize();
             });
             return Text(
               key: _textKey,
               widget._numberInputController.value,
               style: const TextStyle(
-                color: const Color.fromARGB(255, 66, 66, 66),
+                color: Colors.black,
                 fontWeight: FontWeight.w300,
-                fontSize: 60,
+                fontSize: 50,
                 height: 1.1,
               ),
             );
@@ -247,12 +223,11 @@ class _NumberInputValueDisplayerState extends State<NumberInputValueDisplayer> {
         ),
         AnimatedContainer(
           curve: Curves.easeInOut,
-          duration: const Duration(milliseconds: 200),
+          duration: const Duration(milliseconds: 150),
           height: 3,
           width: _targetWidth > 40 ? _targetWidth : 40,
           decoration: BoxDecoration(
-              color: const Color.fromARGB(255, 66, 66, 66),
-              borderRadius: BorderRadius.circular(9999)),
+              color: Colors.black, borderRadius: BorderRadius.circular(9999)),
         ),
       ],
     );

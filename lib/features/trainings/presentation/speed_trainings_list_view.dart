@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:math_training/features/speed_training/presentation/speed_training_pre_view.dart';
-import 'package:math_training/widgets/select_mode_box.dart';
-import 'package:math_training/widgets/titled_row.dart';
+import 'package:math_training/common/widgets/select_mode_box.dart';
+import 'package:math_training/common/widgets/titled_row.dart';
 
 class SpeedTrainingsListView extends StatelessWidget {
   const SpeedTrainingsListView({super.key});

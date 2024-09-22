@@ -9,6 +9,7 @@ class SpeedTrainingSummaryView extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
       ),
+      backgroundColor: Colors.white,
     );
   }
 }

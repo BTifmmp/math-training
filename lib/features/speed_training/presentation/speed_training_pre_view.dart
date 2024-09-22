@@ -17,7 +17,7 @@ class SpeedTrainingPreView extends StatelessWidget {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const SpeedTrainingView()))
+                          builder: (context) => SpeedTrainingPage()))
                 },
             child: const Text('Play')),
       ),
