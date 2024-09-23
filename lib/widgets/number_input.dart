@@ -31,14 +31,17 @@ class NumberInputController with ChangeNotifier {
 }
 
 class NumberInput extends StatelessWidget {
-  final NumberInputController _controller;
-  const NumberInput({super.key, required numberInputController})
-      : _controller = numberInputController;
+  final NumberInputController controller;
+  final Color? backgroundColor;
+  const NumberInput(
+      {super.key, required numberInputController, this.backgroundColor})
+      : controller = numberInputController;
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 30, right: 20, bottom: 20),
+    return Container(
+      color: backgroundColor,
+      padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
       child: AspectRatio(
         aspectRatio: 1.1,
         child: Column(
@@ -47,11 +50,11 @@ class NumberInput extends StatelessWidget {
               child: Row(
                 children: [
                   NumberInputButton(
-                      text: '1', onTap: () => _controller.add('1')),
+                      text: '1', onTap: () => controller.add('1')),
                   NumberInputButton(
-                      text: '2', onTap: () => _controller.add('2')),
+                      text: '2', onTap: () => controller.add('2')),
                   NumberInputButton(
-                      text: '3', onTap: () => _controller.add('3')),
+                      text: '3', onTap: () => controller.add('3')),
                 ],
               ),
             ),
@@ -59,11 +62,11 @@ class NumberInput extends StatelessWidget {
               child: Row(
                 children: [
                   NumberInputButton(
-                      text: '4', onTap: () => _controller.add('4')),
+                      text: '4', onTap: () => controller.add('4')),
                   NumberInputButton(
-                      text: '5', onTap: () => _controller.add('5')),
+                      text: '5', onTap: () => controller.add('5')),
                   NumberInputButton(
-                      text: '6', onTap: () => _controller.add('6')),
+                      text: '6', onTap: () => controller.add('6')),
                 ],
               ),
             ),
@@ -71,23 +74,22 @@ class NumberInput extends StatelessWidget {
               child: Row(
                 children: [
                   NumberInputButton(
-                      text: '7', onTap: () => _controller.add('7')),
+                      text: '7', onTap: () => controller.add('7')),
                   NumberInputButton(
-                      text: '8', onTap: () => _controller.add('8')),
+                      text: '8', onTap: () => controller.add('8')),
                   NumberInputButton(
-                      text: '9', onTap: () => _controller.add('9')),
+                      text: '9', onTap: () => controller.add('9')),
                 ],
               ),
             ),
             Flexible(
               child: Row(
                 children: [
+                  NumberInputButton(text: 'C', onTap: () => controller.clear()),
                   NumberInputButton(
-                      text: 'C', onTap: () => _controller.clear()),
+                      text: '0', onTap: () => controller.add('0')),
                   NumberInputButton(
-                      text: '0', onTap: () => _controller.add('0')),
-                  NumberInputButton(
-                      text: '.', onTap: () => _controller.add('.')),
+                      text: '.', onTap: () => controller.add('.')),
                 ],
               ),
             ),
@@ -173,18 +175,18 @@ class _NumberInputButtonState extends State<NumberInputButton> {
   }
 }
 
-class NumberInputValueDisplayer extends StatefulWidget {
+class NumberInputValueDisplay extends StatefulWidget {
   final NumberInputController _numberInputController;
 
-  const NumberInputValueDisplayer({super.key, required numberInputController})
+  const NumberInputValueDisplay({super.key, required numberInputController})
       : _numberInputController = numberInputController;
 
   @override
-  State<NumberInputValueDisplayer> createState() =>
-      _NumberInputValueDisplayerState();
+  State<NumberInputValueDisplay> createState() =>
+      _NumberInputValueDisplayState();
 }
 
-class _NumberInputValueDisplayerState extends State<NumberInputValueDisplayer> {
+class _NumberInputValueDisplayState extends State<NumberInputValueDisplay> {
   late final GlobalKey _textKey = GlobalKey();
   double _targetWidth = 40;
 
