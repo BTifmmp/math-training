@@ -1,10 +1,11 @@
 String formatDuration(Duration duration) {
   String negativeSign = duration.isNegative ? '-' : '';
-  String twoDigits(int n) => n.toString().padLeft(2, "0");
-  String twoDigitMinutes = twoDigits(duration.inMinutes.remainder(60).abs());
-  String twoDigitSeconds = twoDigits(duration.inSeconds.remainder(60).abs());
+  String digitSeconds = duration.inSeconds.remainder(60).abs().toString();
   String twoDigitMiliseconds =
-      twoDigits((duration.inMilliseconds.remainder(1000).abs() / 10).round());
+      (duration.inMilliseconds.remainder(1000).abs() / 10)
+          .round()
+          .toString()
+          .padLeft(2, "0");
 
-  return "$negativeSign$twoDigitMinutes:$twoDigitSeconds:$twoDigitMiliseconds";
+  return "$negativeSign$digitSeconds.${twoDigitMiliseconds}s";
 }

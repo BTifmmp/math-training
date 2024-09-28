@@ -60,7 +60,6 @@ class _SpeedTrainingViewState extends State<SpeedTrainingView> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
       ),
-      backgroundColor: Colors.white,
       body: BlocListener<SpeedTrainingCubit, SpeedTrainingState>(
         listener: (context, state) {
           if (state is SpeedTrainingFinished) {
@@ -127,7 +126,7 @@ class _SpeedTrainingViewState extends State<SpeedTrainingView> {
             const SizedBox(height: 20),
             NumberInput(
               numberInputController: _numberInputController,
-              backgroundColor: Colors.grey.shade200,
+              backgroundColor: Theme.of(context).colorScheme.surfaceContainer,
             ),
           ],
         ),
@@ -144,12 +143,11 @@ class SpeedCurrentTaskDisplay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+      padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(9999),
-          border: Border.all(
-            color: Colors.black,
-          )),
+        color: Theme.of(context).colorScheme.surfaceContainerHigh,
+        borderRadius: BorderRadius.circular(9999),
+      ),
       child: Row(
         children: [
           BlocBuilder<SpeedTrainingCubit, SpeedTrainingState>(
@@ -157,13 +155,16 @@ class SpeedCurrentTaskDisplay extends StatelessWidget {
               return AnimatedFlipCounter(
                 value:
                     state is SpeedTrainingRunning ? state.currentTaskIndex : 0,
-                textStyle: const TextStyle(fontSize: 18),
+                textStyle: TextStyle(
+                    fontSize: 18,
+                    color: Theme.of(context).colorScheme.onSurface),
               );
             },
           ),
           Text(
             '/${context.select<SpeedTrainingCubit, String>((cubit) => cubit.state.totalTasksNumber.toString())}',
-            style: const TextStyle(fontSize: 18),
+            style: TextStyle(
+                fontSize: 18, color: Theme.of(context).colorScheme.onSurface),
           ),
         ],
       ),
@@ -179,16 +180,16 @@ class SpeedTrainingStopwatchDisplay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+      padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(9999),
-          border: Border.all(
-            color: Colors.black,
-          )),
+        color: Theme.of(context).colorScheme.surfaceContainerHigh,
+        borderRadius: BorderRadius.circular(9999),
+      ),
       child: Text(
         formatDuration(
             context.select((StopwatchCubit bloc) => bloc.state.timeElapsed)),
-        style: const TextStyle(fontSize: 18),
+        style: TextStyle(
+            fontSize: 18, color: Theme.of(context).colorScheme.onSurface),
       ),
     );
   }
@@ -217,8 +218,10 @@ class AnimatedSpeedTaskDisplay extends StatelessWidget {
             builder: (context, state) {
               return Text(
                 state is SpeedTrainingRunning ? state.currentTaskText : '',
-                style:
-                    const TextStyle(fontSize: 50, fontWeight: FontWeight.w300),
+                style: TextStyle(
+                    fontSize: 50,
+                    fontWeight: FontWeight.w300,
+                    color: Theme.of(context).colorScheme.onSurface),
               );
             },
           ),

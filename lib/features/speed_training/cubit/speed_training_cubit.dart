@@ -6,7 +6,7 @@ part 'speed_training_state.dart';
 typedef SpeedTrainingTask = ({String text, num answer});
 
 class SpeedTrainingCubit extends Cubit<SpeedTrainingState> {
-  static const int totalTasksNumber = 5;
+  static const int totalTasksNumber = 2;
   num? _expectedAnswer;
 
   SpeedTrainingCubit()

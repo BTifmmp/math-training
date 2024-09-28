@@ -103,12 +103,9 @@ class NumberInput extends StatelessWidget {
 class NumberInputButton extends StatefulWidget {
   final String text;
   final GestureTapCallback onTap;
-  final Color textColor;
+  final Color? textColor;
   const NumberInputButton(
-      {super.key,
-      required this.text,
-      required this.onTap,
-      this.textColor = Colors.black});
+      {super.key, required this.text, required this.onTap, this.textColor});
 
   @override
   State<NumberInputButton> createState() => _NumberInputButtonState();
@@ -127,7 +124,7 @@ class _NumberInputButtonState extends State<NumberInputButton> {
         onTap: widget.onTap,
         onTapDown: (_) => {
           setState(() {
-            _color = const Color.fromARGB(19, 0, 0, 0);
+            _color = Theme.of(context).colorScheme.onSurface.withOpacity(0.1);
             _fontSize = 28;
             _duration = 0;
           })
@@ -163,7 +160,8 @@ class _NumberInputButtonState extends State<NumberInputButton> {
               style: TextStyle(
                 fontSize: _fontSize,
                 fontWeight: FontWeight.w300,
-                color: widget.textColor,
+                color:
+                    widget.textColor ?? Theme.of(context).colorScheme.onSurface,
               ),
               duration: Duration(milliseconds: _duration),
               child: Text(widget.text),
@@ -214,8 +212,8 @@ class _NumberInputValueDisplayState extends State<NumberInputValueDisplay> {
             return Text(
               key: _textKey,
               widget._numberInputController.value,
-              style: const TextStyle(
-                color: Colors.black,
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.onSurface,
                 fontWeight: FontWeight.w300,
                 fontSize: 50,
                 height: 1.1,
@@ -229,7 +227,8 @@ class _NumberInputValueDisplayState extends State<NumberInputValueDisplay> {
           height: 3,
           width: _targetWidth > 40 ? _targetWidth : 40,
           decoration: BoxDecoration(
-              color: Colors.black, borderRadius: BorderRadius.circular(9999)),
+              color: Theme.of(context).colorScheme.onSurface,
+              borderRadius: BorderRadius.circular(9999)),
         ),
       ],
     );

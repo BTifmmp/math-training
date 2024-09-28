@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:math_training/features/trainings/presentation/speed_trainings_list_view.dart';
+import 'package:math_training/features/trainings/presentation/mental_trainings_list_view.dart';
+import 'package:cupertino_icons/cupertino_icons.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -9,7 +11,23 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  int currentPageIndex = 0;
+  late int _currentPageIndex;
+  late PageController _pageController;
+
+  @override
+  void initState() {
+    _currentPageIndex = 0;
+    _pageController = PageController(initialPage: _currentPageIndex);
+
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -17,25 +35,35 @@ class _HomeViewState extends State<HomeView> {
       bottomNavigationBar: NavigationBar(
           onDestinationSelected: (int index) {
             setState(() {
-              currentPageIndex = index;
+              _currentPageIndex = index;
+              _pageController.jumpToPage(index);
             });
           },
-          selectedIndex: currentPageIndex,
-          destinations: const <Widget>[
+          selectedIndex: _currentPageIndex,
+          destinations: <Widget>[
             NavigationDestination(
-              icon: Icon(Icons.home),
+              icon: AnimatedCrossFade(
+                  crossFadeState: _currentPageIndex == 0
+                      ? CrossFadeState.showFirst
+                      : CrossFadeState.showSecond,
+                  duration: const Duration(milliseconds: 200),
+                  firstChild: const Icon(Icons.bolt_outlined),
+                  secondChild: const Icon(Icons.bolt_outlined)),
               label: 'Speed',
             ),
-            NavigationDestination(
-              icon: Icon(Icons.home),
+            const NavigationDestination(
+              icon: Icon(Icons.psychology),
               label: 'Mental',
             ),
           ]),
       body: SafeArea(
-        child: <Widget>[
-          const SpeedTrainingsListView(),
-          const SpeedTrainingsListView()
-        ][currentPageIndex],
+        child: PageView(
+          controller: _pageController,
+          children: const <Widget>[
+            SpeedTrainingsListView(),
+            MentalTrainingsListView(),
+          ],
+        ),
       ),
     );
   }

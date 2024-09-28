@@ -25,8 +25,23 @@ class AppView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: HomeView(),
+    return MaterialApp(
+      theme: ThemeData(
+          useMaterial3: true,
+          colorScheme: ColorScheme.fromSeed(
+            dynamicSchemeVariant: DynamicSchemeVariant.vibrant,
+            seedColor: const Color.fromARGB(255, 0, 89, 255),
+            contrastLevel: 1,
+            brightness: Brightness.dark,
+          ),
+          navigationBarTheme: const NavigationBarThemeData(
+              indicatorColor: Color.fromARGB(255, 100, 106, 112),
+              height: 70,
+              iconTheme: WidgetStatePropertyAll<IconThemeData>(IconThemeData(
+                size: 25,
+              )))),
+      themeMode: ThemeMode.dark,
+      home: const HomeView(),
     );
   }
 }

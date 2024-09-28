@@ -14,14 +14,16 @@ class Countdown extends StatelessWidget {
       width: 70,
       height: 70,
       decoration: BoxDecoration(
-        border: Border.all(width: 2, color: Colors.black),
+        color: Theme.of(context).colorScheme.surfaceContainerHigh,
         borderRadius: BorderRadius.circular(9999),
       ),
       child: Center(
         child: AnimatedFlipCounter(
           value: count,
-          textStyle: const TextStyle(
-              fontSize: 40, fontWeight: FontWeight.w300, color: Colors.black),
+          textStyle: TextStyle(
+              fontSize: 40,
+              fontWeight: FontWeight.w300,
+              color: Theme.of(context).colorScheme.onSurface),
         ),
       ),
     );
