@@ -17,6 +17,14 @@ class _SpeedTrainingsListViewState extends State<SpeedTrainingsListView>
   final row3 = ScrollController();
 
   @override
+  void dispose() {
+    row1.dispose();
+    row2.dispose();
+    row3.dispose();
+    super.dispose();
+  }
+
+  @override
   bool get wantKeepAlive => true;
 
   @override

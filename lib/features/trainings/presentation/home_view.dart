@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:math_training/features/trainings/presentation/speed_trainings_list_view.dart';
 import 'package:math_training/features/trainings/presentation/mental_trainings_list_view.dart';
-import 'package:cupertino_icons/cupertino_icons.dart';
+import 'package:math_training/utils/custom_icons.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -43,16 +43,24 @@ class _HomeViewState extends State<HomeView> {
           destinations: <Widget>[
             NavigationDestination(
               icon: AnimatedCrossFade(
-                  crossFadeState: _currentPageIndex == 0
-                      ? CrossFadeState.showFirst
-                      : CrossFadeState.showSecond,
-                  duration: const Duration(milliseconds: 200),
-                  firstChild: const Icon(Icons.bolt_outlined),
-                  secondChild: const Icon(Icons.bolt_outlined)),
+                crossFadeState: _currentPageIndex == 0
+                    ? CrossFadeState.showFirst
+                    : CrossFadeState.showSecond,
+                duration: const Duration(milliseconds: 200),
+                firstChild: const Icon(CustomIcons.bolt_filled),
+                secondChild: const Icon(CustomIcons.bolt_outlined),
+              ),
               label: 'Speed',
             ),
-            const NavigationDestination(
-              icon: Icon(Icons.psychology),
+            NavigationDestination(
+              icon: AnimatedCrossFade(
+                crossFadeState: _currentPageIndex == 1
+                    ? CrossFadeState.showFirst
+                    : CrossFadeState.showSecond,
+                duration: const Duration(milliseconds: 200),
+                firstChild: const Icon(CustomIcons.brain_filled),
+                secondChild: const Icon(CustomIcons.brain_outlined),
+              ),
               label: 'Mental',
             ),
           ]),
