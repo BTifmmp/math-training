@@ -46,7 +46,8 @@ class _TrainingSelectModeBoxState extends State<TrainingSelectModeBox> {
           })
         },
         child: Card.filled(
-            color: Theme.of(context).colorScheme.surfaceContainer,
+            // color: Theme.of(context).colorScheme.surfaceContainerHigh,
+            color: Colors.transparent,
             shadowColor: Colors.black,
             clipBehavior: Clip.antiAlias,
             child: Padding(

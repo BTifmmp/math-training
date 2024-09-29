@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 Future<dynamic> showInfoModal(BuildContext context) {
   final dividerColor =
-      Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(0.3);
+      Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(0.15);
   return showModalBottomSheet(
     isScrollControlled: true,
     showDragHandle: true,
@@ -12,7 +12,6 @@ Future<dynamic> showInfoModal(BuildContext context) {
         height: MediaQuery.of(context).size.height * 0.7,
         child: ListView(
           children: [
-            Divider(color: dividerColor),
             const InfoModalCategory(text: 'PRIVACY'),
             InfoModalButton(
               text: 'Privacy Policy',

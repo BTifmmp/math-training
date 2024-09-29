@@ -10,20 +10,37 @@ class TrainingTypePanel extends StatelessWidget {
       required this.title,
       required this.imagePath});
 
+  List<Widget> _dividedModeBoxes(BuildContext context) {
+    List<Widget> result = [];
+    for (Widget box in modeBoxes) {
+      result.add(box);
+      result.add(Divider(
+        indent: 20,
+        endIndent: 20,
+        height: 0,
+        color: Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(0.3),
+      ));
+    }
+
+    result.removeLast();
+
+    return result;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Card.filled(
-      color: Theme.of(context).colorScheme.surfaceContainerLow,
+      color: Theme.of(context).colorScheme.surfaceContainer,
       child: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20),
+            padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 20),
             child: Row(
               children: [
                 Image.asset(
                   imagePath,
-                  width: 40,
-                  height: 40,
+                  width: 50,
+                  height: 50,
                   color: Colors.white,
                 ),
                 const SizedBox(
@@ -39,7 +56,7 @@ class TrainingTypePanel extends StatelessWidget {
               ],
             ),
           ),
-          ...modeBoxes,
+          ..._dividedModeBoxes(context),
         ],
       ),
     );

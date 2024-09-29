@@ -38,10 +38,10 @@ class AppView extends StatelessWidget {
               dragHandleColor: Colors.white.withOpacity(0.3),
               dragHandleSize: const Size(50, 5)),
           navigationBarTheme: const NavigationBarThemeData(
-              indicatorColor: Color.fromARGB(255, 100, 106, 112),
-              height: 60,
+              indicatorColor: Color.fromARGB(255, 51, 56, 70),
+              height: 65,
               iconTheme: WidgetStatePropertyAll<IconThemeData>(IconThemeData(
-                size: 25,
+                size: 22,
               )))),
       themeMode: ThemeMode.dark,
       home: const HomeView(),

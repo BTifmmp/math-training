@@ -32,39 +32,56 @@ class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: NavigationBar(
-          backgroundColor: Theme.of(context).colorScheme.surfaceContainer,
-          onDestinationSelected: (int index) {
-            setState(() {
-              _currentPageIndex = index;
-              _pageController.jumpToPage(index);
-            });
-          },
-          selectedIndex: _currentPageIndex,
-          destinations: <Widget>[
-            NavigationDestination(
-              icon: AnimatedCrossFade(
-                crossFadeState: _currentPageIndex == 0
-                    ? CrossFadeState.showFirst
-                    : CrossFadeState.showSecond,
-                duration: const Duration(milliseconds: 200),
-                firstChild: const Icon(CustomIcons.bolt_filled),
-                secondChild: const Icon(CustomIcons.bolt_outlined),
-              ),
-              label: 'Speed',
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.surface,
+          border: Border(
+            top: BorderSide(
+              color: Theme.of(context)
+                  .colorScheme
+                  .onSurfaceVariant
+                  .withOpacity(0.1),
             ),
-            NavigationDestination(
-              icon: AnimatedCrossFade(
-                crossFadeState: _currentPageIndex == 1
-                    ? CrossFadeState.showFirst
-                    : CrossFadeState.showSecond,
-                duration: const Duration(milliseconds: 200),
-                firstChild: const Icon(CustomIcons.brain_filled),
-                secondChild: const Icon(CustomIcons.brain_outlined),
+          ),
+        ),
+        child: NavigationBar(
+            backgroundColor: Theme.of(context).colorScheme.surface,
+            onDestinationSelected: (int index) {
+              setState(() {
+                _currentPageIndex = index;
+                _pageController.jumpToPage(index);
+              });
+            },
+            selectedIndex: _currentPageIndex,
+            destinations: <Widget>[
+              NavigationDestination(
+                icon: AnimatedCrossFade(
+                  crossFadeState: _currentPageIndex == 0
+                      ? CrossFadeState.showFirst
+                      : CrossFadeState.showSecond,
+                  duration: const Duration(milliseconds: 200),
+                  firstChild: const Icon(CustomIcons.bolt_filled),
+                  secondChild: Icon(
+                    CustomIcons.bolt_outlined,
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
+                ),
+                label: 'Speed',
               ),
-              label: 'Mental',
-            ),
-          ]),
+              NavigationDestination(
+                icon: AnimatedCrossFade(
+                  crossFadeState: _currentPageIndex == 1
+                      ? CrossFadeState.showFirst
+                      : CrossFadeState.showSecond,
+                  duration: const Duration(milliseconds: 200),
+                  firstChild: const Icon(CustomIcons.brain_filled),
+                  secondChild: Icon(CustomIcons.brain_outlined,
+                      color: Theme.of(context).colorScheme.onSurfaceVariant),
+                ),
+                label: 'Mental',
+              ),
+            ]),
+      ),
       body: SafeArea(
         child: PageView(
           controller: _pageController,
