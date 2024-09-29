@@ -36,9 +36,12 @@ final class MentalTrainingRunning extends MentalTrainingState {
 }
 
 final class MentalTrainingWaitingForAnswer extends MentalTrainingState {
+  final AnswerStatus answerStatus;
   final int availableTries;
   const MentalTrainingWaitingForAnswer(
-      {required this.availableTries, required super.totalTasksNumber});
+      {required this.answerStatus,
+      required this.availableTries,
+      required super.totalTasksNumber});
 }
 
 final class MentalTrainingFinished extends MentalTrainingState {

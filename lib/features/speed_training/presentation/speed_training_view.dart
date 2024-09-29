@@ -68,7 +68,6 @@ class _SpeedTrainingViewState extends State<SpeedTrainingView> {
                 fullscreenDialog: true,
                 builder: (_) => const SpeedTrainingSummaryView()));
           } else if (state is SpeedTrainingRunning &&
-              !_numberInputController.clearScheduled &&
               (state.answerStatus == AnswerStatus.incorrect ||
                   state.answerStatus == AnswerStatus.correct)) {
             // Schedules a delayed number input clear if answer was

@@ -41,7 +41,7 @@ class TrainingTypePanel extends StatelessWidget {
                   imagePath,
                   width: 50,
                   height: 50,
-                  color: Colors.white,
+                  color: Theme.of(context).colorScheme.onSurface,
                 ),
                 const SizedBox(
                   width: 20,

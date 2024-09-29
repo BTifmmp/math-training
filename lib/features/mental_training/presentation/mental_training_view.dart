@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:math_training/features/countdown/cubit/count_down_cubit.dart';
 import 'package:math_training/features/countdown/presentation/countdown_widget.dart';
 import 'package:math_training/features/mental_training/cubit/mental_training_cubit.dart';
+import 'package:math_training/features/mental_training/presentation/mental_training_summary_view.dart';
 import 'package:math_training/widgets/number_input.dart';
 
 class MentalTrainingPage extends StatelessWidget {
@@ -34,7 +35,8 @@ class _MentalTrainingViewState extends State<MentalTrainingView> {
   void initState() {
     _numberInputController.addListener(() {
       // Submits every non empty input value as possible answer
-      if (context.read<MentalTrainingCubit>().state is MentalTrainingRunning &&
+      if (context.read<MentalTrainingCubit>().state
+              is MentalTrainingWaitingForAnswer &&
           _numberInputController.value != '') {
         context
             .read<MentalTrainingCubit>()
@@ -56,36 +58,45 @@ class _MentalTrainingViewState extends State<MentalTrainingView> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
       ),
-      body: BlocListener<MentalTrainingCubit, MentalTrainingState>(
+      body: BlocConsumer<MentalTrainingCubit, MentalTrainingState>(
         listener: (context, state) {
-          // if (state is MentalTrainingFinished) {
-          //   // Pushes summary view if all task anwsered
-          //   Navigator.of(context).pushReplacement(MaterialPageRoute(
-          //       fullscreenDialog: true,
-          //       builder: (_) => const MentalTrainingSummaryView()));
-          // } else if (state is MentalTrainingRunning &&
-          //     !_numberInputController.clearScheduled &&
-          //     (state.answerStatus == AnswerStatus.incorrect ||
-          //         state.answerStatus == AnswerStatus.correct)) {
-          //   // Schedules a delayed number input clear if answer was
-          //   // incorrect or correct and clear is not scheduled
-          //   _numberInputController
-          //       .delayedClear(const Duration(milliseconds: 200));
-          // }
+          if (state is MentalTrainingFinished) {
+            // Pushes summary view if all task anwsered
+            Navigator.of(context).pushReplacement(MaterialPageRoute(
+                fullscreenDialog: true,
+                builder: (_) => const MentalTrainingSummaryView()));
+          } else if (state is MentalTrainingWaitingForAnswer &&
+              (state.answerStatus == AnswerStatus.incorrect ||
+                  state.answerStatus == AnswerStatus.correct)) {
+            // Schedules a delayed number input clear if answer was
+            // incorrect or correct and clear is not scheduled
+            _numberInputController
+                .delayedClear(const Duration(milliseconds: 200));
+          }
         },
-        child: Column(
-          children: [
-            const SizedBox(height: 10),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20),
-              child: Row(
-                children: [
-                  MentalCurrentTaskDisplay(),
-                ],
-              ),
-            ),
-            const Spacer(flex: 1),
-            BlocConsumer<CountDownCubit, CountDownState>(
+        builder: (BuildContext context, MentalTrainingState state) {
+          if (state is MentalTrainingFinished) {
+            return const SizedBox.shrink();
+          } else if (state is MentalTrainingWaitingForAnswer) {
+            return Column(
+              children: [
+                const Spacer(flex: 1),
+                const Text('Your Answer', style: TextStyle(fontSize: 30)),
+                const SizedBox(height: 5),
+                AnswerTriesDisplay(availableTries: state.availableTries),
+                const Spacer(flex: 1),
+                NumberInputValueDisplay(
+                    numberInputController: _numberInputController),
+                const Spacer(flex: 2),
+                NumberInput(
+                  numberInputController: _numberInputController,
+                  backgroundColor:
+                      Theme.of(context).colorScheme.surfaceContainer,
+                ),
+              ],
+            );
+          } else {
+            return BlocConsumer<CountDownCubit, CountDownState>(
               listener: (context, state) {
                 // Checks if countdown has finished
                 if (state is CountDownFinished) {
@@ -105,35 +116,75 @@ class _MentalTrainingViewState extends State<MentalTrainingView> {
               },
               builder: (context, state) {
                 return switch (state.runtimeType) {
-                  const (CountDownFinished) => AnimatedMentalTaskDisplay(
-                      opacity: _opacity,
+                  const (CountDownFinished) => Column(
+                      children: [
+                        const SizedBox(height: 10),
+                        const Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 20),
+                          child: Row(
+                            children: [
+                              MentalCurrentTaskDisplay(),
+                              Spacer(),
+                            ],
+                          ),
+                        ),
+                        const Spacer(flex: 1),
+                        AnimatedMentalTaskDisplay(
+                          opacity: _opacity,
+                        ),
+                        const Spacer(flex: 2),
+                      ],
                     ),
-                  _ => Countdown(count: (state as CountDownCounting).count)
+                  _ => Column(
+                      children: [
+                        const SizedBox(height: 50),
+                        const Spacer(flex: 1),
+                        Center(
+                            child: Countdown(
+                                count: (state as CountDownCounting).count)),
+                        const Spacer(flex: 2),
+                      ],
+                    )
                 };
               },
-            ),
-            const Spacer(flex: 2),
-            BlocBuilder<MentalTrainingCubit, MentalTrainingState>(
-              buildWhen: (previous, current) =>
-                  current is MentalTrainingWaitingForAnswer,
-              builder: (context, state) {
-                return state is MentalTrainingWaitingForAnswer
-                    ? Column(
-                        children: [
-                          const SizedBox(height: 20),
-                          NumberInput(
-                            numberInputController: _numberInputController,
-                            backgroundColor:
-                                Theme.of(context).colorScheme.surfaceContainer,
-                          ),
-                        ],
-                      )
-                    : const SizedBox.shrink();
-              },
-            )
-          ],
-        ),
+            );
+          }
+        },
       ),
+    );
+  }
+}
+
+class AnswerTriesDisplay extends StatelessWidget {
+  final int availableTries;
+  const AnswerTriesDisplay({
+    super.key,
+    required this.availableTries,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text('Tries',
+            style: TextStyle(
+                fontSize: 20,
+                color: Theme.of(context).colorScheme.onSurfaceVariant)),
+        const SizedBox(width: 10),
+        Icon(availableTries < 3 ? Icons.cancel : Icons.circle_outlined,
+            size: 20, color: Theme.of(context).colorScheme.onSurfaceVariant),
+        Icon(
+          availableTries < 2 ? Icons.cancel : Icons.circle_outlined,
+          size: 20,
+          color: Theme.of(context).colorScheme.onSurfaceVariant,
+        ),
+        Icon(
+          availableTries < 1 ? Icons.cancel : Icons.circle_outlined,
+          size: 20,
+          color: Theme.of(context).colorScheme.onSurfaceVariant,
+        ),
+      ],
     );
   }
 }

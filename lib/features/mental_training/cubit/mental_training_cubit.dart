@@ -7,7 +7,7 @@ part 'mental_training_state.dart';
 typedef MentalTrainingTask = ({List<String> text, num answer});
 
 class MentalTrainingCubit extends Cubit<MentalTrainingState> {
-  static const int totalTasksNumber = 10;
+  static const int totalTasksNumber = 2;
   static const Duration taskDelay = Duration(milliseconds: 2000);
 
   Timer? _timer;
@@ -32,7 +32,9 @@ class MentalTrainingCubit extends Cubit<MentalTrainingState> {
         if (runningState.currentTaskIndex == totalTasksNumber) {
           _timer?.cancel();
           emit(const MentalTrainingWaitingForAnswer(
-              availableTries: 3, totalTasksNumber: totalTasksNumber));
+              availableTries: 3,
+              totalTasksNumber: totalTasksNumber,
+              answerStatus: AnswerStatus.waiting));
         } else {
           emit(runningState.copywith(
               currentTaskText:
@@ -53,7 +55,7 @@ class MentalTrainingCubit extends Cubit<MentalTrainingState> {
             correctAnswer: _task?.answer ?? 0,
             isAnswerCorrect: true,
             totalTasksNumber: totalTasksNumber));
-      } else {
+      } else if (answer.toString().length >= _task!.answer.toString().length) {
         // If avaible tires are equal to 1 it means that
         // this answer was the last one allowed
         if (answerState.availableTries == 1) {
@@ -64,7 +66,8 @@ class MentalTrainingCubit extends Cubit<MentalTrainingState> {
         } else {
           emit(MentalTrainingWaitingForAnswer(
               availableTries: answerState.availableTries - 1,
-              totalTasksNumber: totalTasksNumber));
+              totalTasksNumber: totalTasksNumber,
+              answerStatus: AnswerStatus.incorrect));
         }
       }
     }
@@ -92,7 +95,7 @@ class MentalTrainingCubit extends Cubit<MentalTrainingState> {
         'Add\n4',
         'Substract\n90'
       ],
-      answer: answer
+      answer: 123
     );
   }
 

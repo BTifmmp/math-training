@@ -42,65 +42,78 @@ class NumberInput extends StatelessWidget {
   Widget build(BuildContext context) {
     return ConstrainedBox(
       constraints:
-          BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.4),
+          BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.2),
       child: Expanded(
         flex: 9999,
         child: Container(
           color: backgroundColor,
           padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-          child: Expanded(
-            child: Column(
-              children: [
-                Flexible(
-                  child: Row(
-                    children: [
-                      NumberInputButton(
-                          text: '1', onTap: () => controller.add('1')),
-                      NumberInputButton(
-                          text: '2', onTap: () => controller.add('2')),
-                      NumberInputButton(
-                          text: '3', onTap: () => controller.add('3')),
-                    ],
-                  ),
+          child: Row(
+            children: [
+              Flexible(
+                flex: 1,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Flexible(
+                      child: Center(
+                        child: FittedBox(
+                          child: Text(
+                            '45399dd99',
+                            style: TextStyle(
+                              fontSize: 35,
+                              fontWeight: FontWeight.w300,
+                              color: Theme.of(context).colorScheme.onSurface,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    NumberInputButton(
+                        text: 'C', onTap: () => controller.clear()),
+                  ],
                 ),
-                Flexible(
-                  child: Row(
-                    children: [
-                      NumberInputButton(
-                          text: '4', onTap: () => controller.add('4')),
-                      NumberInputButton(
-                          text: '5', onTap: () => controller.add('5')),
-                      NumberInputButton(
-                          text: '6', onTap: () => controller.add('6')),
-                    ],
-                  ),
+              ),
+              Flexible(
+                flex: 5,
+                child: Column(
+                  children: [
+                    Flexible(
+                      child: Row(
+                        children: [
+                          NumberInputButton(
+                              text: '0', onTap: () => controller.add('0')),
+                          NumberInputButton(
+                              text: '1', onTap: () => controller.add('1')),
+                          NumberInputButton(
+                              text: '2', onTap: () => controller.add('2')),
+                          NumberInputButton(
+                              text: '3', onTap: () => controller.add('3')),
+                          NumberInputButton(
+                              text: '4', onTap: () => controller.add('4')),
+                        ],
+                      ),
+                    ),
+                    Flexible(
+                      child: Row(
+                        children: [
+                          NumberInputButton(
+                              text: '5', onTap: () => controller.add('5')),
+                          NumberInputButton(
+                              text: '6', onTap: () => controller.add('6')),
+                          NumberInputButton(
+                              text: '7', onTap: () => controller.add('7')),
+                          NumberInputButton(
+                              text: '8', onTap: () => controller.add('8')),
+                          NumberInputButton(
+                              text: '9', onTap: () => controller.add('9')),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
-                Flexible(
-                  child: Row(
-                    children: [
-                      NumberInputButton(
-                          text: '7', onTap: () => controller.add('7')),
-                      NumberInputButton(
-                          text: '8', onTap: () => controller.add('8')),
-                      NumberInputButton(
-                          text: '9', onTap: () => controller.add('9')),
-                    ],
-                  ),
-                ),
-                Flexible(
-                  child: Row(
-                    children: [
-                      NumberInputButton(
-                          text: 'C', onTap: () => controller.clear()),
-                      NumberInputButton(
-                          text: '0', onTap: () => controller.add('0')),
-                      NumberInputButton(
-                          text: '.', onTap: () => controller.add('.')),
-                    ],
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
