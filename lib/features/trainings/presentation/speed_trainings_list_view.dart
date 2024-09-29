@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:math_training/features/speed_training/presentation/speed_training_view.dart';
-import 'package:math_training/widgets/select_mode_box.dart';
-import 'package:math_training/widgets/training_type_panel.dart';
+import 'package:math_training/features/trainings/presentation/select_mode_box.dart';
+import 'package:math_training/features/trainings/presentation/training_type_panel.dart';
+import 'package:math_training/widgets/info_modal.dart';
 
 class SpeedTrainingsListView extends StatefulWidget {
   const SpeedTrainingsListView({super.key});
@@ -19,21 +20,40 @@ class _SpeedTrainingsListViewState extends State<SpeedTrainingsListView>
   Widget build(BuildContext context) {
     super.build(context);
     return SingleChildScrollView(
-      padding: const EdgeInsets.only(bottom: 25, left: 20, right: 20),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 30),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Padding(
-            padding: EdgeInsets.all(25.0),
-            child: Text(
-              'Speed Training',
-              style: TextStyle(
-                fontSize: 30,
-                fontWeight: FontWeight.w600,
-              ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Flexible(
+                  child: Text(
+                    'Speed Training',
+                    style: TextStyle(
+                      fontSize: 30,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 20),
+                  child: IconButton(
+                      onPressed: () {
+                        showInfoModal(context);
+                      },
+                      icon: const Icon(
+                        Icons.person,
+                        size: 32,
+                      )),
+                ),
+              ],
             ),
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 40),
           TrainingTypePanel(
               title: 'Mixed',
               imagePath: 'assets/images/mixed.png',

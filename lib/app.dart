@@ -31,12 +31,15 @@ class AppView extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(
             dynamicSchemeVariant: DynamicSchemeVariant.vibrant,
             seedColor: const Color.fromARGB(255, 0, 89, 255),
-            contrastLevel: 1,
+            contrastLevel: 0.5,
             brightness: Brightness.dark,
           ),
+          bottomSheetTheme: BottomSheetThemeData(
+              dragHandleColor: Colors.white.withOpacity(0.3),
+              dragHandleSize: const Size(50, 5)),
           navigationBarTheme: const NavigationBarThemeData(
               indicatorColor: Color.fromARGB(255, 100, 106, 112),
-              height: 70,
+              height: 60,
               iconTheme: WidgetStatePropertyAll<IconThemeData>(IconThemeData(
                 size: 25,
               )))),

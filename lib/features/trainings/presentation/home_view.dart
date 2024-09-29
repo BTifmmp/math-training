@@ -33,6 +33,7 @@ class _HomeViewState extends State<HomeView> {
   Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: NavigationBar(
+          backgroundColor: Theme.of(context).colorScheme.surfaceContainer,
           onDestinationSelected: (int index) {
             setState(() {
               _currentPageIndex = index;
