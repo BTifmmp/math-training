@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:math_training/features/countdown/cubit/count_down_cubit.dart';
 import 'package:math_training/features/countdown/presentation/countdown_widget.dart';
 import 'package:math_training/features/mental_training/cubit/mental_training_cubit.dart';
-import 'package:math_training/features/stopwatch/cubit/stopwatch_cubit.dart';
 import 'package:math_training/widgets/number_input.dart';
 
 class MentalTrainingPage extends StatelessWidget {

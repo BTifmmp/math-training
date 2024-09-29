@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:math_training/features/mental_training/presentation/mental_training_view.dart';
 import 'package:math_training/widgets/select_mode_box.dart';
-import 'package:math_training/widgets/titled_row.dart';
+import 'package:math_training/widgets/training_type_panel.dart';
 
 class MentalTrainingsListView extends StatefulWidget {
   const MentalTrainingsListView({super.key});
@@ -13,18 +13,6 @@ class MentalTrainingsListView extends StatefulWidget {
 
 class _MentalTrainingsListViewState extends State<MentalTrainingsListView>
     with AutomaticKeepAliveClientMixin<MentalTrainingsListView> {
-  final row1 = ScrollController();
-  final row2 = ScrollController();
-  final row3 = ScrollController();
-
-  @override
-  void dispose() {
-    row1.dispose();
-    row2.dispose();
-    row3.dispose();
-    super.dispose();
-  }
-
   @override
   bool get wantKeepAlive => true;
 
@@ -32,7 +20,7 @@ class _MentalTrainingsListViewState extends State<MentalTrainingsListView>
   Widget build(BuildContext context) {
     super.build(context);
     return SingleChildScrollView(
-      padding: const EdgeInsets.only(bottom: 25),
+      padding: const EdgeInsets.only(bottom: 25, left: 20, right: 20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -47,80 +35,78 @@ class _MentalTrainingsListViewState extends State<MentalTrainingsListView>
             ),
           ),
           const SizedBox(height: 10),
-          TitledRow(
-            title: 'Mixed',
-            children: [
-              TrainingSelectModeBox(
-                  image: 'assets/images/mixed.png',
+          TrainingTypePanel(
+              title: 'Mixed',
+              imagePath: 'assets/images/mixed.png',
+              modeBoxes: [
+                TrainingSelectModeBox(
                   title: 'Easy',
                   description: 'Correct answers: 0',
                   onTap: () {
                     Navigator.of(context).push(MaterialPageRoute(
                         builder: (_) => const MentalTrainingPage()));
                   },
-                  difficulty: 0),
-              TrainingSelectModeBox(
-                  image: 'assets/images/mixed.png',
+                ),
+                TrainingSelectModeBox(
                   title: 'Medium',
                   description: 'Correct answers: 0',
                   onTap: () {},
-                  difficulty: 1),
-              TrainingSelectModeBox(
-                  image: 'assets/images/mixed.png',
+                ),
+                TrainingSelectModeBox(
                   title: 'Hard',
                   description: 'Correct answers: 0',
                   onTap: () {},
-                  difficulty: 2),
-            ],
-          ),
+                ),
+              ]),
           const SizedBox(height: 20),
-          TitledRow(
-            title: 'Addition & Substraction',
-            children: [
-              TrainingSelectModeBox(
-                  image: 'assets/images/plusminus.png',
+          TrainingTypePanel(
+              title: 'Addition & Substraction',
+              imagePath: 'assets/images/plusminus.png',
+              modeBoxes: [
+                TrainingSelectModeBox(
                   title: 'Easy',
                   description: 'Correct answers: 0',
-                  onTap: () {},
-                  difficulty: 0),
-              TrainingSelectModeBox(
-                  image: 'assets/images/plusminus.png',
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (_) => const MentalTrainingPage()));
+                  },
+                ),
+                TrainingSelectModeBox(
                   title: 'Medium',
                   description: 'Correct answers: 0',
                   onTap: () {},
-                  difficulty: 1),
-              TrainingSelectModeBox(
-                  image: 'assets/images/plusminus.png',
+                ),
+                TrainingSelectModeBox(
                   title: 'Hard',
                   description: 'Correct answers: 0',
                   onTap: () {},
-                  difficulty: 2),
-            ],
-          ),
+                ),
+              ]),
           const SizedBox(height: 20),
-          TitledRow(
-            title: 'Mulitplication & Division',
-            children: [
-              TrainingSelectModeBox(
-                  image: 'assets/images/multdiv.png',
+          TrainingTypePanel(
+              title: 'Multiplication & Division',
+              imagePath: 'assets/images/multdiv.png',
+              modeBoxes: [
+                TrainingSelectModeBox(
                   title: 'Easy',
                   description: 'Correct answers: 0',
-                  onTap: () {},
-                  difficulty: 0),
-              TrainingSelectModeBox(
-                  image: 'assets/images/multdiv.png',
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (_) => const MentalTrainingPage()));
+                  },
+                ),
+                TrainingSelectModeBox(
                   title: 'Medium',
                   description: 'Correct answers: 0',
                   onTap: () {},
-                  difficulty: 1),
-              TrainingSelectModeBox(
-                  image: 'assets/images/multdiv.png',
+                ),
+                TrainingSelectModeBox(
                   title: 'Hard',
                   description: 'Correct answers: 0',
                   onTap: () {},
-                  difficulty: 2),
-            ],
-          )
+                ),
+              ]),
+          const SizedBox(height: 20),
         ],
       ),
     );
