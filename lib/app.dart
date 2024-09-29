@@ -34,6 +34,13 @@ class AppView extends StatelessWidget {
             contrastLevel: 0.5,
             brightness: Brightness.dark,
           ),
+          pageTransitionsTheme: const PageTransitionsTheme(
+            builders: <TargetPlatform, PageTransitionsBuilder>{
+              TargetPlatform.android: ZoomPageTransitionsBuilder(
+                allowEnterRouteSnapshotting: false,
+              ),
+            },
+          ),
           bottomSheetTheme: BottomSheetThemeData(
               dragHandleColor: Colors.white.withOpacity(0.3),
               dragHandleSize: const Size(50, 5)),

@@ -34,7 +34,7 @@ class TrainingTypePanel extends StatelessWidget {
       child: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 20),
+            padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
             child: Row(
               children: [
                 Image.asset(
