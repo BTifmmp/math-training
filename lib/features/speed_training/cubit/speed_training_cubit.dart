@@ -1,15 +1,19 @@
 import 'dart:math';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:math_training/features/speed_training/cubit/speed_task_generation.dart';
+import 'package:math_training/features/trainings/domain/training_config.dart';
 part 'speed_training_state.dart';
 
 typedef SpeedTrainingTask = ({String text, num answer});
 
 class SpeedTrainingCubit extends Cubit<SpeedTrainingState> {
-  static const int totalTasksNumber = 2;
+  static const int totalTasksNumber = 15;
+
+  final TrainingConfig trainingConfig;
   num? _expectedAnswer;
 
-  SpeedTrainingCubit()
+  SpeedTrainingCubit({required this.trainingConfig})
       : super(const SpeedTrainingInitial(totalTasksNumber: totalTasksNumber));
 
   void start() {
@@ -22,8 +26,16 @@ class SpeedTrainingCubit extends Cubit<SpeedTrainingState> {
         totalTasksNumber: totalTasksNumber));
   }
 
-  void submitAnswer(num answer) {
-    if (answer == _expectedAnswer) {
+  void submitAnswer(String answer) {
+    if (_expectedAnswer == null) return;
+
+    try {
+      num.parse(answer);
+    } catch (_) {
+      return;
+    }
+
+    if ((num.parse(answer) - _expectedAnswer!).abs() < 0.001) {
       if (state is SpeedTrainingRunning) {
         if ((state as SpeedTrainingRunning).currentTaskIndex ==
             totalTasksNumber) {
@@ -43,7 +55,11 @@ class SpeedTrainingCubit extends Cubit<SpeedTrainingState> {
                 (state as SpeedTrainingRunning).currentTaskIndex + 1,
             totalTasksNumber: totalTasksNumber));
       }
-    } else if (answer.toString().length >= _expectedAnswer!.toString().length) {
+    } else if (answer.length >=
+        _expectedAnswer!
+            .toStringAsFixed(1)
+            .replaceAll(RegExp(r'\.0$'), '')
+            .length) {
       if (state is SpeedTrainingRunning) {
         emit((state as SpeedTrainingRunning)
             .copywith(answerStatus: AnswerStatus.incorrect));
@@ -52,13 +68,51 @@ class SpeedTrainingCubit extends Cubit<SpeedTrainingState> {
   }
 
   SpeedTrainingTask _generateTask() {
-    var rng = Random();
-    num num1 = rng.nextInt(21);
-    num num2 = rng.nextInt(21);
+    final rng = Random();
+    final Operation operation = trainingConfig.availableOperations[
+        rng.nextInt(trainingConfig.availableOperations.length)];
 
-    num answer = num1 + num2;
-    String text = '$num1 + $num2';
+    String taskText = '';
+    num answer = 0;
+    switch (operation) {
+      case Operation.addition:
+        NumberPair pair = generateAddPair(trainingConfig.addSubstractMax,
+            trainingConfig.allowAddSubstractFractions);
+        taskText = '${pair.$1} + ${pair.$2}';
+        answer = pair.$1 + pair.$2;
+        break;
+      case Operation.substraction:
+        NumberPair pair = generateSubstractPair(trainingConfig.addSubstractMax,
+            trainingConfig.allowAddSubstractFractions);
+        taskText = '${pair.$1} - ${pair.$2}';
+        answer = pair.$1 - pair.$2;
+        break;
+      case Operation.multiplication:
+        NumberPair pair = generateMultiplicationPair(trainingConfig.multDivMax);
+        taskText = '${pair.$1} \u00d7 ${pair.$2}';
+        answer = pair.$1 * pair.$2;
+        break;
+      case Operation.division:
+        NumberPair pair = generateDivisionPair(trainingConfig.multDivMax);
+        taskText = '${pair.$1} \u00f7 ${pair.$2}';
+        answer = pair.$1 ~/ pair.$2;
+        break;
+      case Operation.root:
+        NumberPair pair = generateRoot(
+            trainingConfig.rootPowerMax, trainingConfig.allowRootPowerThirds);
 
-    return (text: text, answer: answer);
+        final String prefix = pair.$2 == 3 ? '\u221B' : '\u221A';
+        taskText = '$prefix${pair.$1}';
+        answer = pow(pair.$1, 1 / pair.$2);
+      case Operation.power:
+        NumberPair pair = generatePower(
+            trainingConfig.rootPowerMax, trainingConfig.allowRootPowerThirds);
+
+        final String sufix = pair.$2 == 3 ? '\u00B3' : '\u00B2';
+        taskText = '${pair.$1}$sufix';
+        answer = pow(pair.$1, pair.$2);
+    }
+
+    return (text: taskText, answer: answer);
   }
 }

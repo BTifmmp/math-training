@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:math_training/features/speed_training/presentation/speed_training_view.dart';
+import 'package:math_training/features/trainings/domain/training_config.dart';
 import 'package:math_training/features/trainings/presentation/select_mode_box.dart';
 import 'package:math_training/features/trainings/presentation/training_type_panel.dart';
 import 'package:math_training/features/trainings/presentation/trainings_app_bar.dart';
@@ -84,19 +85,40 @@ class _SpeedTrainingsListViewState extends State<SpeedTrainingsListView>
                       title: 'Easy',
                       description: 'Set best time!',
                       onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (_) => const SpeedTrainingPage()));
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (_) => const SpeedTrainingPage(
+                              trainingConfig: TrainingConfig.mixedEasy,
+                            ),
+                          ),
+                        );
                       },
                     ),
                     TrainingSelectModeBox(
                       title: 'Medium',
                       description: 'Set best time!',
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (_) => const SpeedTrainingPage(
+                              trainingConfig: TrainingConfig.mixedMedium,
+                            ),
+                          ),
+                        );
+                      },
                     ),
                     TrainingSelectModeBox(
                       title: 'Hard',
                       description: 'Set best time!',
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (_) => const SpeedTrainingPage(
+                              trainingConfig: TrainingConfig.mixedHard,
+                            ),
+                          ),
+                        );
+                      },
                     ),
                   ]),
               const SizedBox(height: 20),
@@ -109,18 +131,37 @@ class _SpeedTrainingsListViewState extends State<SpeedTrainingsListView>
                       description: 'Set best time!',
                       onTap: () {
                         Navigator.of(context).push(MaterialPageRoute(
-                            builder: (_) => const SpeedTrainingPage()));
+                            builder: (_) => const SpeedTrainingPage(
+                                  trainingConfig:
+                                      TrainingConfig.addSubstractEasy,
+                                )));
                       },
                     ),
                     TrainingSelectModeBox(
                       title: 'Medium',
                       description: 'Set best time!',
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (_) => const SpeedTrainingPage(
+                              trainingConfig: TrainingConfig.addSubstractMedium,
+                            ),
+                          ),
+                        );
+                      },
                     ),
                     TrainingSelectModeBox(
                       title: 'Hard',
                       description: 'Set best time!',
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (_) => const SpeedTrainingPage(
+                              trainingConfig: TrainingConfig.addSubstractHard,
+                            ),
+                          ),
+                        );
+                      },
                     ),
                   ]),
               const SizedBox(height: 20),
@@ -133,18 +174,78 @@ class _SpeedTrainingsListViewState extends State<SpeedTrainingsListView>
                       description: 'Set best time!',
                       onTap: () {
                         Navigator.of(context).push(MaterialPageRoute(
-                            builder: (_) => const SpeedTrainingPage()));
+                            builder: (_) => const SpeedTrainingPage(
+                                  trainingConfig: TrainingConfig.multDivEasy,
+                                )));
                       },
                     ),
                     TrainingSelectModeBox(
                       title: 'Medium',
                       description: 'Set best time!',
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (_) => const SpeedTrainingPage(
+                              trainingConfig: TrainingConfig.multDivMedium,
+                            ),
+                          ),
+                        );
+                      },
                     ),
                     TrainingSelectModeBox(
                       title: 'Hard',
                       description: 'Set best time!',
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (_) => const SpeedTrainingPage(
+                              trainingConfig: TrainingConfig.multDivHard,
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ]),
+              const SizedBox(height: 20),
+              TrainingTypePanel(
+                  title: 'Powers & Roots',
+                  imagePath: 'assets/images/multdiv.png',
+                  modeBoxes: [
+                    TrainingSelectModeBox(
+                      title: 'Easy',
+                      description: 'Set best time!',
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (_) => const SpeedTrainingPage(
+                                  trainingConfig: TrainingConfig.rootPowerEasy,
+                                )));
+                      },
+                    ),
+                    TrainingSelectModeBox(
+                      title: 'Medium',
+                      description: 'Set best time!',
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (_) => const SpeedTrainingPage(
+                              trainingConfig: TrainingConfig.rootPowerMedium,
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                    TrainingSelectModeBox(
+                      title: 'Hard',
+                      description: 'Set best time!',
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (_) => const SpeedTrainingPage(
+                              trainingConfig: TrainingConfig.rootPowerHard,
+                            ),
+                          ),
+                        );
+                      },
                     ),
                   ]),
               const SizedBox(height: 20),

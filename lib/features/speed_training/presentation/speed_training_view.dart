@@ -5,17 +5,20 @@ import 'package:math_training/features/countdown/cubit/count_down_cubit.dart';
 import 'package:math_training/features/countdown/presentation/countdown_widget.dart';
 import 'package:math_training/features/stopwatch/cubit/stopwatch_cubit.dart';
 import 'package:math_training/features/speed_training/cubit/speed_training_cubit.dart';
+import 'package:math_training/features/trainings/domain/training_config.dart';
 import 'package:math_training/widgets/number_input.dart';
 import 'package:math_training/features/speed_training/presentation/speed_training_summary_view.dart';
 import 'package:math_training/utils/duration_formatter.dart';
 
 class SpeedTrainingPage extends StatelessWidget {
-  const SpeedTrainingPage({super.key});
+  final TrainingConfig trainingConfig;
+  const SpeedTrainingPage({super.key, required this.trainingConfig});
 
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(providers: [
-      BlocProvider<SpeedTrainingCubit>(create: (_) => SpeedTrainingCubit()),
+      BlocProvider<SpeedTrainingCubit>(
+          create: (_) => SpeedTrainingCubit(trainingConfig: trainingConfig)),
       BlocProvider<CountDownCubit>(
           create: (_) => CountDownCubit(count: 3)..start()),
       BlocProvider<StopwatchCubit>(create: (_) => StopwatchCubit()),
@@ -42,7 +45,7 @@ class _SpeedTrainingViewState extends State<SpeedTrainingView> {
           _numberInputController.value != '') {
         context
             .read<SpeedTrainingCubit>()
-            .submitAnswer(num.parse(_numberInputController.value));
+            .submitAnswer(_numberInputController.value);
       }
     });
     super.initState();
