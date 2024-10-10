@@ -1,7 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:math_training/features/trainings/domain/training_config.dart';
 
 class MentalTrainingSummaryView extends StatelessWidget {
-  const MentalTrainingSummaryView({super.key});
+  final bool isAnswerCorrect;
+  final num correctAnswer;
+  final TrainingConfig trainingConfig;
+  const MentalTrainingSummaryView(
+      {super.key,
+      required this.isAnswerCorrect,
+      required this.trainingConfig,
+      required this.correctAnswer});
 
   @override
   Widget build(BuildContext context) {
@@ -16,15 +24,16 @@ class MentalTrainingSummaryView extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               const Spacer(flex: 2),
-              const Text(
-                'Addition & Substraction',
-                style: TextStyle(
+              Text(
+                trainingConfig.title,
+                style: const TextStyle(
                     fontSize: 35, fontWeight: FontWeight.w600, height: 1.3),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 10),
-              const Text('Difficulty: easy',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w300)),
+              Text('Difficulty: ${trainingConfig.diffcultyText}',
+                  style: const TextStyle(
+                      fontSize: 20, fontWeight: FontWeight.w300)),
               const Text('Correct answers: 0',
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.w300)),
               const Spacer(flex: 1),
@@ -34,16 +43,32 @@ class MentalTrainingSummaryView extends StatelessWidget {
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(25)),
                   color: Theme.of(context).colorScheme.surfaceContainer,
-                  child: const Padding(
-                    padding: EdgeInsets.all(25.0),
+                  child: Padding(
+                    padding: const EdgeInsets.all(25.0),
                     child: Column(
                       children: [
-                        Text('Correct Answer',
-                            style: TextStyle(
-                              overflow: TextOverflow.ellipsis,
-                              fontSize: 35,
-                              fontWeight: FontWeight.w400,
-                            )),
+                        Text(
+                          isAnswerCorrect
+                              ? 'Correct Answer'
+                              : 'Incorrect Answer',
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            height: 1.1,
+                            fontSize: 30,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                        const SizedBox(height: 15),
+                        Text(
+                          '${!isAnswerCorrect ? 'Correct answer' : 'Answer'}: ${correctAnswer.toStringAsFixed(1).replaceAll(RegExp(r'\.0$'), '')}',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color:
+                                Theme.of(context).colorScheme.onSurfaceVariant,
+                            fontSize: 20,
+                            fontWeight: FontWeight.w300,
+                          ),
+                        ),
                       ],
                     ),
                   ),

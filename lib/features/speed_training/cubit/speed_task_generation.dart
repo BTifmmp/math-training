@@ -1,31 +1,5 @@
 import 'dart:math';
-import 'package:math_training/utils/math.dart';
-
-typedef NumberPair = (num, num);
-
-NumberPair generateRoot(int upperRange, bool allowThirds) {
-  final rng = Random();
-
-  final int root = allowThirds && rng.nextDouble() < 0.3 ? 3 : 2;
-
-  final num number = root == 3
-      ? pow(rng.nextInt(pow(upperRange, 1 / 3).floor()), 3)
-      : pow(rng.nextInt(sqrt(upperRange).floor()), 2);
-
-  return (number, root);
-}
-
-NumberPair generatePower(int upperRange, bool allowThirds) {
-  final rng = Random();
-
-  final int power = allowThirds && rng.nextDouble() < 0.3 ? 3 : 2;
-
-  final num number = power == 3
-      ? rng.nextInt(pow(upperRange, 1 / 3).floor())
-      : rng.nextInt(sqrt(upperRange).floor());
-
-  return (number, power);
-}
+import 'package:math_training/utils/task_generation/generation_common.dart';
 
 NumberPair generateAddPair(int upperRange, bool allowFractions) {
   final rng = Random();
@@ -44,11 +18,11 @@ NumberPair generateAddPair(int upperRange, bool allowFractions) {
 NumberPair generateSubstractPair(int upperRange, bool allowFractions) {
   final rng = Random();
 
-  final num firstNum = rng.nextDouble() < 0.2
+  final num firstNum = allowFractions && rng.nextDouble() < 0.2
       ? rng.nextInt(upperRange) / 10
       : rng.nextInt(upperRange);
 
-  final num secondNum = rng.nextDouble() < 0.2
+  final num secondNum = allowFractions && rng.nextDouble() < 0.2
       ? rng.nextInt(upperRange) / 10
       : rng.nextInt(upperRange);
 
@@ -76,4 +50,28 @@ NumberPair generateDivisionPair(int upperRange) {
   final secondNum = divisors[rng.nextInt(divisors.length)];
 
   return (firstNum, secondNum);
+}
+
+NumberPair generateRoot(int upperRange, bool allowThirds) {
+  final rng = Random();
+
+  final int root = allowThirds && rng.nextDouble() < 0.3 ? 3 : 2;
+
+  final num number = root == 3
+      ? pow(rng.nextInt(pow(upperRange, 1 / 3).floor()), 3)
+      : pow(rng.nextInt(sqrt(upperRange).floor()), 2);
+
+  return (number, root);
+}
+
+NumberPair generatePower(int upperRange, bool allowThirds) {
+  final rng = Random();
+
+  final int power = allowThirds && rng.nextDouble() < 0.3 ? 3 : 2;
+
+  final num number = power == 3
+      ? rng.nextInt(pow(upperRange, 1 / 3).floor())
+      : rng.nextInt(sqrt(upperRange).floor());
+
+  return (number, power);
 }

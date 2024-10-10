@@ -63,75 +63,81 @@ class _SpeedTrainingViewState extends State<SpeedTrainingView> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
       ),
-      body: BlocListener<SpeedTrainingCubit, SpeedTrainingState>(
-        listener: (context, state) {
-          if (state is SpeedTrainingFinished) {
+      body: BlocConsumer<SpeedTrainingCubit, SpeedTrainingState>(
+        listener: (context, trainState) {
+          if (trainState is SpeedTrainingFinished) {
             // Pushes summary view if all task anwsered
             Navigator.of(context).pushReplacement(MaterialPageRoute(
                 fullscreenDialog: true,
-                builder: (_) => const SpeedTrainingSummaryView()));
-          } else if (state is SpeedTrainingRunning &&
-              (state.answerStatus == AnswerStatus.incorrect ||
-                  state.answerStatus == AnswerStatus.correct)) {
+                builder: (_) => SpeedTrainingSummaryView(
+                      trainingConfig: trainState.trainingConfig,
+                      time: context.read<StopwatchCubit>().state.timeElapsed,
+                    )));
+          } else if (trainState is SpeedTrainingRunning &&
+              (trainState.answerStatus == AnswerStatus.incorrect ||
+                  trainState.answerStatus == AnswerStatus.correct)) {
             // Schedules a delayed number input clear if answer was
             // incorrect or correct and clear is not scheduled
             _numberInputController
                 .delayedClear(const Duration(milliseconds: 200));
           }
         },
-        child: Column(
-          children: [
-            const SizedBox(height: 10),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  SpeedCurrentTaskDisplay(),
-                  SpeedTrainingStopwatchDisplay(),
-                ],
+        builder: (BuildContext context, SpeedTrainingState state) {
+          if (state is SpeedTrainingFinished) return const SizedBox.shrink();
+          return Column(
+            children: [
+              const SizedBox(height: 10),
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    SpeedCurrentTaskDisplay(),
+                    SpeedTrainingStopwatchDisplay(),
+                  ],
+                ),
               ),
-            ),
-            const Spacer(),
-            BlocConsumer<CountDownCubit, CountDownState>(
-              listener: (context, state) {
-                // Checks if countdown has finished
-                if (state is CountDownFinished) {
-                  if (context.read<StopwatchCubit>().state
-                      is StopwatchInitial) {
-                    context.read<StopwatchCubit>().start();
-                  }
-                  if (context.read<SpeedTrainingCubit>().state
-                      is SpeedTrainingInitial) {
-                    // Executes opacity change after frame has been build
-                    // to ensure that animated task display exist
-                    WidgetsBinding.instance.addPostFrameCallback((_) {
-                      setState(() {
-                        _opacity = 1;
+              const Spacer(),
+              BlocConsumer<CountDownCubit, CountDownState>(
+                listener: (context, state) {
+                  // Checks if countdown has finished
+                  if (state is CountDownFinished) {
+                    if (context.read<StopwatchCubit>().state
+                        is StopwatchInitial) {
+                      context.read<StopwatchCubit>().start();
+                    }
+                    if (context.read<SpeedTrainingCubit>().state
+                        is SpeedTrainingInitial) {
+                      // Executes opacity change after frame has been build
+                      // to ensure that animated task display exist
+                      WidgetsBinding.instance.addPostFrameCallback((_) {
+                        setState(() {
+                          _opacity = 1;
+                        });
                       });
-                    });
-                    _numberInputController.clear();
-                    context.read<SpeedTrainingCubit>().start();
+                      _numberInputController.clear();
+                      context.read<SpeedTrainingCubit>().start();
+                    }
                   }
-                }
-              },
-              builder: (context, state) {
-                return switch (state.runtimeType) {
-                  const (CountDownFinished) => AnimatedSpeedTaskDisplay(
-                      opacity: _opacity,
-                      numberInputController: _numberInputController),
-                  _ => Countdown(count: (state as CountDownCounting).count)
-                };
-              },
-            ),
-            const Spacer(),
-            const SizedBox(height: 20),
-            NumberInput(
-              numberInputController: _numberInputController,
-              backgroundColor: Theme.of(context).colorScheme.surfaceContainer,
-            ),
-          ],
-        ),
+                },
+                builder: (context, state) {
+                  return switch (state.runtimeType) {
+                    const (CountDownFinished) => AnimatedSpeedTaskDisplay(
+                        opacity: _opacity,
+                        numberInputController: _numberInputController),
+                    _ => Countdown(count: (state as CountDownCounting).count)
+                  };
+                },
+              ),
+              const Spacer(),
+              const SizedBox(height: 20),
+              NumberInput(
+                numberInputController: _numberInputController,
+                backgroundColor: Theme.of(context).colorScheme.surfaceContainer,
+              ),
+            ],
+          );
+        },
       ),
     );
   }

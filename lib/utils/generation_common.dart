@@ -1,3 +1,5 @@
+typedef NumberPair = (num, num);
+
 List<int> getDivisorsSorted(int num) {
   List<int> divisors = [];
 

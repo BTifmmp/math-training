@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:math_training/features/mental_training/presentation/mental_training_view.dart';
+import 'package:math_training/features/trainings/domain/training_config.dart';
 import 'package:math_training/features/trainings/presentation/select_mode_box.dart';
 import 'package:math_training/features/trainings/presentation/training_type_panel.dart';
 import 'package:math_training/features/trainings/presentation/trainings_app_bar.dart';
@@ -86,7 +87,10 @@ class _MentalTrainingsListViewState extends State<MentalTrainingsListView>
                       description: 'Correct answers: 0',
                       onTap: () {
                         Navigator.of(context).push(MaterialPageRoute(
-                            builder: (_) => const MentalTrainingPage()));
+                            builder: (_) => const MentalTrainingPage(
+                                  trainingConfig:
+                                      TrainingConfig.mixedMentalEasy,
+                                )));
                       },
                     ),
                     TrainingSelectModeBox(
@@ -110,7 +114,10 @@ class _MentalTrainingsListViewState extends State<MentalTrainingsListView>
                       description: 'Correct answers: 0',
                       onTap: () {
                         Navigator.of(context).push(MaterialPageRoute(
-                            builder: (_) => const MentalTrainingPage()));
+                            builder: (_) => const MentalTrainingPage(
+                                  trainingConfig:
+                                      TrainingConfig.addSubstractEasy,
+                                )));
                       },
                     ),
                     TrainingSelectModeBox(
@@ -134,7 +141,10 @@ class _MentalTrainingsListViewState extends State<MentalTrainingsListView>
                       description: 'Correct answers: 0',
                       onTap: () {
                         Navigator.of(context).push(MaterialPageRoute(
-                            builder: (_) => const MentalTrainingPage()));
+                            builder: (_) => const MentalTrainingPage(
+                                  trainingConfig:
+                                      TrainingConfig.addSubstractEasy,
+                                )));
                       },
                     ),
                     TrainingSelectModeBox(

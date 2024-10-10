@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:math_training/features/trainings/domain/training_config.dart';
+import 'package:math_training/utils/duration_formatter.dart';
 
 class SpeedTrainingSummaryView extends StatelessWidget {
-  const SpeedTrainingSummaryView({super.key});
+  final TrainingConfig trainingConfig;
+  final Duration time;
+
+  const SpeedTrainingSummaryView(
+      {super.key, required this.trainingConfig, required this.time});
 
   @override
   Widget build(BuildContext context) {
@@ -16,34 +22,35 @@ class SpeedTrainingSummaryView extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               const Spacer(flex: 2),
-              const Text(
-                'Addition & Substraction',
-                style: TextStyle(
+              Text(
+                trainingConfig.title,
+                style: const TextStyle(
                     fontSize: 35, fontWeight: FontWeight.w600, height: 1.3),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 10),
-              const Text('Difficulty: easy',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w300)),
-              const Text('Best time: 20.453s',
+              Text('Difficulty: ${trainingConfig.diffcultyText}',
+                  style: const TextStyle(
+                      fontSize: 20, fontWeight: FontWeight.w300)),
+              const Text('Best time: 00:00',
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.w300)),
               const Spacer(flex: 1),
               SizedBox(
                 width: 250,
                 child: Card.filled(
                   color: Theme.of(context).colorScheme.surfaceContainer,
-                  child: const Padding(
-                    padding: EdgeInsets.all(25.0),
+                  child: Padding(
+                    padding: const EdgeInsets.all(25.0),
                     child: Column(
                       children: [
-                        Text('Your time',
+                        const Text('Your time',
                             style: TextStyle(
                               overflow: TextOverflow.ellipsis,
                               fontSize: 22,
                               fontWeight: FontWeight.w300,
                             )),
-                        Text('200.200s',
-                            style: TextStyle(
+                        Text(formatDuration(time),
+                            style: const TextStyle(
                               overflow: TextOverflow.ellipsis,
                               fontSize: 35,
                               fontWeight: FontWeight.w400,

@@ -41,5 +41,7 @@ final class SpeedTrainingRunning extends SpeedTrainingState {
 }
 
 final class SpeedTrainingFinished extends SpeedTrainingState {
-  const SpeedTrainingFinished({required super.totalTasksNumber});
+  final TrainingConfig trainingConfig;
+  const SpeedTrainingFinished(
+      {required this.trainingConfig, required super.totalTasksNumber});
 }

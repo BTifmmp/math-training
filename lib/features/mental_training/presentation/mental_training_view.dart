@@ -5,15 +5,19 @@ import 'package:math_training/features/countdown/cubit/count_down_cubit.dart';
 import 'package:math_training/features/countdown/presentation/countdown_widget.dart';
 import 'package:math_training/features/mental_training/cubit/mental_training_cubit.dart';
 import 'package:math_training/features/mental_training/presentation/mental_training_summary_view.dart';
+import 'package:math_training/features/trainings/domain/training_config.dart';
 import 'package:math_training/widgets/number_input.dart';
 
 class MentalTrainingPage extends StatelessWidget {
-  const MentalTrainingPage({super.key});
+  final TrainingConfig trainingConfig;
+
+  const MentalTrainingPage({super.key, required this.trainingConfig});
 
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(providers: [
-      BlocProvider<MentalTrainingCubit>(create: (_) => MentalTrainingCubit()),
+      BlocProvider<MentalTrainingCubit>(
+          create: (_) => MentalTrainingCubit(trainingConfig: trainingConfig)),
       BlocProvider<CountDownCubit>(
           create: (_) => CountDownCubit(count: 3)..start()),
     ], child: const MentalTrainingView());
@@ -40,7 +44,7 @@ class _MentalTrainingViewState extends State<MentalTrainingView> {
           _numberInputController.value != '') {
         context
             .read<MentalTrainingCubit>()
-            .submitAnswer(num.parse(_numberInputController.value));
+            .submitAnswer(_numberInputController.value);
       }
     });
     super.initState();
@@ -64,7 +68,11 @@ class _MentalTrainingViewState extends State<MentalTrainingView> {
             // Pushes summary view if all task anwsered
             Navigator.of(context).pushReplacement(MaterialPageRoute(
                 fullscreenDialog: true,
-                builder: (_) => const MentalTrainingSummaryView()));
+                builder: (_) => MentalTrainingSummaryView(
+                      isAnswerCorrect: state.isAnswerCorrect,
+                      trainingConfig: state.trainingConfig,
+                      correctAnswer: state.correctAnswer,
+                    )));
           } else if (state is MentalTrainingWaitingForAnswer &&
               (state.answerStatus == AnswerStatus.incorrect ||
                   state.answerStatus == AnswerStatus.correct)) {

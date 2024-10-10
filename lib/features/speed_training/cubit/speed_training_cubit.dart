@@ -1,14 +1,15 @@
 import 'dart:math';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:math_training/features/speed_training/cubit/speed_task_generation.dart';
+import 'package:math_training/utils/task_generation/generation_common.dart';
+import 'package:math_training/utils/task_generation/speed_task_generation.dart';
 import 'package:math_training/features/trainings/domain/training_config.dart';
 part 'speed_training_state.dart';
 
 typedef SpeedTrainingTask = ({String text, num answer});
 
 class SpeedTrainingCubit extends Cubit<SpeedTrainingState> {
-  static const int totalTasksNumber = 15;
+  static const int totalTasksNumber = 1;
 
   final TrainingConfig trainingConfig;
   num? _expectedAnswer;
@@ -39,7 +40,9 @@ class SpeedTrainingCubit extends Cubit<SpeedTrainingState> {
       if (state is SpeedTrainingRunning) {
         if ((state as SpeedTrainingRunning).currentTaskIndex ==
             totalTasksNumber) {
-          emit(const SpeedTrainingFinished(totalTasksNumber: totalTasksNumber));
+          emit(SpeedTrainingFinished(
+              totalTasksNumber: totalTasksNumber,
+              trainingConfig: trainingConfig));
           return;
         }
 

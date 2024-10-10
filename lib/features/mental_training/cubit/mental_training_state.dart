@@ -47,9 +47,11 @@ final class MentalTrainingWaitingForAnswer extends MentalTrainingState {
 final class MentalTrainingFinished extends MentalTrainingState {
   final bool isAnswerCorrect;
   final num correctAnswer;
+  final TrainingConfig trainingConfig;
 
   const MentalTrainingFinished(
-      {required this.correctAnswer,
+      {required this.trainingConfig,
+      required this.correctAnswer,
       required this.isAnswerCorrect,
       required super.totalTasksNumber});
 }
