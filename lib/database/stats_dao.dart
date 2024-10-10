@@ -1,8 +1,8 @@
-import 'package:math_training/utils/database/mental_training_stats.dart';
-import 'package:math_training/utils/database/speed_training_stats.dart';
-import 'package:math_training/features/trainings/domain/training_types.dart';
-import 'package:math_training/utils/database/database.dart';
-import 'package:math_training/utils/database/stats_tables.dart';
+import 'package:math_training/database/models/mental_training_stats.dart';
+import 'package:math_training/database/models/speed_training_stats.dart';
+import 'package:math_training/database/models/training_types.dart';
+import 'package:math_training/database/stats_database.dart';
+import 'package:math_training/database/stats_tables.dart';
 
 class SessionDAO {
   final StatsDatabase dbProvider;
@@ -56,7 +56,7 @@ class SessionDAO {
     return stats.isNotEmpty ? stats[0] : null;
   }
 
-  Future<bool> insertSpeedTrainingTime(int time) async {
+  Future<bool> insertSpeedTrainingTime(SpeedTrainingType type, int time) async {
     return false;
   }
 

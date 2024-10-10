@@ -1,4 +1,4 @@
-import 'package:math_training/features/trainings/domain/training_types.dart';
+import 'package:math_training/database/models/training_types.dart';
 
 class MentalTrainingStats {
   final MentalTrainingType type;

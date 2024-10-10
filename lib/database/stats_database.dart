@@ -1,4 +1,4 @@
-import 'package:math_training/utils/database/stats_tables.dart';
+import 'package:math_training/database/stats_tables.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
