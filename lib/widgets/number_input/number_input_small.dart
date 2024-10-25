@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:math_training/widgets/number_input.dart';
+import 'package:math_training/widgets/number_input/number_input.dart';
 
 class NumberInputSmall extends StatelessWidget {
   final NumberInputController controller;

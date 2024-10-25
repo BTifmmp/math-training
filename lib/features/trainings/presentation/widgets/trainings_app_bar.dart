@@ -23,7 +23,7 @@ class TrainingsAppBar extends StatelessWidget {
               color: Theme.of(context)
                   .colorScheme
                   .onSurfaceVariant
-                  .withOpacity(0.1),
+                  .withOpacity(0.05),
             ),
           ),
         ),

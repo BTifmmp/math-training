@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:math_training/utils/task_generation/generation_common.dart';
+import 'package:math_training/utils/generation_common.dart';
 
 num generateNextAdd(int upperRange, bool allowFractions) {
   final rng = Random();

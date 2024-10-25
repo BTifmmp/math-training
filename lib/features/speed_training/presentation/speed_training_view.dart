@@ -1,18 +1,25 @@
 import 'package:animated_flip_counter/animated_flip_counter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:math_training/database/models/speed_training_stats.dart';
+import 'package:math_training/database/models/training_types.dart';
 import 'package:math_training/features/countdown/cubit/count_down_cubit.dart';
 import 'package:math_training/features/countdown/presentation/countdown_widget.dart';
+import 'package:math_training/features/statictics/cubit/statistics_cubit.dart';
+import 'package:math_training/features/statictics/repository/statistic_repository.dart';
 import 'package:math_training/features/stopwatch/cubit/stopwatch_cubit.dart';
 import 'package:math_training/features/speed_training/cubit/speed_training_cubit.dart';
 import 'package:math_training/features/trainings/domain/training_config.dart';
-import 'package:math_training/widgets/number_input.dart';
+import 'package:math_training/widgets/number_input/number_input.dart';
 import 'package:math_training/features/speed_training/presentation/speed_training_summary_view.dart';
 import 'package:math_training/utils/duration_formatter.dart';
 
 class SpeedTrainingPage extends StatelessWidget {
   final TrainingConfig trainingConfig;
-  const SpeedTrainingPage({super.key, required this.trainingConfig});
+  final SpeedTrainingType type;
+
+  const SpeedTrainingPage(
+      {super.key, required this.trainingConfig, required this.type});
 
   @override
   Widget build(BuildContext context) {
@@ -22,12 +29,17 @@ class SpeedTrainingPage extends StatelessWidget {
       BlocProvider<CountDownCubit>(
           create: (_) => CountDownCubit(count: 3)..start()),
       BlocProvider<StopwatchCubit>(create: (_) => StopwatchCubit()),
-    ], child: const SpeedTrainingView());
+      BlocProvider<StatisitcsCubit>(
+        create: (_) => StatisitcsCubit(
+            statisticRepository: context.read<StatisticRepository>()),
+      )
+    ], child: SpeedTrainingView(type: type));
   }
 }
 
 class SpeedTrainingView extends StatefulWidget {
-  const SpeedTrainingView({super.key});
+  final SpeedTrainingType type;
+  const SpeedTrainingView({super.key, required this.type});
 
   @override
   State<SpeedTrainingView> createState() => _SpeedTrainingViewState();
@@ -64,15 +76,24 @@ class _SpeedTrainingViewState extends State<SpeedTrainingView> {
         backgroundColor: Colors.transparent,
       ),
       body: BlocConsumer<SpeedTrainingCubit, SpeedTrainingState>(
-        listener: (context, trainState) {
+        listener: (context, trainState) async {
           if (trainState is SpeedTrainingFinished) {
+            final time = context.read<StopwatchCubit>().state.timeElapsed;
+
+            await context.read<StatisitcsCubit>().insertSpeedTrainingTime(
+                SpeedTrainingTime(
+                    type: widget.type, time: time.inMilliseconds));
+
             // Pushes summary view if all task anwsered
-            Navigator.of(context).pushReplacement(MaterialPageRoute(
-                fullscreenDialog: true,
-                builder: (_) => SpeedTrainingSummaryView(
-                      trainingConfig: trainState.trainingConfig,
-                      time: context.read<StopwatchCubit>().state.timeElapsed,
-                    )));
+            if (context.mounted) {
+              Navigator.of(context).pushReplacement(MaterialPageRoute(
+                  fullscreenDialog: true,
+                  builder: (_) => SpeedTrainingSummaryPage(
+                        trainingConfig: trainState.trainingConfig,
+                        time: time,
+                        type: widget.type,
+                      )));
+            }
           } else if (trainState is SpeedTrainingRunning &&
               (trainState.answerStatus == AnswerStatus.incorrect ||
                   trainState.answerStatus == AnswerStatus.correct)) {

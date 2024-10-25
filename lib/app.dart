@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:math_training/features/statictics/cubit/statistics_cubit.dart';
 import 'package:math_training/features/statictics/repository/statistic_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:math_training/features/trainings/presentation/home_view.dart';
@@ -12,9 +11,8 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) =>
-          StatisitcsCubit(statisticRepository: _statisticRepository),
+    return RepositoryProvider.value(
+      value: _statisticRepository,
       child: const AppView(),
     );
   }

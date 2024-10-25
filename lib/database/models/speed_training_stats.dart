@@ -8,14 +8,15 @@ class SpeedTrainingTime {
 
   Map<String, Object?> toJson() {
     return {
-      'type': type,
+      'type': type.index,
       'time': time,
     };
   }
 
-  factory SpeedTrainingTime.fromDatabaseJson(Map<String, dynamic> data) =>
-      SpeedTrainingTime(
-        type: data['type'],
-        time: data['time'],
-      );
+  factory SpeedTrainingTime.fromDatabaseJson(Map<String, dynamic> data) {
+    return SpeedTrainingTime(
+      type: SpeedTrainingType.values[data['type']],
+      time: data['time'],
+    );
+  }
 }

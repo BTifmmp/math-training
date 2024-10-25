@@ -1,15 +1,15 @@
 import 'dart:math';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:math_training/utils/task_generation/generation_common.dart';
-import 'package:math_training/utils/task_generation/speed_task_generation.dart';
+import 'package:math_training/utils/generation_common.dart';
+import 'package:math_training/features/speed_training/cubit/speed_task_generation.dart';
 import 'package:math_training/features/trainings/domain/training_config.dart';
 part 'speed_training_state.dart';
 
 typedef SpeedTrainingTask = ({String text, num answer});
 
 class SpeedTrainingCubit extends Cubit<SpeedTrainingState> {
-  static const int totalTasksNumber = 1;
+  static const int totalTasksNumber = 10;
 
   final TrainingConfig trainingConfig;
   num? _expectedAnswer;
@@ -81,13 +81,15 @@ class SpeedTrainingCubit extends Cubit<SpeedTrainingState> {
       case Operation.addition:
         NumberPair pair = generateAddPair(trainingConfig.addSubstractMax,
             trainingConfig.allowAddSubstractFractions);
-        taskText = '${pair.$1} + ${pair.$2}';
+        taskText =
+            '${removeUnnecesaryDecimalZero(pair.$1)} + ${removeUnnecesaryDecimalZero(pair.$2)}';
         answer = pair.$1 + pair.$2;
         break;
       case Operation.substraction:
         NumberPair pair = generateSubstractPair(trainingConfig.addSubstractMax,
             trainingConfig.allowAddSubstractFractions);
-        taskText = '${pair.$1} - ${pair.$2}';
+        taskText =
+            '${removeUnnecesaryDecimalZero(pair.$1)} - ${removeUnnecesaryDecimalZero(pair.$2)}';
         answer = pair.$1 - pair.$2;
         break;
       case Operation.multiplication:

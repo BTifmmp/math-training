@@ -23,11 +23,24 @@ class NumberInputController with ChangeNotifier {
   void add(String value) {
     if (clearScheduled) {
       clearScheduled = false;
-      this.value = value;
+      this.value = _nextValue('', value);
     } else {
-      this.value += value;
+      this.value = _nextValue(this.value, value);
     }
+
     notifyListeners();
+  }
+
+  String _nextValue(String previousValue, String addedValue) {
+    if (addedValue == '.') {
+      if (previousValue == '') {
+        return '0.';
+      } else if (previousValue.endsWith('.')) {
+        return previousValue;
+      }
+    }
+
+    return previousValue + addedValue;
   }
 }
 

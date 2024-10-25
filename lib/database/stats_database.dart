@@ -3,9 +3,11 @@ import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
 class StatsDatabase {
-  static final StatsDatabase dbProvider = StatsDatabase();
+  static final StatsDatabase _dbProvider = StatsDatabase._privateConstrcutor();
+  StatsDatabase._privateConstrcutor();
+  factory StatsDatabase.instance() => _dbProvider;
 
-  static const databseName = "stats_database.db";
+  static const databaseName = "stats_database.db";
 
   Database? _database;
 
@@ -16,9 +18,9 @@ class StatsDatabase {
 
   Future<Database> createDatabase() async {
     //"ReactiveTodo.db is our database instance name
-    String path = join(await getDatabasesPath(), databseName);
+    String path = join(await getDatabasesPath(), databaseName);
 
-    var database = await openDatabase(path, onCreate: _initDB);
+    var database = await openDatabase(path, version: 1, onCreate: _initDB);
     return database;
   }
 

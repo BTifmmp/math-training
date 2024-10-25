@@ -3,16 +3,15 @@ import 'package:math_training/database/models/speed_training_stats.dart';
 import 'package:math_training/database/models/training_types.dart';
 import 'package:math_training/database/stats_database.dart';
 import 'package:math_training/database/stats_tables.dart';
+import 'package:sqflite/sqflite.dart';
 
-class SessionDAO {
-  final StatsDatabase dbProvider;
-
-  SessionDAO([StatsDatabase? dbProvider])
-      : dbProvider = dbProvider ?? StatsDatabase.dbProvider;
+class StatsDAO {
+  final StatsDatabase _dbProvider = StatsDatabase.instance();
+  StatsDAO();
 
   Future<List<SpeedTrainingTime>> getSpeedTrainingTimes(
       SpeedTrainingType type) async {
-    final db = await dbProvider.database;
+    final db = await _dbProvider.database;
     var res = await db.query(
       SpeedTimesTable.tableName,
       where: "${SpeedTimesTable.type} = ?",
@@ -26,11 +25,23 @@ class SessionDAO {
     return times;
   }
 
+  Future<List<SpeedTrainingTime>> getAllBestSpeedTrainingTimes() async {
+    final db = await _dbProvider.database;
+    var res = await db.rawQuery(
+        'SELECT ${SpeedTimesTable.type}, MIN(${SpeedTimesTable.time}) as time FROM ${SpeedTimesTable.tableName} GROUP BY ${SpeedTimesTable.type};');
+
+    List<SpeedTrainingTime> times = res.isNotEmpty
+        ? res.map((row) => SpeedTrainingTime.fromDatabaseJson(row)).toList()
+        : [];
+
+    return times;
+  }
+
   Future<SpeedTrainingTime?> getBestSpeedTrainingTime(
       SpeedTrainingType type) async {
-    final db = await dbProvider.database;
+    final db = await _dbProvider.database;
     var res = await db.rawQuery(
-      'SELECT MIN(${SpeedTimesTable.time}) as best_time FROM ${SpeedTimesTable.tableName} WHERE ${SpeedTimesTable.type} = $type',
+      'SELECT ${SpeedTimesTable.type}, MIN(${SpeedTimesTable.time}) as time FROM ${SpeedTimesTable.tableName} WHERE ${SpeedTimesTable.type} = ${type.index}',
     );
 
     List<SpeedTrainingTime> times = res.isNotEmpty
@@ -42,7 +53,7 @@ class SessionDAO {
 
   Future<MentalTrainingStats?> getMentalTrainingStats(
       MentalTrainingType type) async {
-    final db = await dbProvider.database;
+    final db = await _dbProvider.database;
     var res = await db.query(
       MentalStatsTable.tableName,
       where: "${MentalStatsTable.type} = ?",
@@ -56,53 +67,38 @@ class SessionDAO {
     return stats.isNotEmpty ? stats[0] : null;
   }
 
-  Future<bool> insertSpeedTrainingTime(SpeedTrainingType type, int time) async {
-    return false;
+  Future<List<MentalTrainingStats>> getAllMentalTrainingStats(
+      MentalTrainingType type) async {
+    final db = await _dbProvider.database;
+    var res = await db.query(MentalStatsTable.tableName);
+
+    List<MentalTrainingStats> stats = res.isNotEmpty
+        ? res.map((row) => MentalTrainingStats.fromDatabaseJson(row)).toList()
+        : [];
+
+    return stats;
   }
 
-  // Future<SessionModel> getUser(int id) async {
-  //   final db = await dbProvider.database;
-  //   var res = await db.query(
-  //     SessionsTable.SESSIONS_TABLE_NAME,
-  //     where: "${SessionsTable.SESSIONS_ID} = ?",
-  //     whereArgs: [id],
-  //   );
+  Future<bool> insertSpeedTrainingTime(SpeedTrainingTime speedTime) async {
+    final db = await _dbProvider.database;
+    final res = await db.insert(
+      SpeedTimesTable.tableName,
+      speedTime.toJson(),
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
 
-  //   List<SessionModel>? sessionModel = res.isNotEmpty
-  //       ? res.map((row) => SessionModel.fromDatabaseJson(row)).toList()
-  //       : [];
+    return res != 0;
+  }
 
-  //   return sessionModel.isNotEmpty
-  //       ? sessionModel[0]
-  //       : const SessionModel.empty();
-  // }
+  Future<bool> increaseMentalTrainingCorrectAnswers(
+      MentalTrainingType type) async {
+    final db = await _dbProvider.database;
 
-  // Future<bool> insertUser(SessionModel? localSessionModel) async {
-  //   final db = await dbProvider.database;
-  //   final result = await db.insert(
-  //       SessionsTable.SESSIONS_TABLE_NAME, localSessionModel!.toDatabaseJson(),
-  //       conflictAlgorithm: ConflictAlgorithm.replace);
-  //   return result != 0;
-  // }
+    final res = await db.rawInsert(
+        '''INSERT INTO ${MentalStatsTable.tableName} (${MentalStatsTable.type}, ${MentalStatsTable.correctAnswers}) 
+        VALUES ($type, 1) ON CONFLICT(${MentalStatsTable.type}) 
+        DO UPDATE SET ${MentalStatsTable.correctAnswers} = ${MentalStatsTable.correctAnswers} + 1;''');
 
-  // Future<bool> updateUser(int id, SessionModel localSessionModel) async {
-  //   final db = await dbProvider.database;
-  //   final result = await db.update(
-  //     SessionsTable.SESSIONS_TABLE_NAME,
-  //     localSessionModel.toDatabaseJson(),
-  //     where: "${SessionsTable.SESSIONS_ID} = ?",
-  //     whereArgs: [id],
-  //   );
-  //   return result != 0;
-  // }
-
-  // Future<bool> deleteUser(int id) async {
-  //   final db = await dbProvider.database;
-  //   final result = await db.delete(
-  //     SessionsTable.SESSIONS_TABLE_NAME,
-  //     where: "${SessionsTable.SESSIONS_ID} = ?",
-  //     whereArgs: [id],
-  //   );
-  //   return result != 0;
-  // }
+    return res != 0;
+  }
 }

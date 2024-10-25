@@ -11,3 +11,7 @@ List<int> getDivisorsSorted(int num) {
 
   return divisors;
 }
+
+num removeUnnecesaryDecimalZero(num n) {
+  return num.parse(n.toStringAsFixed(1).replaceAll(RegExp(r'\.0$'), ''));
+}

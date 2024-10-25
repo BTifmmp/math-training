@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:math_training/features/trainings/domain/training_config.dart';
-import 'package:math_training/utils/task_generation/mental_task_generation.dart';
+import 'package:math_training/features/mental_training/cubit/mental_task_generation.dart';
 part 'mental_training_state.dart';
 
 typedef MentalTrainingTask = ({List<String> text, num answer});
@@ -60,7 +60,7 @@ class MentalTrainingCubit extends Cubit<MentalTrainingState> {
             totalTasksNumber: totalTasksNumber,
             trainingConfig: trainingConfig));
       } else if (answer.length >=
-          _task!.answer!
+          _task!.answer
               .toStringAsFixed(1)
               .replaceAll(RegExp(r'\.0$'), '')
               .length) {
@@ -145,7 +145,6 @@ class MentalTrainingCubit extends Cubit<MentalTrainingState> {
           text.add('Divide by\n$number');
         case _:
       }
-      print(answer);
     }
     return (text: text, answer: answer);
   }

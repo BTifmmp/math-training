@@ -8,9 +8,9 @@ class SpeedTimesTable {
   static void createTable(Database database) async {
     await database.execute('''
       CREATE TABLE $tableName (
-        training_type INTEGER REFERENCES training(type),
-        time BIGINT
-      )
+        $type INTEGER,
+        $time BIGINT
+        )
     ''');
   }
 }
@@ -24,8 +24,7 @@ class MentalStatsTable {
     await database.execute('''
       CREATE TABLE $tableName (
         $type INTEGER PRIMARY KEY,
-        $correctAnswers INTEGER,
-
+        $correctAnswers INTEGER
       )
     ''');
   }

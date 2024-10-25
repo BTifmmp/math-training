@@ -40,7 +40,7 @@ class _HomeViewState extends State<HomeView> {
               color: Theme.of(context)
                   .colorScheme
                   .onSurfaceVariant
-                  .withOpacity(0.1),
+                  .withOpacity(0.05),
             ),
           ),
         ),
@@ -80,13 +80,25 @@ class _HomeViewState extends State<HomeView> {
                 ),
                 label: 'Mental',
               ),
+              NavigationDestination(
+                icon: AnimatedCrossFade(
+                  crossFadeState: _currentPageIndex == 1
+                      ? CrossFadeState.showFirst
+                      : CrossFadeState.showSecond,
+                  duration: const Duration(milliseconds: 200),
+                  firstChild: const Icon(CustomIcons.brain_filled),
+                  secondChild: Icon(CustomIcons.brain_outlined,
+                      color: Theme.of(context).colorScheme.onSurfaceVariant),
+                ),
+                label: 'Games',
+              ),
             ]),
       ),
       body: SafeArea(
         child: PageView(
           controller: _pageController,
           children: const <Widget>[
-            SpeedTrainingsListView(),
+            SpeedTrainingsListPage(),
             MentalTrainingsListView(),
           ],
         ),

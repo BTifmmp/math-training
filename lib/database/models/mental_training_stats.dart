@@ -9,7 +9,7 @@ class MentalTrainingStats {
     required this.numberOfCorrectAnswers,
   });
 
-  Map<String, Object?> toMap() {
+  Map<String, Object?> toJson() {
     return {
       'type': type,
       'correct': numberOfCorrectAnswers,
