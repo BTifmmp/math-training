@@ -40,6 +40,7 @@ dependencies:
   sqflite: ^2.3.3+1
   path: ^1.9.0
   animated_flip_counter: ^0.3.4
+  meta: ^1.15.0
 
 dev_dependencies:
   flutter_test:

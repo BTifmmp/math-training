@@ -31,16 +31,19 @@ class NumberInputController with ChangeNotifier {
     notifyListeners();
   }
 
-  String _nextValue(String previousValue, String addedValue) {
+  String _nextValue(String currentValue, String addedValue) {
+    if (currentValue == '0' && addedValue != '.') {
+      return addedValue;
+    }
     if (addedValue == '.') {
-      if (previousValue == '') {
+      if (currentValue == '') {
         return '0.';
-      } else if (previousValue.endsWith('.')) {
-        return previousValue;
+      } else if (currentValue.endsWith('.')) {
+        return currentValue;
       }
     }
 
-    return previousValue + addedValue;
+    return currentValue + addedValue;
   }
 }
 

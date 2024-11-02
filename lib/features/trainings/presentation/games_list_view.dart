@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:math_training/database/models/training_types.dart';
-import 'package:math_training/features/speed_training/presentation/speed_training_view.dart';
+import 'package:math_training/features/math_crossword/presentation/math_crossword_view.dart';
 import 'package:math_training/features/statictics/cubit/statistics_cubit.dart';
 import 'package:math_training/features/statictics/repository/statistic_repository.dart';
 import 'package:math_training/features/trainings/domain/training_config.dart';
@@ -11,8 +11,8 @@ import 'package:math_training/features/trainings/presentation/widgets/trainings_
 import 'package:math_training/utils/duration_formatter.dart';
 import 'package:math_training/widgets/info_modal.dart';
 
-class SpeedTrainingsListPage extends StatelessWidget {
-  const SpeedTrainingsListPage({super.key});
+class GamesListPage extends StatelessWidget {
+  const GamesListPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -23,20 +23,20 @@ class SpeedTrainingsListPage extends StatelessWidget {
     });
     return BlocProvider.value(
       value: statsCubit,
-      child: const SpeedTrainingsListView(),
+      child: const GamesListView(),
     );
   }
 }
 
-class SpeedTrainingsListView extends StatefulWidget {
-  const SpeedTrainingsListView({super.key});
+class GamesListView extends StatefulWidget {
+  const GamesListView({super.key});
 
   @override
-  State<SpeedTrainingsListView> createState() => _SpeedTrainingsListViewState();
+  State<GamesListView> createState() => _GamesListViewState();
 }
 
-class _SpeedTrainingsListViewState extends State<SpeedTrainingsListView>
-    with AutomaticKeepAliveClientMixin<SpeedTrainingsListView> {
+class _GamesListViewState extends State<GamesListView>
+    with AutomaticKeepAliveClientMixin<GamesListView> {
   final _scrollController = ScrollController();
   bool _visible = false;
 
@@ -81,7 +81,7 @@ class _SpeedTrainingsListViewState extends State<SpeedTrainingsListView>
                       children: [
                         const Flexible(
                           child: Text(
-                            'Speed Training',
+                            'Games',
                             style: TextStyle(
                               fontSize: 30,
                               fontWeight: FontWeight.w500,
@@ -104,134 +104,11 @@ class _SpeedTrainingsListViewState extends State<SpeedTrainingsListView>
                   ),
                   const SizedBox(height: 40),
                   TrainingTypePanel(
-                      title: 'Mixed',
-                      imagePath: 'assets/images/mixed.png',
-                      modeBoxes: [
-                        TrainingSelectModeBox(
-                          title: 'Easy',
-                          description: areBestTimeFetched &&
-                                  state.bestTimes
-                                      .containsKey(SpeedTrainingType.mixedEasy)
-                              ? "Best time: ${formatDuration(Duration(milliseconds: state.bestTimes[SpeedTrainingType.mixedEasy] ?? 0))}"
-                              : 'Set best time!',
-                          onTap: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (_) => const SpeedTrainingPage(
-                                  trainingConfig: TrainingConfig.mixedEasy,
-                                  type: SpeedTrainingType.mixedEasy,
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                        TrainingSelectModeBox(
-                          title: 'Medium',
-                          description: areBestTimeFetched &&
-                                  state.bestTimes.containsKey(
-                                      SpeedTrainingType.mixedMedium)
-                              ? "Best time: ${formatDuration(Duration(milliseconds: state.bestTimes[SpeedTrainingType.mixedMedium] ?? 0))}"
-                              : 'Set best time!',
-                          onTap: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (_) => const SpeedTrainingPage(
-                                  trainingConfig: TrainingConfig.mixedMedium,
-                                  type: SpeedTrainingType.mixedMedium,
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                        TrainingSelectModeBox(
-                          title: 'Hard',
-                          description: areBestTimeFetched &&
-                                  state.bestTimes
-                                      .containsKey(SpeedTrainingType.mixedHard)
-                              ? "Best time: ${formatDuration(Duration(milliseconds: state.bestTimes[SpeedTrainingType.mixedHard] ?? 0))}"
-                              : 'Set best time!',
-                          onTap: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (_) => const SpeedTrainingPage(
-                                  trainingConfig: TrainingConfig.mixedHard,
-                                  type: SpeedTrainingType.mixedHard,
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                      ]),
-                  const SizedBox(height: 20),
-                  TrainingTypePanel(
-                      title: 'Addition & Substraction',
-                      imagePath: 'assets/images/plusminus.png',
-                      modeBoxes: [
-                        TrainingSelectModeBox(
-                          title: 'Easy',
-                          description: areBestTimeFetched &&
-                                  state.bestTimes.containsKey(SpeedTrainingType
-                                      .additionSubstractionEasy)
-                              ? "Best time: ${formatDuration(Duration(milliseconds: state.bestTimes[SpeedTrainingType.additionSubstractionEasy] ?? 0))}"
-                              : 'Set best time!',
-                          onTap: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (_) => const SpeedTrainingPage(
-                                      trainingConfig:
-                                          TrainingConfig.addSubstractEasy,
-                                      type: SpeedTrainingType
-                                          .additionSubstractionEasy,
-                                    )));
-                          },
-                        ),
-                        TrainingSelectModeBox(
-                          title: 'Medium',
-                          description: areBestTimeFetched &&
-                                  state.bestTimes.containsKey(SpeedTrainingType
-                                      .additionSubstractionMedium)
-                              ? "Best time: ${formatDuration(Duration(milliseconds: state.bestTimes[SpeedTrainingType.additionSubstractionMedium] ?? 0))}"
-                              : 'Set best time!',
-                          onTap: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (_) => const SpeedTrainingPage(
-                                  trainingConfig:
-                                      TrainingConfig.addSubstractMedium,
-                                  type: SpeedTrainingType
-                                      .additionSubstractionMedium,
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                        TrainingSelectModeBox(
-                          title: 'Hard',
-                          description: areBestTimeFetched &&
-                                  state.bestTimes.containsKey(SpeedTrainingType
-                                      .additionSubstractionHard)
-                              ? "Best time: ${formatDuration(Duration(milliseconds: state.bestTimes[SpeedTrainingType.additionSubstractionHard] ?? 0))}"
-                              : 'Set best time!',
-                          onTap: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (_) => const SpeedTrainingPage(
-                                  trainingConfig:
-                                      TrainingConfig.addSubstractHard,
-                                  type: SpeedTrainingType
-                                      .additionSubstractionHard,
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                      ]),
-                  const SizedBox(height: 20),
-                  TrainingTypePanel(
-                      title: 'Multiplication & Division',
+                      title: 'Crossword',
                       imagePath: 'assets/images/multdiv.png',
                       modeBoxes: [
                         TrainingSelectModeBox(
-                          title: 'Easy',
+                          title: 'Small',
                           description: areBestTimeFetched &&
                                   state.bestTimes.containsKey(SpeedTrainingType
                                       .multiplicationDivisionEasy)
@@ -239,109 +116,21 @@ class _SpeedTrainingsListViewState extends State<SpeedTrainingsListView>
                               : 'Set best time!',
                           onTap: () {
                             Navigator.of(context).push(MaterialPageRoute(
-                                builder: (_) => const SpeedTrainingPage(
-                                      trainingConfig:
-                                          TrainingConfig.multDivEasy,
-                                      type: SpeedTrainingType
-                                          .multiplicationDivisionEasy,
-                                    )));
+                                builder: (_) => const MathCrosswordPage(
+                                    size: GameSize.standard)));
                           },
                         ),
                         TrainingSelectModeBox(
-                          title: 'Medium',
+                          title: 'Big',
                           description: areBestTimeFetched &&
                                   state.bestTimes.containsKey(SpeedTrainingType
-                                      .multiplicationDivisionMedium)
-                              ? "Best time: ${formatDuration(Duration(milliseconds: state.bestTimes[SpeedTrainingType.multiplicationDivisionMedium] ?? 0))}"
-                              : 'Set best time!',
-                          onTap: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (_) => const SpeedTrainingPage(
-                                  trainingConfig: TrainingConfig.multDivMedium,
-                                  type: SpeedTrainingType
-                                      .multiplicationDivisionMedium,
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                        TrainingSelectModeBox(
-                          title: 'Hard',
-                          description: areBestTimeFetched &&
-                                  state.bestTimes.containsKey(SpeedTrainingType
-                                      .multiplicationDivisionHard)
-                              ? "Best time: ${formatDuration(Duration(milliseconds: state.bestTimes[SpeedTrainingType.multiplicationDivisionHard] ?? 0))}"
-                              : 'Set best time!',
-                          onTap: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (_) => const SpeedTrainingPage(
-                                  trainingConfig: TrainingConfig.multDivHard,
-                                  type: SpeedTrainingType
-                                      .multiplicationDivisionHard,
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                      ]),
-                  const SizedBox(height: 20),
-                  TrainingTypePanel(
-                      title: 'Powers & Roots',
-                      imagePath: 'assets/images/multdiv.png',
-                      modeBoxes: [
-                        TrainingSelectModeBox(
-                          title: 'Easy',
-                          description: areBestTimeFetched &&
-                                  state.bestTimes.containsKey(
-                                      SpeedTrainingType.powerRootEasy)
-                              ? "Best time: ${formatDuration(Duration(milliseconds: state.bestTimes[SpeedTrainingType.powerRootEasy] ?? 0))}"
+                                      .multiplicationDivisionEasy)
+                              ? "Best time: ${formatDuration(Duration(milliseconds: state.bestTimes[SpeedTrainingType.multiplicationDivisionEasy] ?? 0))}"
                               : 'Set best time!',
                           onTap: () {
                             Navigator.of(context).push(MaterialPageRoute(
-                                builder: (_) => const SpeedTrainingPage(
-                                      trainingConfig:
-                                          TrainingConfig.rootPowerEasy,
-                                      type: SpeedTrainingType.powerRootEasy,
-                                    )));
-                          },
-                        ),
-                        TrainingSelectModeBox(
-                          title: 'Medium',
-                          description: areBestTimeFetched &&
-                                  state.bestTimes.containsKey(
-                                      SpeedTrainingType.powerRootMedium)
-                              ? "Best time: ${formatDuration(Duration(milliseconds: state.bestTimes[SpeedTrainingType.powerRootMedium] ?? 0))}"
-                              : 'Set best time!',
-                          onTap: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (_) => const SpeedTrainingPage(
-                                  trainingConfig:
-                                      TrainingConfig.rootPowerMedium,
-                                  type: SpeedTrainingType.powerRootMedium,
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                        TrainingSelectModeBox(
-                          title: 'Hard',
-                          description: areBestTimeFetched &&
-                                  state.bestTimes.containsKey(
-                                      SpeedTrainingType.powerRootHard)
-                              ? "Best time: ${formatDuration(Duration(milliseconds: state.bestTimes[SpeedTrainingType.powerRootHard] ?? 0))}"
-                              : 'Set best time!',
-                          onTap: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (_) => const SpeedTrainingPage(
-                                  trainingConfig: TrainingConfig.rootPowerHard,
-                                  type: SpeedTrainingType.powerRootHard,
-                                ),
-                              ),
-                            );
+                                builder: (_) => const MathCrosswordPage(
+                                    size: GameSize.big)));
                           },
                         ),
                       ]),
@@ -349,7 +138,7 @@ class _SpeedTrainingsListViewState extends State<SpeedTrainingsListView>
                 ],
               ),
             ),
-            TrainingsAppBar(title: 'Speed Training', visible: _visible),
+            TrainingsAppBar(title: 'Games', visible: _visible),
           ],
         );
       },

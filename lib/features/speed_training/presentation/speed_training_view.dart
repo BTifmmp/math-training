@@ -175,7 +175,7 @@ class SpeedCurrentTaskDisplay extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surfaceContainerHigh,
-        borderRadius: BorderRadius.circular(9999),
+        borderRadius: BorderRadius.circular(5),
       ),
       child: Row(
         children: [
@@ -202,9 +202,7 @@ class SpeedCurrentTaskDisplay extends StatelessWidget {
 }
 
 class SpeedTrainingStopwatchDisplay extends StatelessWidget {
-  const SpeedTrainingStopwatchDisplay({
-    super.key,
-  });
+  const SpeedTrainingStopwatchDisplay({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -212,11 +210,11 @@ class SpeedTrainingStopwatchDisplay extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surfaceContainerHigh,
-        borderRadius: BorderRadius.circular(9999),
+        borderRadius: BorderRadius.circular(5),
       ),
       child: Text(
         formatDuration(
-            context.select((StopwatchCubit bloc) => bloc.state.timeElapsed)),
+            context.select((StopwatchCubit cubit) => cubit.state.timeElapsed)),
         style: TextStyle(
             fontSize: 18, color: Theme.of(context).colorScheme.onSurface),
       ),

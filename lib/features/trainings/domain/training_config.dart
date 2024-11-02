@@ -1,5 +1,7 @@
 enum Operation { addition, substraction, multiplication, division, root, power }
 
+enum GameSize { standard, big }
+
 class TrainingConfig {
   final String title;
   final String diffcultyText;

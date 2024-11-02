@@ -5,9 +5,9 @@ import 'package:math_training/features/speed_training/presentation/speed_trainin
 import 'package:math_training/features/statictics/cubit/statistics_cubit.dart';
 import 'package:math_training/features/statictics/repository/statistic_repository.dart';
 import 'package:math_training/features/trainings/domain/training_config.dart';
-import 'package:math_training/features/trainings/presentation/select_mode_box.dart';
-import 'package:math_training/features/trainings/presentation/training_type_panel.dart';
-import 'package:math_training/features/trainings/presentation/trainings_app_bar.dart';
+import 'package:math_training/features/trainings/presentation/widgets/select_mode_box.dart';
+import 'package:math_training/features/trainings/presentation/widgets/training_type_panel.dart';
+import 'package:math_training/features/trainings/presentation/widgets/trainings_app_bar.dart';
 import 'package:math_training/utils/duration_formatter.dart';
 import 'package:math_training/widgets/info_modal.dart';
 

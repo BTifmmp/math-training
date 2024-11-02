@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:math_training/features/trainings/presentation/games_list_view.dart';
 import 'package:math_training/features/trainings/presentation/speed_trainings_list_view.dart';
 import 'package:math_training/features/trainings/presentation/mental_trainings_list_view.dart';
 import 'package:math_training/utils/custom_icons.dart';
@@ -82,7 +83,7 @@ class _HomeViewState extends State<HomeView> {
               ),
               NavigationDestination(
                 icon: AnimatedCrossFade(
-                  crossFadeState: _currentPageIndex == 1
+                  crossFadeState: _currentPageIndex == 2
                       ? CrossFadeState.showFirst
                       : CrossFadeState.showSecond,
                   duration: const Duration(milliseconds: 200),
@@ -100,6 +101,7 @@ class _HomeViewState extends State<HomeView> {
           children: const <Widget>[
             SpeedTrainingsListPage(),
             MentalTrainingsListView(),
+            GamesListPage(),
           ],
         ),
       ),
