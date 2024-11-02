@@ -26,6 +26,7 @@ class StatsDatabase {
 
   void _initDB(Database database, int version) async {
     SpeedTimesTable.createTable(database);
+    GamesTimesTable.createTable(database);
     MentalStatsTable.createTable(database);
   }
 }

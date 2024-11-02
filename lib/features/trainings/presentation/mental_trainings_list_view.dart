@@ -56,7 +56,7 @@ class _MentalTrainingsListViewState extends State<MentalTrainingsListView>
                   children: [
                     const Flexible(
                       child: Text(
-                        'Mental Training',
+                        'Mental',
                         style: TextStyle(
                           fontSize: 30,
                           fontWeight: FontWeight.w500,
@@ -162,7 +162,7 @@ class _MentalTrainingsListViewState extends State<MentalTrainingsListView>
             ],
           ),
         ),
-        TrainingsAppBar(title: 'Mental Training', visible: _visible),
+        TrainingsAppBar(title: 'Mental', visible: _visible),
       ],
     );
   }

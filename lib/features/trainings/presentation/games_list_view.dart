@@ -18,8 +18,8 @@ class GamesListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final statsCubit = StatisitcsCubit(
         statisticRepository: context.read<StatisticRepository>());
-    statsCubit.refreshOnSpeedChnage(() {
-      statsCubit.getAllBestSpeedTrainingTimes();
+    statsCubit.refreshOnGamesChange(() {
+      statsCubit.getAllBestGamesTimes();
     });
     return BlocProvider.value(
       value: statsCubit,
@@ -42,7 +42,7 @@ class _GamesListViewState extends State<GamesListView>
 
   @override
   void initState() {
-    context.read<StatisitcsCubit>().getAllBestSpeedTrainingTimes();
+    context.read<StatisitcsCubit>().getAllBestGamesTimes();
     _scrollController.addListener(() {
       _visible = _scrollController.offset > 30;
       setState(() {});
@@ -64,7 +64,8 @@ class _GamesListViewState extends State<GamesListView>
     super.build(context);
     return BlocBuilder<StatisitcsCubit, StatisticsState>(
       builder: (context, state) {
-        final bool areBestTimeFetched = state is StatisticsSuccessAllBestTimes;
+        final bool areBestTimeFetched =
+            state is StatisticsSuccessAllBestTimesGames;
         return Stack(
           children: [
             SingleChildScrollView(
@@ -110,27 +111,31 @@ class _GamesListViewState extends State<GamesListView>
                         TrainingSelectModeBox(
                           title: 'Small',
                           description: areBestTimeFetched &&
-                                  state.bestTimes.containsKey(SpeedTrainingType
-                                      .multiplicationDivisionEasy)
-                              ? "Best time: ${formatDuration(Duration(milliseconds: state.bestTimes[SpeedTrainingType.multiplicationDivisionEasy] ?? 0))}"
+                                  state.bestTimesGames
+                                      .containsKey(GameType.crossWordSmall)
+                              ? "Best time: ${formatDuration(Duration(milliseconds: state.bestTimesGames[GameType.crossWordSmall] ?? 0))}"
                               : 'Set best time!',
                           onTap: () {
                             Navigator.of(context).push(MaterialPageRoute(
                                 builder: (_) => const MathCrosswordPage(
-                                    size: GameSize.standard)));
+                                      size: GameSize.small,
+                                      type: GameType.crossWordSmall,
+                                    )));
                           },
                         ),
                         TrainingSelectModeBox(
                           title: 'Big',
                           description: areBestTimeFetched &&
-                                  state.bestTimes.containsKey(SpeedTrainingType
-                                      .multiplicationDivisionEasy)
-                              ? "Best time: ${formatDuration(Duration(milliseconds: state.bestTimes[SpeedTrainingType.multiplicationDivisionEasy] ?? 0))}"
+                                  state.bestTimesGames
+                                      .containsKey(GameType.crossWardBig)
+                              ? "Best time: ${formatDuration(Duration(milliseconds: state.bestTimesGames[GameType.crossWardBig] ?? 0))}"
                               : 'Set best time!',
                           onTap: () {
                             Navigator.of(context).push(MaterialPageRoute(
                                 builder: (_) => const MathCrosswordPage(
-                                    size: GameSize.big)));
+                                      size: GameSize.big,
+                                      type: GameType.crossWardBig,
+                                    )));
                           },
                         ),
                       ]),

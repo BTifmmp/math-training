@@ -6,8 +6,9 @@ import 'package:math_training/features/board/domain/board_box.dart';
 import 'package:math_training/widgets/number_input/number_input.dart';
 
 class Board extends StatelessWidget {
+  final Function(int value, int id) onValueChange;
   final BoardMatrix? matrix;
-  const Board({super.key, this.matrix});
+  const Board({super.key, this.matrix, required this.onValueChange});
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +39,10 @@ class Board extends StatelessWidget {
                     BoardBoxType.empty => const BoardBoxEmpty(),
                     BoardBoxType.filledStatic =>
                       BoardBoxFilledStatic(text: box.data),
-                    BoardBoxType.fillable => const BoardBoxFillable(),
+                    BoardBoxType.fillable => BoardBoxFillable(
+                        onValueChange: onValueChange,
+                        id: box.id!,
+                      ),
                   }
               ])
           ]));
@@ -92,32 +96,40 @@ class BoardBoxFilledStatic extends StatelessWidget {
 }
 
 class BoardBoxFillable extends StatefulWidget {
-  const BoardBoxFillable({super.key});
+  final Function(int value, int id) onValueChange;
+  final int id;
+  const BoardBoxFillable(
+      {super.key, required this.onValueChange, required this.id});
 
   @override
   State<BoardBoxFillable> createState() => _BoardBoxFillableState();
 }
 
 class _BoardBoxFillableState extends State<BoardBoxFillable> {
-  late NumberInputController numberContorller;
+  late NumberInputController _numberContorller;
   double _scale = 1;
   bool _border = false;
 
   @override
   void initState() {
-    numberContorller = NumberInputController();
+    _numberContorller = NumberInputController();
+    _numberContorller.addListener(() {
+      var value = int.tryParse(_numberContorller.value) ?? 0;
+      widget.onValueChange(value, widget.id);
+    });
+
     super.initState();
   }
 
   @override
   void dispose() {
-    numberContorller.dispose();
+    _numberContorller.dispose();
     super.dispose();
   }
 
   void onFocusChange(bool isFocused) {
     if (isFocused) {
-      context.read<BoardCubit>().changeController(numberContorller);
+      context.read<BoardCubit>().changeController(_numberContorller);
       setState(() {
         _scale = 1.05;
         _border = true;
@@ -168,11 +180,11 @@ class _BoardBoxFillableState extends State<BoardBoxFillable> {
                         padding: const EdgeInsets.all(5.0),
                         child: FittedBox(
                           child: ListenableBuilder(
-                            listenable: numberContorller,
+                            listenable: _numberContorller,
                             builder: (context, child) {
                               return Text(
-                                numberContorller.value.isNotEmpty
-                                    ? numberContorller.value
+                                _numberContorller.value.isNotEmpty
+                                    ? _numberContorller.value
                                     : ' ',
                                 style: TextStyle(
                                     fontWeight: FontWeight.w400,

@@ -1,6 +1,6 @@
 String formatDuration(Duration duration) {
   String negativeSign = duration.isNegative ? '-' : '';
-  String digitSeconds = duration.inSeconds.remainder(60).abs().toString();
+  String digitSeconds = duration.inSeconds.abs().toString();
   String twoDigitMiliseconds =
       (duration.inMilliseconds.remainder(1000).abs() / 10)
           .round()

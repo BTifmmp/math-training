@@ -1,6 +1,6 @@
 enum Operation { addition, substraction, multiplication, division, root, power }
 
-enum GameSize { standard, big }
+enum GameSize { small, big }
 
 class TrainingConfig {
   final String title;

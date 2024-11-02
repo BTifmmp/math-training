@@ -1,3 +1,4 @@
+import 'package:math_training/database/models/game_stats.dart';
 import 'package:math_training/database/models/mental_training_stats.dart';
 import 'package:math_training/database/models/speed_training_stats.dart';
 import 'package:math_training/database/models/training_types.dart';
@@ -51,6 +52,46 @@ class StatsDAO {
     return times.isNotEmpty ? times[0] : null;
   }
 
+  Future<List<GameTime>> getGameTimes(GameType type) async {
+    final db = await _dbProvider.database;
+    var res = await db.query(
+      GamesTimesTable.tableName,
+      where: "${GamesTimesTable.type} = ?",
+      whereArgs: [type],
+    );
+
+    List<GameTime> times = res.isNotEmpty
+        ? res.map((row) => GameTime.fromDatabaseJson(row)).toList()
+        : [];
+
+    return times;
+  }
+
+  Future<List<GameTime>> getAllBestGamesTimes() async {
+    final db = await _dbProvider.database;
+    var res = await db.rawQuery(
+        'SELECT ${GamesTimesTable.type}, MIN(${GamesTimesTable.time}) as time FROM ${GamesTimesTable.tableName} GROUP BY ${GamesTimesTable.type};');
+
+    List<GameTime> times = res.isNotEmpty
+        ? res.map((row) => GameTime.fromDatabaseJson(row)).toList()
+        : [];
+
+    return times;
+  }
+
+  Future<GameTime?> getBestGameTime(GameType type) async {
+    final db = await _dbProvider.database;
+    var res = await db.rawQuery(
+      'SELECT ${GamesTimesTable.type}, MIN(${GamesTimesTable.time}) as time FROM ${GamesTimesTable.tableName} WHERE ${GamesTimesTable.type} = ${type.index}',
+    );
+
+    List<GameTime> times = res.isNotEmpty
+        ? res.map((row) => GameTime.fromDatabaseJson(row)).toList()
+        : [];
+
+    return times.isNotEmpty ? times[0] : null;
+  }
+
   Future<MentalTrainingStats?> getMentalTrainingStats(
       MentalTrainingType type) async {
     final db = await _dbProvider.database;
@@ -83,6 +124,17 @@ class StatsDAO {
     final db = await _dbProvider.database;
     final res = await db.insert(
       SpeedTimesTable.tableName,
+      speedTime.toJson(),
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+
+    return res != 0;
+  }
+
+  Future<bool> insertGameTime(GameTime speedTime) async {
+    final db = await _dbProvider.database;
+    final res = await db.insert(
+      GamesTimesTable.tableName,
       speedTime.toJson(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );

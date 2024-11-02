@@ -15,7 +15,7 @@ class Countdown extends StatelessWidget {
       height: 70,
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surfaceContainerHigh,
-        borderRadius: BorderRadius.circular(9999),
+        borderRadius: BorderRadius.circular(5),
       ),
       child: Center(
         child: AnimatedFlipCounter(

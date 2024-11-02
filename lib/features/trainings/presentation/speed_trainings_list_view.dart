@@ -18,7 +18,7 @@ class SpeedTrainingsListPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final statsCubit = StatisitcsCubit(
         statisticRepository: context.read<StatisticRepository>());
-    statsCubit.refreshOnSpeedChnage(() {
+    statsCubit.refreshOnSpeedChange(() {
       statsCubit.getAllBestSpeedTrainingTimes();
     });
     return BlocProvider.value(
@@ -81,7 +81,7 @@ class _SpeedTrainingsListViewState extends State<SpeedTrainingsListView>
                       children: [
                         const Flexible(
                           child: Text(
-                            'Speed Training',
+                            'Speed',
                             style: TextStyle(
                               fontSize: 30,
                               fontWeight: FontWeight.w500,
@@ -349,7 +349,7 @@ class _SpeedTrainingsListViewState extends State<SpeedTrainingsListView>
                 ],
               ),
             ),
-            TrainingsAppBar(title: 'Speed Training', visible: _visible),
+            TrainingsAppBar(title: 'Speed', visible: _visible),
           ],
         );
       },

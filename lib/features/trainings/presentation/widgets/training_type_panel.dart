@@ -31,6 +31,9 @@ class TrainingTypePanel extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card.filled(
       color: Theme.of(context).colorScheme.surfaceContainer,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(5.0),
+      ),
       child: Column(
         children: [
           Padding(

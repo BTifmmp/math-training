@@ -17,6 +17,16 @@ final class StatisticsSuccessBestTime extends StatisticsState {
   StatisticsSuccessBestTime({required this.bestTime});
 }
 
+final class StatisticsSuccessAllBestTimesGames extends StatisticsState {
+  final Map<GameType, int> bestTimesGames;
+  StatisticsSuccessAllBestTimesGames({required this.bestTimesGames});
+}
+
+final class StatisticsSuccessBestTimeGame extends StatisticsState {
+  final int? bestTimeGame;
+  StatisticsSuccessBestTimeGame({required this.bestTimeGame});
+}
+
 final class StatisticsSuccessAllMentalTrainingStats extends StatisticsState {
   final Map<MentalTrainingType, MentalTrainingStats> allMentalStats;
   StatisticsSuccessAllMentalTrainingStats({required this.allMentalStats});

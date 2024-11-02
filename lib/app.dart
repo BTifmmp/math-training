@@ -27,9 +27,9 @@ class AppView extends StatelessWidget {
       theme: ThemeData(
           useMaterial3: true,
           colorScheme: ColorScheme.fromSeed(
-            dynamicSchemeVariant: DynamicSchemeVariant.vibrant,
-            seedColor: const Color.fromARGB(255, 0, 89, 255),
-            contrastLevel: 0.5,
+            dynamicSchemeVariant: DynamicSchemeVariant.tonalSpot,
+            seedColor: const Color.fromARGB(255, 39, 26, 216),
+            contrastLevel: 0.6,
             brightness: Brightness.dark,
           ),
           pageTransitionsTheme: const PageTransitionsTheme(
@@ -42,10 +42,15 @@ class AppView extends StatelessWidget {
           bottomSheetTheme: BottomSheetThemeData(
               dragHandleColor: Colors.white.withOpacity(0.3),
               dragHandleSize: const Size(50, 5)),
-          navigationBarTheme: const NavigationBarThemeData(
+          navigationBarTheme: NavigationBarThemeData(
+              indicatorShape: RoundedRectangleBorder(
+                borderRadius:
+                    BorderRadius.circular(5.0), // Set the border radius here
+              ),
               indicatorColor: Color.fromARGB(255, 51, 56, 70),
               height: 65,
-              iconTheme: WidgetStatePropertyAll<IconThemeData>(IconThemeData(
+              iconTheme:
+                  const WidgetStatePropertyAll<IconThemeData>(IconThemeData(
                 size: 22,
               )))),
       themeMode: ThemeMode.dark,

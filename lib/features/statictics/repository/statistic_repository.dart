@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:math_training/database/models/game_stats.dart';
 import 'package:math_training/database/models/mental_training_stats.dart';
 import 'package:math_training/database/models/speed_training_stats.dart';
 import 'package:math_training/database/models/training_types.dart';
@@ -8,6 +9,7 @@ class StatisticRepository {
   final _statsDao = StatsDAO();
   final speedTimesChanged = ChangeNotifier();
   final mentalStatsChanged = ChangeNotifier();
+  final gamesTimesChanged = ChangeNotifier();
 
   StatisticRepository();
 
@@ -21,6 +23,21 @@ class StatisticRepository {
     final res = await _statsDao.getAllBestSpeedTrainingTimes();
     final Map<SpeedTrainingType, int> formattedRes = {
       for (var speedTraining in res) speedTraining.type: speedTraining.time
+    };
+
+    return formattedRes;
+  }
+
+  Future<int?> getBestGameTime(GameType type) async {
+    final res = await _statsDao.getBestGameTime(type);
+
+    return res?.time;
+  }
+
+  Future<Map<GameType, int>> getAllBestGamesTimes() async {
+    final res = await _statsDao.getAllBestGamesTimes();
+    final Map<GameType, int> formattedRes = {
+      for (var game in res) game.type: game.time
     };
 
     return formattedRes;
@@ -45,6 +62,14 @@ class StatisticRepository {
     final res = await _statsDao.insertSpeedTrainingTime(speedTime);
     // ignore: invalid_use_of_protected_member, invalid_use_of_visible_for_testing_member
     if (res) speedTimesChanged.notifyListeners();
+
+    return res;
+  }
+
+  Future<bool> insertGameTime(GameTime speedTime) async {
+    final res = await _statsDao.insertGameTime(speedTime);
+    // ignore: invalid_use_of_protected_member, invalid_use_of_visible_for_testing_member
+    if (res) gamesTimesChanged.notifyListeners();
 
     return res;
   }

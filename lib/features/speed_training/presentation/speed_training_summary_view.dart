@@ -81,6 +81,9 @@ class SpeedTrainingSummaryView extends StatelessWidget {
                   SizedBox(
                     width: 250,
                     child: Card.filled(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5.0),
+                      ),
                       color: Theme.of(context).colorScheme.surfaceContainer,
                       child: Padding(
                         padding: const EdgeInsets.all(25.0),

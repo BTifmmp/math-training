@@ -29,3 +29,10 @@ enum MentalTrainingType {
   mixedMedium,
   mixedHard,
 }
+
+enum GameType {
+  crossWordSmall,
+  crossWardBig,
+  magicSquareSmall,
+  magicSquareBig,
+}
