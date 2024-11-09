@@ -4,8 +4,8 @@ import 'package:math_training/database/models/game_stats.dart';
 import 'package:math_training/database/models/training_types.dart';
 import 'package:math_training/features/board/cubit/board_cubit.dart';
 import 'package:math_training/features/board/presentation/board_widgets.dart';
-import 'package:math_training/features/math_crossword/cubit/math_crossword_cubit.dart';
-import 'package:math_training/features/math_crossword/presentation/math_crossword_summary_view.dart';
+import 'package:math_training/features/magic_square/cubit/magic_square_cubit.dart';
+import 'package:math_training/features/magic_square/presentation/magic_square_summary_view.dart';
 import 'package:math_training/features/speed_training/presentation/speed_training_view.dart';
 import 'package:math_training/features/statictics/cubit/statistics_cubit.dart';
 import 'package:math_training/features/statictics/repository/statistic_repository.dart';
@@ -13,11 +13,11 @@ import 'package:math_training/features/stopwatch/cubit/stopwatch_cubit.dart';
 import 'package:math_training/features/trainings/domain/training_config.dart';
 import 'package:math_training/widgets/number_input/number_input_small.dart';
 
-class MathCrosswordPage extends StatelessWidget {
+class MagicSquarePage extends StatelessWidget {
   final GameSize size;
   final GameType type;
 
-  const MathCrosswordPage({super.key, required this.size, required this.type});
+  const MagicSquarePage({super.key, required this.size, required this.type});
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +25,7 @@ class MathCrosswordPage extends StatelessWidget {
         providers: [
           BlocProvider(
               create: (context) =>
-                  MathCrosswordCubit()..generateCrossword(size)),
+                  MagicSquareCubit()..generateMagicSquare(size)),
           BlocProvider(create: (context) => StopwatchCubit()..start()),
           BlocProvider<StatisitcsCubit>(
             create: (_) => StatisitcsCubit(
@@ -33,23 +33,23 @@ class MathCrosswordPage extends StatelessWidget {
           ),
           BlocProvider(create: (context) => BoardCubit()),
         ],
-        child: MathCrosswordView(
+        child: MagicSquareView(
           size: size,
           type: type,
         ));
   }
 }
 
-class MathCrosswordView extends StatelessWidget {
+class MagicSquareView extends StatelessWidget {
   final GameSize size;
   final GameType type;
-  const MathCrosswordView({super.key, required this.size, required this.type});
+  const MagicSquareView({super.key, required this.size, required this.type});
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<MathCrosswordCubit, MathCrosswordState>(
+    return BlocListener<MagicSquareCubit, MagicSquareState>(
       listener: (context, state) async {
-        if (state is MathCrossWordFinished) {
+        if (state is MagicSquareFinished) {
           var time = context.read<StopwatchCubit>().state.timeElapsed;
 
           await context
@@ -59,8 +59,8 @@ class MathCrosswordView extends StatelessWidget {
             Navigator.of(context).pushReplacement(
               MaterialPageRoute(
                 fullscreenDialog: true,
-                builder: (_) => MathCrosswordSummaryPage(
-                    size: size, time: time, type: type),
+                builder: (_) =>
+                    MagicSquareSummaryPage(size: size, time: time, type: type),
               ),
             );
           }
@@ -85,15 +85,15 @@ class MathCrosswordView extends StatelessWidget {
               const Spacer(),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: BlocBuilder<MathCrosswordCubit, MathCrosswordState>(
+                child: BlocBuilder<MagicSquareCubit, MagicSquareState>(
                   builder: (context, state) {
                     return Board(
                       onValueChange: (value, id) {
-                        var cubit = context.read<MathCrosswordCubit>();
+                        var cubit = context.read<MagicSquareCubit>();
                         cubit.submitAnswer(value, id);
                       },
                       matrix:
-                          state is MathCrosswordGenerated ? state.matrix : null,
+                          state is MagicSquareGenerated ? state.matrix : null,
                     );
                   },
                 ),

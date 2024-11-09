@@ -42,16 +42,11 @@ class AppView extends StatelessWidget {
           bottomSheetTheme: BottomSheetThemeData(
               dragHandleColor: Colors.white.withOpacity(0.3),
               dragHandleSize: const Size(50, 5)),
-          navigationBarTheme: NavigationBarThemeData(
-              indicatorShape: RoundedRectangleBorder(
-                borderRadius:
-                    BorderRadius.circular(5.0), // Set the border radius here
-              ),
-              indicatorColor: Color.fromARGB(255, 51, 56, 70),
-              height: 65,
-              iconTheme:
-                  const WidgetStatePropertyAll<IconThemeData>(IconThemeData(
-                size: 22,
+          navigationBarTheme: const NavigationBarThemeData(
+              indicatorColor: Color.fromARGB(255, 50, 54, 63),
+              height: 60,
+              iconTheme: WidgetStatePropertyAll<IconThemeData>(IconThemeData(
+                size: 20,
               )))),
       themeMode: ThemeMode.dark,
       home: const HomeView(),

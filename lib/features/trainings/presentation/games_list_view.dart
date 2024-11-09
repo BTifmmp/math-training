@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:math_training/database/models/training_types.dart';
+import 'package:math_training/features/magic_square/presentation/magic_square_view.dart';
 import 'package:math_training/features/math_crossword/presentation/math_crossword_view.dart';
 import 'package:math_training/features/statictics/cubit/statistics_cubit.dart';
 import 'package:math_training/features/statictics/repository/statistic_repository.dart';
@@ -139,6 +140,43 @@ class _GamesListViewState extends State<GamesListView>
                           },
                         ),
                       ]),
+                  const SizedBox(height: 20),
+                  TrainingTypePanel(
+                    title: 'Magic Sqaure',
+                    imagePath: 'assets/images/multdiv.png',
+                    modeBoxes: [
+                      TrainingSelectModeBox(
+                        title: '3x3',
+                        description: areBestTimeFetched &&
+                                state.bestTimesGames
+                                    .containsKey(GameType.magicSquareSmall)
+                            ? "Best time: ${formatDuration(Duration(milliseconds: state.bestTimesGames[GameType.magicSquareSmall] ?? 0))}"
+                            : 'Set best time!',
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (_) => const MagicSquarePage(
+                                    size: GameSize.small,
+                                    type: GameType.magicSquareSmall,
+                                  )));
+                        },
+                      ),
+                      TrainingSelectModeBox(
+                        title: '4x4',
+                        description: areBestTimeFetched &&
+                                state.bestTimesGames
+                                    .containsKey(GameType.magicSquareBig)
+                            ? "Best time: ${formatDuration(Duration(milliseconds: state.bestTimesGames[GameType.magicSquareBig] ?? 0))}"
+                            : 'Set best time!',
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (_) => const MagicSquarePage(
+                                    size: GameSize.big,
+                                    type: GameType.magicSquareBig,
+                                  )));
+                        },
+                      ),
+                    ],
+                  ),
                   const SizedBox(height: 20),
                 ],
               ),

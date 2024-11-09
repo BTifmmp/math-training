@@ -24,7 +24,7 @@ class StatisitcsCubit extends Cubit<StatisticsState> {
   }
 
   void refreshOnGamesChange(void Function() onChnage) {
-    _statisticRepository.mentalStatsChanged.addListener(onChnage);
+    _statisticRepository.gamesTimesChanged.addListener(onChnage);
   }
 
   Future<void> getBestSpeedTrainingTime(SpeedTrainingType type) async {

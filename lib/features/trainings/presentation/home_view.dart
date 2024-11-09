@@ -46,7 +46,7 @@ class _HomeViewState extends State<HomeView> {
           ),
         ),
         child: NavigationBar(
-            backgroundColor: Theme.of(context).colorScheme.surface,
+            backgroundColor: const Color.fromARGB(255, 37, 37, 44),
             onDestinationSelected: (int index) {
               setState(() {
                 _currentPageIndex = index;

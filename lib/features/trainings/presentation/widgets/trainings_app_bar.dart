@@ -15,7 +15,7 @@ class TrainingsAppBar extends StatelessWidget {
     return Visibility(
       visible: _visible,
       child: Container(
-        height: 60,
+        height: 55,
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.surface,
           border: Border(

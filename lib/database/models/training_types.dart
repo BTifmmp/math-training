@@ -33,6 +33,7 @@ enum MentalTrainingType {
 enum GameType {
   crossWordSmall,
   crossWardBig,
+
   magicSquareSmall,
   magicSquareBig,
 }

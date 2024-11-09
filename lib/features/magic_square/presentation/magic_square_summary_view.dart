@@ -7,12 +7,12 @@ import 'package:math_training/features/statictics/repository/statistic_repositor
 import 'package:math_training/features/trainings/domain/training_config.dart';
 import 'package:math_training/utils/duration_formatter.dart';
 
-class MathCrosswordSummaryPage extends StatelessWidget {
+class MagicSquareSummaryPage extends StatelessWidget {
   final GameSize size;
   final Duration time;
   final GameType type;
 
-  const MathCrosswordSummaryPage(
+  const MagicSquareSummaryPage(
       {super.key, required this.size, required this.time, required this.type});
 
   @override
@@ -20,17 +20,17 @@ class MathCrosswordSummaryPage extends StatelessWidget {
     return BlocProvider<StatisitcsCubit>(
       create: (_) => StatisitcsCubit(
           statisticRepository: context.read<StatisticRepository>()),
-      child: MathCrosswordSummaryView(size: size, time: time, type: type),
+      child: MagicSquareSummaryView(size: size, time: time, type: type),
     );
   }
 }
 
-class MathCrosswordSummaryView extends StatelessWidget {
+class MagicSquareSummaryView extends StatelessWidget {
   final GameSize size;
   final Duration time;
   final GameType type;
 
-  const MathCrosswordSummaryView(
+  const MagicSquareSummaryView(
       {super.key, required this.size, required this.time, required this.type});
 
   @override
@@ -58,7 +58,7 @@ class MathCrosswordSummaryView extends StatelessWidget {
                 children: [
                   const Spacer(flex: 2),
                   const Text(
-                    'Crossword',
+                    'Magic Square',
                     style: TextStyle(
                         fontSize: 35, fontWeight: FontWeight.w600, height: 1.3),
                     textAlign: TextAlign.center,

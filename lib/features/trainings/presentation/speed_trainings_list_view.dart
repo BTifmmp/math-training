@@ -96,13 +96,13 @@ class _SpeedTrainingsListViewState extends State<SpeedTrainingsListView>
                               },
                               icon: const Icon(
                                 Icons.person,
-                                size: 32,
+                                size: 30,
                               )),
                         ),
                       ],
                     ),
                   ),
-                  const SizedBox(height: 40),
+                  const SizedBox(height: 20),
                   TrainingTypePanel(
                       title: 'Mixed',
                       imagePath: 'assets/images/mixed.png',

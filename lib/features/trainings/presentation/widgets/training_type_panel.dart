@@ -32,7 +32,7 @@ class TrainingTypePanel extends StatelessWidget {
     return Card.filled(
       color: Theme.of(context).colorScheme.surfaceContainer,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(5.0),
+        borderRadius: BorderRadius.circular(20.0),
       ),
       child: Column(
         children: [
@@ -44,7 +44,7 @@ class TrainingTypePanel extends StatelessWidget {
                   imagePath,
                   width: 50,
                   height: 50,
-                  color: Theme.of(context).colorScheme.onSurface,
+                  // color: Theme.of(context).colorScheme.onSurface,
                 ),
                 const SizedBox(
                   width: 20,
