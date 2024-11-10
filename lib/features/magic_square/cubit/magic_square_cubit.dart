@@ -9,7 +9,6 @@ part 'magic_square_state.dart';
 
 class MagicSquareCubit extends Cubit<MagicSquareState> {
   MagicSquareCubit() : super(MagicSquareInitial());
-  static const int upperLimit = 40;
   late int magicSum;
   late List<List<int>> generatedSquareMatrix;
   late List<List<int>> userAnswersMatrix;
@@ -112,11 +111,6 @@ class MagicSquareCubit extends Cubit<MagicSquareState> {
     if (flip) {
       _flipHorizontally();
     }
-
-    print(magicSum);
-    print(generatedSquareMatrix[0]);
-    print(generatedSquareMatrix[1]);
-    print(generatedSquareMatrix[2]);
   }
 
   void _generateMagicBig() {
@@ -142,12 +136,6 @@ class MagicSquareCubit extends Cubit<MagicSquareState> {
     ];
 
     magicSum = a + a2 + b + b2 + c + c2 + d + d2;
-
-    print(magicSum);
-    print(generatedSquareMatrix[0]);
-    print(generatedSquareMatrix[1]);
-    print(generatedSquareMatrix[2]);
-    print(generatedSquareMatrix[3]);
   }
 
   BoardMatrix _computeBoardMatrix(GameSize size) {
@@ -174,10 +162,7 @@ class MagicSquareCubit extends Cubit<MagicSquareState> {
   }
 
   List<int> _pickAnsweredAnswers(GameSize size) {
-    // Picks 4 random fields or 5 for 4x4 square
-    int answeredAnswersCount = size == GameSize.small ? 3 : 7;
-    int sizeVal = size == GameSize.small ? 9 : 16;
-
+    // Picks 3 random fields or 8
     if (size == GameSize.small) {
       List<List<int>> validCombinations = [
         [0, 1, 2],
@@ -223,79 +208,134 @@ class MagicSquareCubit extends Cubit<MagicSquareState> {
       ];
       return validCombinations[Random().nextInt(validCombinations.length)];
     } else {
-      List<List<int>> validCombinations = []; // 7 answers
-      var validCombinationsGen = [
-        [
-          [0, 0, 0, 0],
-          [0, 0, 0, 0],
-          [0, 0, 0, 0],
-          [0, 0, 0, 0]
-        ],
-        [
-          [0, 0, 0, 0],
-          [0, 0, 0, 0],
-          [0, 0, 0, 0],
-          [0, 0, 0, 0]
-        ],
-        [
-          [0, 0, 0, 0],
-          [0, 0, 0, 0],
-          [0, 0, 0, 0],
-          [0, 0, 0, 0]
-        ],
-        [
-          [0, 0, 0, 0],
-          [0, 0, 0, 0],
-          [0, 0, 0, 0],
-          [0, 0, 0, 0]
-        ]
-      ]; // 3 answers
-
-      for (int i = 0; i < 4; i++) {
-        for (int j = 0; j < 4; j++) {
-          _rotateBy90Degree2(validCombinationsGen[i]);
-          for (int k = 0; k < 2; k++) {
-            List<int> valid = [];
-            _flipHorizontally2(validCombinationsGen[i]);
-            for (int l = 0; l < 4; l++) {
-              for (int m = 0; m < 4; m++) {
-                if (validCombinationsGen[i][l][m] == 1) {
-                  valid.add(l * 4 + m);
-                }
-              }
-            }
-            valid.sort();
-            validCombinations.add(valid);
-          }
-        }
-      }
-      validCombinations.sort((a, b) {
-        for (int i = 0; i < a.length && i < b.length; i++) {
-          if (a[i] != b[i]) {
-            return a[i].compareTo(b[i]);
-          }
-        }
-        // If elements so far are the same, the shorter list is "smaller"
-        return a.length.compareTo(b.length);
-      });
-      var seen = <String>{}; // A set to track unique lists as strings
-      List<List<int>> uniqueLists = [];
-      for (var sublist in validCombinations) {
-        // Convert the list to a string representation
-        var key = sublist.join(',');
-        if (seen.add(key)) {
-          // If the set did not already contain this "key", add the original list
-          uniqueLists.add(sublist);
-        }
-      }
-      print(validCombinations);
-      print((uniqueLists));
+      List<List<int>> validCombinations = [
+        [0, 1, 2, 3, 4, 6, 11, 15],
+        [0, 1, 2, 3, 4, 13, 14, 15],
+        [0, 1, 2, 3, 5, 7, 8, 12],
+        [0, 1, 2, 3, 7, 12, 13, 14],
+        [0, 1, 2, 3, 8, 9, 12, 14],
+        [0, 1, 2, 3, 8, 9, 13, 15],
+        [0, 1, 2, 3, 8, 11, 13, 14],
+        [0, 1, 2, 3, 10, 11, 12, 14],
+        [0, 1, 2, 3, 10, 11, 13, 15],
+        [0, 1, 2, 4, 8, 10, 11, 15],
+        [0, 1, 2, 4, 8, 10, 14, 15],
+        [0, 1, 2, 5, 6, 7, 10, 11],
+        [0, 1, 2, 5, 6, 10, 11, 14],
+        [0, 1, 2, 5, 7, 9, 10, 12],
+        [0, 1, 2, 7, 8, 9, 10, 12],
+        [0, 1, 2, 7, 8, 10, 13, 15],
+        [0, 1, 2, 11, 12, 13, 14, 15],
+        [0, 1, 3, 4, 5, 6, 10, 14],
+        [0, 1, 3, 4, 6, 9, 13, 15],
+        [0, 1, 3, 5, 6, 9, 12, 13],
+        [0, 1, 3, 5, 7, 8, 11, 15],
+        [0, 1, 3, 5, 7, 9, 11, 14],
+        [0, 1, 3, 6, 7, 11, 14, 15],
+        [0, 1, 4, 5, 9, 10, 11, 12],
+        [0, 1, 4, 6, 7, 9, 12, 15],
+        [0, 1, 4, 7, 8, 11, 12, 15],
+        [0, 1, 4, 8, 9, 12, 14, 15],
+        [0, 1, 5, 6, 7, 9, 12, 13],
+        [0, 1, 5, 7, 11, 13, 14, 15],
+        [0, 1, 5, 9, 10, 11, 12, 13],
+        [0, 1, 5, 9, 10, 12, 13, 15],
+        [0, 2, 3, 4, 5, 8, 12, 13],
+        [0, 2, 3, 4, 6, 8, 10, 13],
+        [0, 2, 3, 4, 6, 8, 11, 12],
+        [0, 2, 3, 5, 6, 7, 9, 13],
+        [0, 2, 3, 5, 6, 10, 14, 15],
+        [0, 2, 3, 5, 7, 10, 12, 14],
+        [0, 2, 4, 5, 12, 13, 14, 15],
+        [0, 2, 4, 6, 7, 8, 12, 15],
+        [0, 2, 4, 7, 8, 10, 13, 15],
+        [0, 2, 4, 7, 8, 11, 12, 14],
+        [0, 2, 5, 6, 7, 9, 13, 15],
+        [0, 2, 5, 7, 8, 11, 13, 15],
+        [0, 2, 5, 7, 8, 13, 14, 15],
+        [0, 2, 6, 7, 8, 9, 10, 15],
+        [0, 2, 6, 7, 12, 13, 14, 15],
+        [0, 2, 6, 8, 9, 10, 13, 15],
+        [0, 2, 6, 9, 11, 12, 14, 15],
+        [0, 3, 4, 5, 6, 7, 9, 12],
+        [0, 3, 4, 5, 6, 7, 9, 13],
+        [0, 3, 4, 5, 6, 7, 10, 14],
+        [0, 3, 4, 5, 6, 7, 10, 15],
+        [0, 3, 4, 5, 6, 8, 10, 13],
+        [0, 3, 4, 7, 8, 11, 12, 13],
+        [0, 3, 4, 7, 8, 11, 14, 15],
+        [0, 3, 4, 8, 10, 11, 12, 14],
+        [0, 3, 5, 6, 7, 9, 11, 14],
+        [0, 3, 5, 8, 10, 11, 12, 13],
+        [0, 3, 6, 8, 9, 11, 14, 15],
+        [0, 3, 7, 8, 9, 11, 13, 15],
+        [0, 4, 5, 6, 11, 12, 13, 14],
+        [0, 4, 5, 7, 11, 13, 14, 15],
+        [0, 4, 5, 8, 9, 10, 11, 14],
+        [0, 4, 5, 8, 9, 10, 13, 14],
+        [0, 4, 7, 8, 10, 12, 14, 15],
+        [0, 4, 9, 11, 12, 13, 14, 15],
+        [0, 5, 6, 7, 8, 9, 12, 13],
+        [0, 5, 6, 7, 8, 9, 13, 15],
+        [0, 5, 6, 9, 11, 12, 13, 14],
+        [0, 5, 8, 9, 10, 11, 12, 15],
+        [1, 2, 3, 4, 5, 6, 8, 9],
+        [1, 2, 3, 4, 6, 9, 10, 15],
+        [1, 2, 3, 4, 9, 10, 11, 15],
+        [1, 2, 3, 4, 9, 11, 12, 14],
+        [1, 2, 3, 5, 6, 8, 9, 13],
+        [1, 2, 3, 7, 8, 9, 11, 12],
+        [1, 2, 3, 7, 9, 11, 12, 13],
+        [1, 2, 3, 8, 12, 13, 14, 15],
+        [1, 2, 4, 5, 6, 8, 9, 12],
+        [1, 2, 4, 7, 12, 13, 14, 15],
+        [1, 2, 5, 6, 7, 10, 11, 15],
+        [1, 3, 4, 5, 6, 10, 12, 14],
+        [1, 3, 4, 5, 7, 11, 12, 15],
+        [1, 3, 4, 5, 9, 10, 11, 12],
+        [1, 3, 4, 5, 12, 13, 14, 15],
+        [1, 3, 4, 6, 8, 11, 12, 14],
+        [1, 3, 4, 6, 11, 12, 13, 14],
+        [1, 3, 4, 7, 8, 11, 13, 15],
+        [1, 3, 4, 7, 9, 11, 12, 14],
+        [1, 3, 5, 8, 10, 12, 13, 15],
+        [1, 3, 5, 9, 10, 11, 12, 14],
+        [1, 3, 6, 7, 12, 13, 14, 15],
+        [1, 4, 5, 6, 7, 10, 11, 15],
+        [1, 4, 5, 9, 10, 13, 14, 15],
+        [1, 4, 6, 8, 9, 10, 12, 15],
+        [1, 4, 6, 8, 10, 12, 14, 15],
+        [1, 5, 8, 9, 10, 11, 12, 15],
+        [1, 5, 9, 10, 11, 12, 14, 15],
+        [2, 3, 4, 5, 6, 10, 14, 15],
+        [2, 3, 4, 5, 7, 10, 12, 15],
+        [2, 3, 4, 6, 8, 12, 13, 14],
+        [2, 3, 4, 7, 8, 11, 12, 15],
+        [2, 3, 6, 7, 8, 9, 10, 15],
+        [2, 3, 6, 8, 9, 10, 14, 15],
+        [2, 3, 6, 9, 10, 12, 14, 15],
+        [2, 3, 7, 10, 11, 12, 13, 15],
+        [2, 4, 5, 6, 7, 8, 9, 12],
+        [2, 5, 7, 9, 10, 11, 12, 15],
+        [2, 5, 7, 9, 11, 12, 13, 15],
+        [2, 6, 7, 9, 10, 12, 13, 14],
+        [2, 6, 8, 9, 10, 11, 12, 15],
+        [2, 6, 8, 9, 10, 12, 13, 15],
+        [3, 4, 5, 6, 10, 11, 12, 14],
+        [3, 4, 5, 6, 10, 11, 14, 15],
+        [3, 4, 6, 7, 8, 12, 13, 14],
+        [3, 4, 7, 9, 11, 12, 13, 15],
+        [3, 5, 6, 7, 8, 13, 14, 15],
+        [3, 5, 6, 8, 10, 13, 14, 15],
+        [3, 6, 7, 8, 9, 10, 11, 13],
+        [3, 6, 7, 9, 10, 11, 13, 14],
+        [3, 6, 8, 9, 10, 11, 12, 15],
+        [3, 7, 8, 10, 12, 13, 14, 15],
+        [4, 5, 8, 9, 10, 13, 14, 15],
+        [6, 7, 9, 10, 11, 12, 13, 14]
+      ]; // 8 answers
+      return validCombinations[Random().nextInt(validCombinations.length)];
     }
-
-    List<int> answeredAnswers = List.generate(sizeVal, (i) => i);
-    answeredAnswers.shuffle();
-    answeredAnswers = answeredAnswers.sublist(0, answeredAnswersCount);
-    return answeredAnswers;
   }
 
   void _rotateBy90Degree() {
@@ -319,31 +359,6 @@ class MagicSquareCubit extends Cubit<MagicSquareState> {
         var temp = generatedSquareMatrix[i][j];
         generatedSquareMatrix[i][j] = generatedSquareMatrix[i][length - 1 - j];
         generatedSquareMatrix[i][length - 1 - j] = temp;
-      }
-    }
-  }
-
-  void _rotateBy90Degree2(List<List<int>> array) {
-    for (int i = 0; i < array.length; i++) {
-      for (int j = i; j < array.length; j++) {
-        var temp = array[i][j];
-        array[i][j] = array[j][i];
-        array[j][i] = temp;
-      }
-    }
-
-    for (int i = 0; i < array.length; i++) {
-      array[i] = array[i].reversed.toList();
-    }
-  }
-
-  void _flipHorizontally2(List<List<int>> array) {
-    int length = array.length;
-    for (int i = 0; i < length; i++) {
-      for (int j = 0; j < length ~/ 2; j++) {
-        var temp = array[i][j];
-        array[i][j] = array[i][length - 1 - j];
-        array[i][length - 1 - j] = temp;
       }
     }
   }

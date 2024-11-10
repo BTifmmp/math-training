@@ -103,8 +103,6 @@ class MagicSquareView extends StatelessWidget {
                 builder: (context, state) {
                   return NumberInputSmall(
                     controller: (state as BoardSelectedController).controller,
-                    backgroundColor:
-                        Theme.of(context).colorScheme.surfaceContainer,
                   );
                 },
               ),

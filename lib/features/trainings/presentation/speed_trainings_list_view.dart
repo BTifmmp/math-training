@@ -79,13 +79,11 @@ class _SpeedTrainingsListViewState extends State<SpeedTrainingsListView>
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Flexible(
-                          child: Text(
-                            'Speed',
-                            style: TextStyle(
-                              fontSize: 30,
-                              fontWeight: FontWeight.w500,
-                            ),
+                        const Text(
+                          'Speed',
+                          style: TextStyle(
+                            fontSize: 28,
+                            fontWeight: FontWeight.w500,
                           ),
                         ),
                         Padding(
@@ -96,7 +94,7 @@ class _SpeedTrainingsListViewState extends State<SpeedTrainingsListView>
                               },
                               icon: const Icon(
                                 Icons.person,
-                                size: 30,
+                                size: 32,
                               )),
                         ),
                       ],
@@ -104,6 +102,7 @@ class _SpeedTrainingsListViewState extends State<SpeedTrainingsListView>
                   ),
                   const SizedBox(height: 20),
                   TrainingTypePanel(
+                      color: const Color.fromARGB(255, 255, 230, 154),
                       title: 'Mixed',
                       imagePath: 'assets/images/mixed.png',
                       modeBoxes: [
@@ -164,6 +163,7 @@ class _SpeedTrainingsListViewState extends State<SpeedTrainingsListView>
                       ]),
                   const SizedBox(height: 20),
                   TrainingTypePanel(
+                      color: const Color.fromARGB(255, 170, 230, 175),
                       title: 'Addition & Substraction',
                       imagePath: 'assets/images/plusminus.png',
                       modeBoxes: [
@@ -227,6 +227,7 @@ class _SpeedTrainingsListViewState extends State<SpeedTrainingsListView>
                       ]),
                   const SizedBox(height: 20),
                   TrainingTypePanel(
+                      color: const Color.fromARGB(255, 221, 179, 248),
                       title: 'Multiplication & Division',
                       imagePath: 'assets/images/multdiv.png',
                       modeBoxes: [
@@ -288,6 +289,7 @@ class _SpeedTrainingsListViewState extends State<SpeedTrainingsListView>
                       ]),
                   const SizedBox(height: 20),
                   TrainingTypePanel(
+                      color: const Color.fromARGB(255, 179, 201, 248),
                       title: 'Powers & Roots',
                       imagePath: 'assets/images/multdiv.png',
                       modeBoxes: [

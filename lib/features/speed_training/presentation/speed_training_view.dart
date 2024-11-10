@@ -154,7 +154,6 @@ class _SpeedTrainingViewState extends State<SpeedTrainingView> {
               const SizedBox(height: 20),
               NumberInput(
                 numberInputController: _numberInputController,
-                backgroundColor: Theme.of(context).colorScheme.surfaceContainer,
               ),
             ],
           );
@@ -174,8 +173,8 @@ class SpeedCurrentTaskDisplay extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surfaceContainerHigh,
-        borderRadius: BorderRadius.circular(5),
+        color: Theme.of(context).colorScheme.surfaceContainer,
+        borderRadius: BorderRadius.circular(12),
       ),
       child: Row(
         children: [
@@ -209,8 +208,8 @@ class SpeedTrainingStopwatchDisplay extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surfaceContainerHigh,
-        borderRadius: BorderRadius.circular(5),
+        color: Theme.of(context).colorScheme.surfaceContainer,
+        borderRadius: BorderRadius.circular(12),
       ),
       child: Text(
         formatDuration(

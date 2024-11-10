@@ -31,6 +31,10 @@ class AppView extends StatelessWidget {
             seedColor: const Color.fromARGB(255, 39, 26, 216),
             contrastLevel: 0.6,
             brightness: Brightness.dark,
+            surface: const Color.fromARGB(255, 20, 30, 43),
+            surfaceContainer: const Color.fromARGB(255, 51, 62, 75),
+            surfaceContainerHigh: const Color.fromARGB(255, 84, 96, 114),
+            onSurface: const Color.fromARGB(255, 255, 255, 255),
           ),
           pageTransitionsTheme: const PageTransitionsTheme(
             builders: <TargetPlatform, PageTransitionsBuilder>{
@@ -43,7 +47,7 @@ class AppView extends StatelessWidget {
               dragHandleColor: Colors.white.withOpacity(0.3),
               dragHandleSize: const Size(50, 5)),
           navigationBarTheme: const NavigationBarThemeData(
-              indicatorColor: Color.fromARGB(255, 50, 54, 63),
+              indicatorColor: Color.fromARGB(255, 86, 129, 211),
               height: 60,
               iconTheme: WidgetStatePropertyAll<IconThemeData>(IconThemeData(
                 size: 20,

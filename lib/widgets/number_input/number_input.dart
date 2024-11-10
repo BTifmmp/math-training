@@ -49,9 +49,7 @@ class NumberInputController with ChangeNotifier {
 
 class NumberInput extends StatelessWidget {
   final NumberInputController controller;
-  final Color? backgroundColor;
-  const NumberInput(
-      {super.key, required numberInputController, this.backgroundColor})
+  const NumberInput({super.key, required numberInputController})
       : controller = numberInputController;
 
   @override
@@ -60,19 +58,25 @@ class NumberInput extends StatelessWidget {
       constraints:
           BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.4),
       child: Container(
-        color: backgroundColor,
-        padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+        color: const Color.fromARGB(255, 31, 39, 53),
+        padding: const EdgeInsets.all(20),
         child: Column(
           children: [
             Flexible(
               child: Row(
                 children: [
                   NumberInputButton(
-                      text: '1', onTap: () => controller.add('1')),
+                      text: '1',
+                      onTap: () => controller.add('1'),
+                      padding: 5.0),
                   NumberInputButton(
-                      text: '2', onTap: () => controller.add('2')),
+                      text: '2',
+                      onTap: () => controller.add('2'),
+                      padding: 5.0),
                   NumberInputButton(
-                      text: '3', onTap: () => controller.add('3')),
+                      text: '3',
+                      onTap: () => controller.add('3'),
+                      padding: 5.0),
                 ],
               ),
             ),
@@ -80,11 +84,17 @@ class NumberInput extends StatelessWidget {
               child: Row(
                 children: [
                   NumberInputButton(
-                      text: '4', onTap: () => controller.add('4')),
+                      text: '4',
+                      onTap: () => controller.add('4'),
+                      padding: 5.0),
                   NumberInputButton(
-                      text: '5', onTap: () => controller.add('5')),
+                      text: '5',
+                      onTap: () => controller.add('5'),
+                      padding: 5.0),
                   NumberInputButton(
-                      text: '6', onTap: () => controller.add('6')),
+                      text: '6',
+                      onTap: () => controller.add('6'),
+                      padding: 5.0),
                 ],
               ),
             ),
@@ -92,22 +102,37 @@ class NumberInput extends StatelessWidget {
               child: Row(
                 children: [
                   NumberInputButton(
-                      text: '7', onTap: () => controller.add('7')),
+                    text: '7',
+                    onTap: () => controller.add('7'),
+                    padding: 5.0,
+                  ),
                   NumberInputButton(
-                      text: '8', onTap: () => controller.add('8')),
+                      text: '8',
+                      onTap: () => controller.add('8'),
+                      padding: 5.0),
                   NumberInputButton(
-                      text: '9', onTap: () => controller.add('9')),
+                      text: '9',
+                      onTap: () => controller.add('9'),
+                      padding: 5.0),
                 ],
               ),
             ),
             Flexible(
               child: Row(
                 children: [
-                  NumberInputButton(text: 'C', onTap: () => controller.clear()),
                   NumberInputButton(
-                      text: '0', onTap: () => controller.add('0')),
+                    text: 'C',
+                    onTap: () => controller.clear(),
+                    padding: 5.0,
+                  ),
                   NumberInputButton(
-                      text: '.', onTap: () => controller.add('.')),
+                      text: '0',
+                      onTap: () => controller.add('0'),
+                      padding: 5.0),
+                  NumberInputButton(
+                      text: '.',
+                      onTap: () => controller.add('.'),
+                      padding: 5.0),
                 ],
               ),
             ),
@@ -119,19 +144,25 @@ class NumberInput extends StatelessWidget {
 }
 
 class NumberInputButton extends StatefulWidget {
+  final double padding;
   final String text;
   final GestureTapCallback onTap;
   final Color? textColor;
   const NumberInputButton(
-      {super.key, required this.text, required this.onTap, this.textColor});
+      {super.key,
+      required this.text,
+      required this.onTap,
+      this.textColor,
+      required this.padding});
 
   @override
   State<NumberInputButton> createState() => _NumberInputButtonState();
 }
 
 class _NumberInputButtonState extends State<NumberInputButton> {
+  double _scale = 1.0;
   Color _color = Colors.transparent;
-  double _fontSize = 35;
+  double _fontSize = 30;
   int _duration = 150;
 
   @override
@@ -142,35 +173,52 @@ class _NumberInputButtonState extends State<NumberInputButton> {
         onTap: widget.onTap,
         onTapDown: (_) => {
           setState(() {
-            _color = Theme.of(context).colorScheme.onSurface.withOpacity(0.1);
-            _fontSize = 28;
+            _color = Theme.of(context).colorScheme.onSurface.withOpacity(0.05);
+            _scale = 0.95;
+            _fontSize = 25;
             _duration = 0;
           })
         },
         onTapUp: (_) => {
           setState(() {
             _color = Colors.transparent;
-            _fontSize = 35;
+            _scale = 1.0;
+            _fontSize = 30;
             _duration = 150;
           })
         },
         onTapCancel: () => {
           setState(() {
             _color = Colors.transparent;
-            _fontSize = 35;
+            _scale = 1.0;
+            _fontSize = 30;
             _duration = 150;
           })
         },
         child: Stack(children: [
-          Center(
-            child: AspectRatio(
-                aspectRatio: 1,
-                child: AnimatedContainer(
+          Padding(
+            padding: EdgeInsets.all(widget.padding),
+            child: Center(
+              child: AnimatedScale(
+                scale: _scale,
+                curve: Curves.ease,
+                duration: Duration(milliseconds: _duration),
+                child: Container(
                   decoration: BoxDecoration(
-                      color: _color, borderRadius: BorderRadius.circular(9999)),
-                  curve: Curves.ease,
-                  duration: Duration(milliseconds: _duration),
-                )),
+                    color: Theme.of(context).colorScheme.surfaceContainer,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: AnimatedContainer(
+                    curve: Curves.ease,
+                    duration: Duration(milliseconds: _duration),
+                    decoration: BoxDecoration(
+                      color: _color,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                ),
+              ),
+            ),
           ),
           Center(
             child: AnimatedDefaultTextStyle(

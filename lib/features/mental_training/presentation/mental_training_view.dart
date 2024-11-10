@@ -98,8 +98,6 @@ class _MentalTrainingViewState extends State<MentalTrainingView> {
                 const Spacer(flex: 2),
                 NumberInput(
                   numberInputController: _numberInputController,
-                  backgroundColor:
-                      Theme.of(context).colorScheme.surfaceContainer,
                 ),
               ],
             );
@@ -207,7 +205,7 @@ class MentalCurrentTaskDisplay extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surfaceContainerHigh,
+        color: Theme.of(context).colorScheme.surfaceContainer,
         borderRadius: BorderRadius.circular(9999),
       ),
       child: Row(
