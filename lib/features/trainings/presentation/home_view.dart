@@ -35,16 +35,14 @@ class _HomeViewState extends State<HomeView> {
     return Scaffold(
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.surface,
-          border: Border(
-            top: BorderSide(
-              color: Theme.of(context)
-                  .colorScheme
-                  .onSurfaceVariant
-                  .withOpacity(0.05),
-            ),
-          ),
-        ),
+            color: Theme.of(context).colorScheme.surfaceContainer,
+            border: Border(
+                top: BorderSide(
+                    width: 1,
+                    color: Theme.of(context)
+                        .colorScheme
+                        .onSurface
+                        .withOpacity(0.05)))),
         child: NavigationBar(
             backgroundColor: Theme.of(context).colorScheme.surface,
             onDestinationSelected: (int index) {
@@ -64,7 +62,7 @@ class _HomeViewState extends State<HomeView> {
                   firstChild: const Icon(CustomIcons.bolt_filled),
                   secondChild: Icon(
                     CustomIcons.bolt_outlined,
-                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                    color: Theme.of(context).colorScheme.onSecondaryContainer,
                   ),
                 ),
                 label: 'Speed',
@@ -77,7 +75,8 @@ class _HomeViewState extends State<HomeView> {
                   duration: const Duration(milliseconds: 200),
                   firstChild: const Icon(CustomIcons.brain_filled),
                   secondChild: Icon(CustomIcons.brain_outlined,
-                      color: Theme.of(context).colorScheme.onSurfaceVariant),
+                      color:
+                          Theme.of(context).colorScheme.onSecondaryContainer),
                 ),
                 label: 'Mental',
               ),
@@ -89,7 +88,8 @@ class _HomeViewState extends State<HomeView> {
                   duration: const Duration(milliseconds: 200),
                   firstChild: const Icon(CustomIcons.brain_filled),
                   secondChild: Icon(CustomIcons.brain_outlined,
-                      color: Theme.of(context).colorScheme.onSurfaceVariant),
+                      color:
+                          Theme.of(context).colorScheme.onSecondaryContainer),
                 ),
                 label: 'Games',
               ),
@@ -98,6 +98,11 @@ class _HomeViewState extends State<HomeView> {
       body: SafeArea(
         child: PageView(
           controller: _pageController,
+          onPageChanged: (index) {
+            setState(() {
+              _currentPageIndex = index;
+            });
+          },
           children: const <Widget>[
             SpeedTrainingsListPage(),
             MentalTrainingsListView(),

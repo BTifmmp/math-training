@@ -56,9 +56,8 @@ class NumberInput extends StatelessWidget {
   Widget build(BuildContext context) {
     return ConstrainedBox(
       constraints:
-          BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.4),
+          BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.38),
       child: Container(
-        color: const Color.fromARGB(255, 31, 39, 53),
         padding: const EdgeInsets.all(20),
         child: Column(
           children: [
@@ -66,17 +65,20 @@ class NumberInput extends StatelessWidget {
               child: Row(
                 children: [
                   NumberInputButton(
-                      text: '1',
-                      onTap: () => controller.add('1'),
-                      padding: 5.0),
+                    text: '1',
+                    onTap: () => controller.add('1'),
+                    padding: 5.0,
+                  ),
                   NumberInputButton(
-                      text: '2',
-                      onTap: () => controller.add('2'),
-                      padding: 5.0),
+                    text: '2',
+                    onTap: () => controller.add('2'),
+                    padding: 5.0,
+                  ),
                   NumberInputButton(
-                      text: '3',
-                      onTap: () => controller.add('3'),
-                      padding: 5.0),
+                    text: '3',
+                    onTap: () => controller.add('3'),
+                    padding: 5.0,
+                  ),
                 ],
               ),
             ),
@@ -84,17 +86,20 @@ class NumberInput extends StatelessWidget {
               child: Row(
                 children: [
                   NumberInputButton(
-                      text: '4',
-                      onTap: () => controller.add('4'),
-                      padding: 5.0),
+                    text: '4',
+                    onTap: () => controller.add('4'),
+                    padding: 5.0,
+                  ),
                   NumberInputButton(
-                      text: '5',
-                      onTap: () => controller.add('5'),
-                      padding: 5.0),
+                    text: '5',
+                    onTap: () => controller.add('5'),
+                    padding: 5.0,
+                  ),
                   NumberInputButton(
-                      text: '6',
-                      onTap: () => controller.add('6'),
-                      padding: 5.0),
+                    text: '6',
+                    onTap: () => controller.add('6'),
+                    padding: 5.0,
+                  ),
                 ],
               ),
             ),
@@ -107,13 +112,15 @@ class NumberInput extends StatelessWidget {
                     padding: 5.0,
                   ),
                   NumberInputButton(
-                      text: '8',
-                      onTap: () => controller.add('8'),
-                      padding: 5.0),
+                    text: '8',
+                    onTap: () => controller.add('8'),
+                    padding: 5.0,
+                  ),
                   NumberInputButton(
-                      text: '9',
-                      onTap: () => controller.add('9'),
-                      padding: 5.0),
+                    text: '9',
+                    onTap: () => controller.add('9'),
+                    padding: 5.0,
+                  ),
                 ],
               ),
             ),
@@ -126,13 +133,15 @@ class NumberInput extends StatelessWidget {
                     padding: 5.0,
                   ),
                   NumberInputButton(
-                      text: '0',
-                      onTap: () => controller.add('0'),
-                      padding: 5.0),
+                    text: '0',
+                    onTap: () => controller.add('0'),
+                    padding: 5.0,
+                  ),
                   NumberInputButton(
-                      text: '.',
-                      onTap: () => controller.add('.'),
-                      padding: 5.0),
+                    text: '.',
+                    onTap: () => controller.add('.'),
+                    padding: 5.0,
+                  ),
                 ],
               ),
             ),
@@ -146,6 +155,7 @@ class NumberInput extends StatelessWidget {
 class NumberInputButton extends StatefulWidget {
   final double padding;
   final String text;
+  final double fontSize;
   final GestureTapCallback onTap;
   final Color? textColor;
   const NumberInputButton(
@@ -153,7 +163,8 @@ class NumberInputButton extends StatefulWidget {
       required this.text,
       required this.onTap,
       this.textColor,
-      required this.padding});
+      required this.padding,
+      this.fontSize = 26});
 
   @override
   State<NumberInputButton> createState() => _NumberInputButtonState();
@@ -162,7 +173,7 @@ class NumberInputButton extends StatefulWidget {
 class _NumberInputButtonState extends State<NumberInputButton> {
   double _scale = 1.0;
   Color _color = Colors.transparent;
-  double _fontSize = 30;
+  double? _fontSize;
   int _duration = 150;
 
   @override
@@ -175,7 +186,7 @@ class _NumberInputButtonState extends State<NumberInputButton> {
           setState(() {
             _color = Theme.of(context).colorScheme.onSurface.withOpacity(0.05);
             _scale = 0.95;
-            _fontSize = 25;
+            _fontSize = widget.fontSize * 0.9;
             _duration = 0;
           })
         },
@@ -183,7 +194,7 @@ class _NumberInputButtonState extends State<NumberInputButton> {
           setState(() {
             _color = Colors.transparent;
             _scale = 1.0;
-            _fontSize = 30;
+            _fontSize = widget.fontSize;
             _duration = 150;
           })
         },
@@ -191,7 +202,7 @@ class _NumberInputButtonState extends State<NumberInputButton> {
           setState(() {
             _color = Colors.transparent;
             _scale = 1.0;
-            _fontSize = 30;
+            _fontSize = widget.fontSize;
             _duration = 150;
           })
         },
@@ -205,15 +216,15 @@ class _NumberInputButtonState extends State<NumberInputButton> {
                 duration: Duration(milliseconds: _duration),
                 child: Container(
                   decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.surfaceContainer,
-                    borderRadius: BorderRadius.circular(12),
+                    color: Theme.of(context).colorScheme.surfaceContainerLow,
+                    borderRadius: BorderRadius.circular(8),
                   ),
                   child: AnimatedContainer(
                     curve: Curves.ease,
                     duration: Duration(milliseconds: _duration),
                     decoration: BoxDecoration(
                       color: _color,
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(8),
                     ),
                   ),
                 ),
@@ -224,7 +235,7 @@ class _NumberInputButtonState extends State<NumberInputButton> {
             child: AnimatedDefaultTextStyle(
               curve: Curves.ease,
               style: TextStyle(
-                fontSize: _fontSize,
+                fontSize: _fontSize ?? widget.fontSize,
                 fontWeight: FontWeight.w300,
                 color:
                     widget.textColor ?? Theme.of(context).colorScheme.onSurface,

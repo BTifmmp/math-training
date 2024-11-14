@@ -69,7 +69,7 @@ class BoardBoxFilledStatic extends StatelessWidget {
       child: AspectRatio(
         aspectRatio: 1.0,
         child: Padding(
-          padding: const EdgeInsets.all(1),
+          padding: const EdgeInsets.all(2.0),
           child: Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(5),
@@ -107,7 +107,6 @@ class BoardBoxFillable extends StatefulWidget {
 
 class _BoardBoxFillableState extends State<BoardBoxFillable> {
   late NumberInputController _numberContorller;
-  double _scale = 1;
   bool _border = false;
 
   @override
@@ -131,12 +130,10 @@ class _BoardBoxFillableState extends State<BoardBoxFillable> {
     if (isFocused) {
       context.read<BoardCubit>().changeController(_numberContorller);
       setState(() {
-        _scale = 1.05;
         _border = true;
       });
     } else {
       setState(() {
-        _scale = 1;
         _border = false;
       });
     }
@@ -160,41 +157,37 @@ class _BoardBoxFillableState extends State<BoardBoxFillable> {
                   focusNode.requestFocus();
                 }
               },
-              child: AnimatedScale(
-                duration: const Duration(milliseconds: 100),
-                scale: _scale,
-                child: Padding(
-                  padding: const EdgeInsets.all(1),
-                  child: AnimatedContainer(
-                    duration: const Duration(milliseconds: 100),
-                    decoration: BoxDecoration(
+              child: Padding(
+                padding: const EdgeInsets.all(2.0),
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 100),
+                  decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(5),
-                      border: _border
-                          ? Border.all(
-                              color: Theme.of(context).colorScheme.onSurface)
-                          : null,
-                      color: Theme.of(context).colorScheme.surfaceContainerHigh,
-                    ),
-                    child: Center(
-                      child: Padding(
-                        padding: const EdgeInsets.all(5.0),
-                        child: FittedBox(
-                          child: ListenableBuilder(
-                            listenable: _numberContorller,
-                            builder: (context, child) {
-                              return Text(
-                                _numberContorller.value.isNotEmpty
-                                    ? _numberContorller.value
-                                    : ' ',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: 19,
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .onSurface),
-                              );
-                            },
-                          ),
+                      border: Border.all(
+                          width: 2,
+                          color: _border
+                              ? Theme.of(context).colorScheme.onSurface
+                              : Theme.of(context)
+                                  .colorScheme
+                                  .surfaceContainer)),
+                  child: Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(5.0),
+                      child: FittedBox(
+                        child: ListenableBuilder(
+                          listenable: _numberContorller,
+                          builder: (context, child) {
+                            return Text(
+                              _numberContorller.value.isNotEmpty
+                                  ? _numberContorller.value
+                                  : ' ',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 19,
+                                  color:
+                                      Theme.of(context).colorScheme.onSurface),
+                            );
+                          },
                         ),
                       ),
                     ),

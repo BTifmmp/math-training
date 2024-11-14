@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:math_training/database/models/training_types.dart';
 import 'package:math_training/features/speed_training/presentation/speed_training_view.dart';
 import 'package:math_training/features/statictics/cubit/statistics_cubit.dart';
-import 'package:math_training/features/statictics/repository/statistic_repository.dart';
 import 'package:math_training/features/trainings/domain/training_config.dart';
 import 'package:math_training/features/trainings/presentation/widgets/select_mode_box.dart';
 import 'package:math_training/features/trainings/presentation/widgets/training_type_panel.dart';
@@ -11,38 +10,23 @@ import 'package:math_training/features/trainings/presentation/widgets/trainings_
 import 'package:math_training/utils/duration_formatter.dart';
 import 'package:math_training/widgets/info_modal.dart';
 
-class SpeedTrainingsListPage extends StatelessWidget {
-  const SpeedTrainingsListPage({super.key});
+class TrainingListTemplate extends StatefulWidget {
+  final String title;
+  final List<Widget> trainingPanels;
+  const TrainingListTemplate(
+      {super.key, required this.title, required this.trainingPanels});
 
   @override
-  Widget build(BuildContext context) {
-    final statsCubit = StatisitcsCubit(
-        statisticRepository: context.read<StatisticRepository>());
-    statsCubit.refreshOnSpeedChange(() {
-      statsCubit.getAllBestSpeedTrainingTimes();
-    });
-    return BlocProvider.value(
-      value: statsCubit,
-      child: const SpeedTrainingsListView(),
-    );
-  }
+  State<TrainingListTemplate> createState() => _TrainingListTemplateListS();
 }
 
-class SpeedTrainingsListView extends StatefulWidget {
-  const SpeedTrainingsListView({super.key});
-
-  @override
-  State<SpeedTrainingsListView> createState() => _SpeedTrainingsListViewState();
-}
-
-class _SpeedTrainingsListViewState extends State<SpeedTrainingsListView>
-    with AutomaticKeepAliveClientMixin<SpeedTrainingsListView> {
+class _TrainingListTemplateListS extends State<TrainingListTemplate>
+    with AutomaticKeepAliveClientMixin<TrainingListTemplate> {
   final _scrollController = ScrollController();
   bool _visible = false;
 
   @override
   void initState() {
-    context.read<StatisitcsCubit>().getAllBestSpeedTrainingTimes();
     _scrollController.addListener(() {
       _visible = _scrollController.offset > 30;
       setState(() {});
@@ -64,7 +48,8 @@ class _SpeedTrainingsListViewState extends State<SpeedTrainingsListView>
     super.build(context);
     return BlocBuilder<StatisitcsCubit, StatisticsState>(
       builder: (context, state) {
-        final bool areBestTimeFetched = state is StatisticsSuccessAllBestTimes;
+        final bool areBestTimeFetched =
+            state is StatisticsSuccessAllBestTimes; // HERE
         return Stack(
           children: [
             SingleChildScrollView(
@@ -89,7 +74,6 @@ class _SpeedTrainingsListViewState extends State<SpeedTrainingsListView>
                         Padding(
                           padding: const EdgeInsets.only(left: 20),
                           child: IconButton(
-                              color: Theme.of(context).colorScheme.onSurface,
                               onPressed: () {
                                 showInfoModal(context);
                               },

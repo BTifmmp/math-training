@@ -21,7 +21,7 @@ class Countdown extends StatelessWidget {
         child: AnimatedFlipCounter(
           value: count,
           textStyle: TextStyle(
-              fontSize: 40,
+              fontSize: 35,
               fontWeight: FontWeight.w300,
               color: Theme.of(context).colorScheme.onSurface),
         ),

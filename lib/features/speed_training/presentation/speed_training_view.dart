@@ -173,7 +173,7 @@ class SpeedCurrentTaskDisplay extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surfaceContainer,
+        color: Theme.of(context).colorScheme.surfaceContainerLow,
         borderRadius: BorderRadius.circular(12),
       ),
       child: Row(
@@ -184,7 +184,7 @@ class SpeedCurrentTaskDisplay extends StatelessWidget {
                 value:
                     state is SpeedTrainingRunning ? state.currentTaskIndex : 0,
                 textStyle: TextStyle(
-                    fontSize: 18,
+                    fontSize: 16,
                     color: Theme.of(context).colorScheme.onSurface),
               );
             },
@@ -192,7 +192,7 @@ class SpeedCurrentTaskDisplay extends StatelessWidget {
           Text(
             '/${context.select<SpeedTrainingCubit, String>((cubit) => cubit.state.totalTasksNumber.toString())}',
             style: TextStyle(
-                fontSize: 18, color: Theme.of(context).colorScheme.onSurface),
+                fontSize: 16, color: Theme.of(context).colorScheme.onSurface),
           ),
         ],
       ),
@@ -208,14 +208,14 @@ class SpeedTrainingStopwatchDisplay extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surfaceContainer,
+        color: Theme.of(context).colorScheme.surfaceContainerLow,
         borderRadius: BorderRadius.circular(12),
       ),
       child: Text(
         formatDuration(
             context.select((StopwatchCubit cubit) => cubit.state.timeElapsed)),
         style: TextStyle(
-            fontSize: 18, color: Theme.of(context).colorScheme.onSurface),
+            fontSize: 16, color: Theme.of(context).colorScheme.onSurface),
       ),
     );
   }
