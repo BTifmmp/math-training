@@ -57,6 +57,19 @@ class MathCrosswordSummaryView extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   const Spacer(flex: 2),
+                  Card.filled(
+                    color: const Color.fromARGB(255, 255, 230, 154),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Image.asset(
+                        'assets/images/mixed.png',
+                        width: 55,
+                        height: 55,
+                        color: const Color.fromARGB(255, 22, 22, 22),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
                   const Text(
                     'Crossword',
                     style: TextStyle(
@@ -70,14 +83,14 @@ class MathCrosswordSummaryView extends StatelessWidget {
                   Text('Best time: $text',
                       style: const TextStyle(
                           fontSize: 20, fontWeight: FontWeight.w300)),
-                  const Spacer(flex: 2),
+                  const Spacer(flex: 1),
                   SizedBox(
                     width: 250,
                     child: Card.filled(
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5.0),
+                        borderRadius: BorderRadius.circular(12.0),
                       ),
-                      color: Theme.of(context).colorScheme.surfaceContainer,
+                      color: Theme.of(context).colorScheme.surfaceContainerLow,
                       child: Padding(
                         padding: const EdgeInsets.all(25.0),
                         child: Column(
@@ -103,10 +116,12 @@ class MathCrosswordSummaryView extends StatelessWidget {
                   FilledButton(
                     style: FilledButton.styleFrom(
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5.0),
+                          borderRadius: BorderRadius.circular(12.0),
                         ),
-                        backgroundColor:
-                            Theme.of(context).colorScheme.onSurfaceVariant),
+                        backgroundColor: Theme.of(context)
+                            .colorScheme
+                            .onSurface
+                            .withOpacity(0.9)),
                     onPressed: () {
                       Navigator.of(context).pushReplacement(
                         MaterialPageRoute(
@@ -120,7 +135,7 @@ class MathCrosswordSummaryView extends StatelessWidget {
                     child: Container(
                       width: 200,
                       padding: const EdgeInsets.symmetric(
-                          vertical: 8, horizontal: 12),
+                          vertical: 10, horizontal: 12),
                       child: Text(
                         'Play Again',
                         textAlign: TextAlign.center,

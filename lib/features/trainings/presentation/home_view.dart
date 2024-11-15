@@ -35,14 +35,16 @@ class _HomeViewState extends State<HomeView> {
     return Scaffold(
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.surfaceContainer,
-            border: Border(
-                top: BorderSide(
-                    width: 1,
-                    color: Theme.of(context)
-                        .colorScheme
-                        .onSurface
-                        .withOpacity(0.05)))),
+          border: Border(
+            top: BorderSide(
+              width: 1,
+              color: Theme.of(context)
+                  .colorScheme
+                  .onSurfaceVariant
+                  .withOpacity(0.1),
+            ),
+          ),
+        ),
         child: NavigationBar(
             backgroundColor: Theme.of(context).colorScheme.surface,
             onDestinationSelected: (int index) {

@@ -12,28 +12,33 @@ class TrainingsAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Visibility(
-      visible: _visible,
-      child: Container(
-        height: 55,
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.surface,
-          border: Border(
-            bottom: BorderSide(
-              color: Theme.of(context)
-                  .colorScheme
-                  .onSurfaceVariant
-                  .withOpacity(0.05),
+    return AnimatedOpacity(
+      duration: const Duration(milliseconds: 100),
+      curve: Curves.easeIn,
+      opacity: _visible ? 1 : 0,
+      child: Visibility(
+        visible: _visible,
+        child: Container(
+          height: 55,
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.surface,
+            border: Border(
+              bottom: BorderSide(
+                color: Theme.of(context)
+                    .colorScheme
+                    .onSurfaceVariant
+                    .withOpacity(0.1),
+              ),
             ),
           ),
-        ),
-        child: Center(
-          child: Text(
-            title,
-            style: TextStyle(
-                fontSize: 15,
-                fontWeight: FontWeight.w300,
-                color: Theme.of(context).colorScheme.onSurface),
+          child: Center(
+            child: Text(
+              title,
+              style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400,
+                  color: Theme.of(context).colorScheme.onSurface),
+            ),
           ),
         ),
       ),

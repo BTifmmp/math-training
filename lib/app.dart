@@ -50,12 +50,12 @@ class AppView extends StatelessWidget {
             dragHandleColor: Colors.white.withOpacity(0.3),
             dragHandleSize: const Size(50, 5)),
         navigationBarTheme: NavigationBarThemeData(
-          indicatorColor: Color.fromARGB(255, 46, 61, 82),
+          indicatorColor: Color.fromARGB(255, 70, 93, 126),
           height: 60,
           labelTextStyle: WidgetStateTextStyle.resolveWith((states) {
             if (states.contains(WidgetState.selected)) {
               return const TextStyle(
-                fontSize: 14,
+                fontSize: 12,
                 color: Color.fromARGB(255, 255, 255, 255),
                 fontWeight: FontWeight.w500,
               );
@@ -69,7 +69,7 @@ class AppView extends StatelessWidget {
           iconTheme: const WidgetStatePropertyAll<IconThemeData>(
             IconThemeData(
               color: Color.fromARGB(255, 255, 255, 255),
-              size: 22,
+              size: 24,
             ),
           ),
         ),
