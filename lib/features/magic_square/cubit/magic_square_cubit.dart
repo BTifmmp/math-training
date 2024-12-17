@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:bloc/bloc.dart';
 import 'package:math_training/features/board/domain/board_box.dart';
-import 'package:math_training/features/trainings/domain/training_config.dart';
+import 'package:math_training/features/trainings/constants/training_config.dart';
 import 'package:meta/meta.dart';
 
 part 'magic_square_state.dart';

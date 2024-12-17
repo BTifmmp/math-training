@@ -6,11 +6,11 @@ import 'package:math_training/features/board/cubit/board_cubit.dart';
 import 'package:math_training/features/board/presentation/board_widgets.dart';
 import 'package:math_training/features/math_crossword/cubit/math_crossword_cubit.dart';
 import 'package:math_training/features/math_crossword/presentation/math_crossword_summary_view.dart';
-import 'package:math_training/features/speed_training/presentation/speed_training_view.dart';
 import 'package:math_training/features/statictics/cubit/statistics_cubit.dart';
 import 'package:math_training/features/statictics/repository/statistic_repository.dart';
 import 'package:math_training/features/stopwatch/cubit/stopwatch_cubit.dart';
-import 'package:math_training/features/trainings/domain/training_config.dart';
+import 'package:math_training/features/stopwatch/presentation/stopwatch_display.dart';
+import 'package:math_training/features/trainings/constants/training_config.dart';
 import 'package:math_training/widgets/number_input/number_input_small.dart';
 
 class MathCrosswordPage extends StatelessWidget {
@@ -78,7 +78,7 @@ class MathCrosswordView extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    SpeedTrainingStopwatchDisplay(),
+                    StopwatchDisplay(),
                   ],
                 ),
               ),

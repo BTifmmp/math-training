@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:math_training/features/board/cubit/board_cubit.dart';
 import 'package:math_training/features/board/domain/board_box.dart';
-import 'package:math_training/widgets/number_input/number_input.dart';
+import 'package:math_training/widgets/number_input/number_input_controller.dart';
 
 class Board extends StatelessWidget {
   final Function(int value, int id) onValueChange;

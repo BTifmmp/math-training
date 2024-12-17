@@ -4,7 +4,7 @@ import 'package:math_training/database/models/training_types.dart';
 import 'package:math_training/features/math_crossword/presentation/math_crossword_view.dart';
 import 'package:math_training/features/statictics/cubit/statistics_cubit.dart';
 import 'package:math_training/features/statictics/repository/statistic_repository.dart';
-import 'package:math_training/features/trainings/domain/training_config.dart';
+import 'package:math_training/features/trainings/constants/training_config.dart';
 import 'package:math_training/utils/duration_formatter.dart';
 
 class MathCrosswordSummaryPage extends StatelessWidget {
@@ -58,11 +58,11 @@ class MathCrosswordSummaryView extends StatelessWidget {
                 children: [
                   const Spacer(flex: 2),
                   Card.filled(
-                    color: const Color.fromARGB(255, 255, 230, 154),
+                    color: TrainingImageConfig.fromGameType(type).color,
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Image.asset(
-                        'assets/images/mixed.png',
+                        TrainingImageConfig.fromGameType(type).imgPath,
                         width: 55,
                         height: 55,
                         color: const Color.fromARGB(255, 22, 22, 22),
@@ -76,7 +76,6 @@ class MathCrosswordSummaryView extends StatelessWidget {
                         fontSize: 35, fontWeight: FontWeight.w600, height: 1.3),
                     textAlign: TextAlign.center,
                   ),
-                  const SizedBox(height: 10),
                   Text('Size: ${(size == GameSize.small ? "Small" : "Big")}',
                       style: const TextStyle(
                           fontSize: 20, fontWeight: FontWeight.w300)),

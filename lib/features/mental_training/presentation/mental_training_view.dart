@@ -5,8 +5,10 @@ import 'package:math_training/features/countdown/cubit/count_down_cubit.dart';
 import 'package:math_training/features/countdown/presentation/countdown_widget.dart';
 import 'package:math_training/features/mental_training/cubit/mental_training_cubit.dart';
 import 'package:math_training/features/mental_training/presentation/mental_training_summary_view.dart';
-import 'package:math_training/features/trainings/domain/training_config.dart';
+import 'package:math_training/features/trainings/constants/training_config.dart';
 import 'package:math_training/widgets/number_input/number_input.dart';
+import 'package:math_training/widgets/number_input/number_input_controller.dart';
+import 'package:math_training/widgets/number_input/value_display.dart';
 
 class MentalTrainingPage extends StatelessWidget {
   final TrainingConfig trainingConfig;

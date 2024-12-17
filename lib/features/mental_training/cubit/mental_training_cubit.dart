@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:math';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:math_training/features/trainings/domain/training_config.dart';
+import 'package:math_training/features/trainings/constants/training_config.dart';
 import 'package:math_training/utils/generation.dart';
 part 'mental_training_state.dart';
 

@@ -5,12 +5,11 @@ import 'package:math_training/features/magic_square/presentation/magic_square_vi
 import 'package:math_training/features/math_crossword/presentation/math_crossword_view.dart';
 import 'package:math_training/features/statictics/cubit/statistics_cubit.dart';
 import 'package:math_training/features/statictics/repository/statistic_repository.dart';
-import 'package:math_training/features/trainings/domain/training_config.dart';
+import 'package:math_training/features/trainings/constants/training_config.dart';
 import 'package:math_training/features/trainings/presentation/widgets/select_mode_box.dart';
 import 'package:math_training/features/trainings/presentation/widgets/training_type_panel.dart';
-import 'package:math_training/features/trainings/presentation/widgets/trainings_app_bar.dart';
+import 'package:math_training/features/trainings/presentation/widgets/trainings_list_template.dart';
 import 'package:math_training/utils/duration_formatter.dart';
-import 'package:math_training/widgets/info_modal.dart';
 
 class GamesListPage extends StatelessWidget {
   const GamesListPage({super.key});
@@ -29,159 +28,104 @@ class GamesListPage extends StatelessWidget {
   }
 }
 
-class GamesListView extends StatefulWidget {
+class GamesListView extends StatelessWidget {
   const GamesListView({super.key});
 
   @override
-  State<GamesListView> createState() => _GamesListViewState();
-}
-
-class _GamesListViewState extends State<GamesListView>
-    with AutomaticKeepAliveClientMixin<GamesListView> {
-  final _scrollController = ScrollController();
-  bool _visible = false;
-
-  @override
-  void initState() {
-    context.read<StatisitcsCubit>().getAllBestGamesTimes();
-    _scrollController.addListener(() {
-      _visible = _scrollController.offset > 30;
-      setState(() {});
-    });
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    _scrollController.dispose();
-    super.dispose();
-  }
-
-  @override
-  bool get wantKeepAlive => true;
-
-  @override
   Widget build(BuildContext context) {
-    super.build(context);
     return BlocBuilder<StatisitcsCubit, StatisticsState>(
       builder: (context, state) {
         final bool areBestTimeFetched =
             state is StatisticsSuccessAllBestTimesGames;
-        return Stack(
-          children: [
-            SingleChildScrollView(
-              controller: _scrollController,
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Flexible(
-                          child: Text(
-                            'Games',
-                            style: TextStyle(
-                              fontSize: 30,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
+        return TrainingsListTemplate(
+          title: 'Games',
+          trainingPanels: [
+            TrainingTypePanel(
+              color: TrainingImageConfig.crossword.color,
+              title: 'Crossword',
+              imagePath: TrainingImageConfig.crossword.imgPath,
+              modeBoxes: [
+                TrainingSelectModeBox(
+                  title: 'Small',
+                  description: areBestTimeFetched &&
+                          state.bestTimesGames
+                              .containsKey(GameType.crossWordSmall)
+                      ? "Best time: ${formatDuration(Duration(milliseconds: state.bestTimesGames[GameType.crossWordSmall] ?? 0))}"
+                      : 'Set best time!',
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) => const MathCrosswordPage(
+                          size: GameSize.small,
+                          type: GameType.crossWordSmall,
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 20),
-                          child: IconButton(
-                              onPressed: () {
-                                showInfoModal(context);
-                              },
-                              icon: const Icon(
-                                Icons.person,
-                                size: 32,
-                              )),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 40),
-                  TrainingTypePanel(
-                      title: 'Crossword',
-                      imagePath: 'assets/images/multdiv.png',
-                      modeBoxes: [
-                        TrainingSelectModeBox(
-                          title: 'Small',
-                          description: areBestTimeFetched &&
-                                  state.bestTimesGames
-                                      .containsKey(GameType.crossWordSmall)
-                              ? "Best time: ${formatDuration(Duration(milliseconds: state.bestTimesGames[GameType.crossWordSmall] ?? 0))}"
-                              : 'Set best time!',
-                          onTap: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (_) => const MathCrosswordPage(
-                                      size: GameSize.small,
-                                      type: GameType.crossWordSmall,
-                                    )));
-                          },
-                        ),
-                        TrainingSelectModeBox(
-                          title: 'Big',
-                          description: areBestTimeFetched &&
-                                  state.bestTimesGames
-                                      .containsKey(GameType.crossWardBig)
-                              ? "Best time: ${formatDuration(Duration(milliseconds: state.bestTimesGames[GameType.crossWardBig] ?? 0))}"
-                              : 'Set best time!',
-                          onTap: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (_) => const MathCrosswordPage(
-                                      size: GameSize.big,
-                                      type: GameType.crossWardBig,
-                                    )));
-                          },
-                        ),
-                      ]),
-                  const SizedBox(height: 20),
-                  TrainingTypePanel(
-                    title: 'Magic Sqaure',
-                    imagePath: 'assets/images/multdiv.png',
-                    modeBoxes: [
-                      TrainingSelectModeBox(
-                        title: '3x3',
-                        description: areBestTimeFetched &&
-                                state.bestTimesGames
-                                    .containsKey(GameType.magicSquareSmall)
-                            ? "Best time: ${formatDuration(Duration(milliseconds: state.bestTimesGames[GameType.magicSquareSmall] ?? 0))}"
-                            : 'Set best time!',
-                        onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (_) => const MagicSquarePage(
-                                    size: GameSize.small,
-                                    type: GameType.magicSquareSmall,
-                                  )));
-                        },
                       ),
-                      TrainingSelectModeBox(
-                        title: '4x4',
-                        description: areBestTimeFetched &&
-                                state.bestTimesGames
-                                    .containsKey(GameType.magicSquareBig)
-                            ? "Best time: ${formatDuration(Duration(milliseconds: state.bestTimesGames[GameType.magicSquareBig] ?? 0))}"
-                            : 'Set best time!',
-                        onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (_) => const MagicSquarePage(
-                                    size: GameSize.big,
-                                    type: GameType.magicSquareBig,
-                                  )));
-                        },
+                    );
+                  },
+                ),
+                TrainingSelectModeBox(
+                  title: 'Big',
+                  description: areBestTimeFetched &&
+                          state.bestTimesGames
+                              .containsKey(GameType.crossWardBig)
+                      ? "Best time: ${formatDuration(Duration(milliseconds: state.bestTimesGames[GameType.crossWardBig] ?? 0))}"
+                      : 'Set best time!',
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) => const MathCrosswordPage(
+                          size: GameSize.big,
+                          type: GameType.crossWardBig,
+                        ),
                       ),
-                    ],
-                  ),
-                  const SizedBox(height: 20),
-                ],
-              ),
+                    );
+                  },
+                ),
+              ],
             ),
-            TrainingsAppBar(title: 'Games', visible: _visible),
+            TrainingTypePanel(
+              color: TrainingImageConfig.magicSqaure.color,
+              title: 'Magic Sqaure',
+              imagePath: TrainingImageConfig.magicSqaure.imgPath,
+              modeBoxes: [
+                TrainingSelectModeBox(
+                  title: '3x3',
+                  description: areBestTimeFetched &&
+                          state.bestTimesGames
+                              .containsKey(GameType.magicSquareSmall)
+                      ? "Best time: ${formatDuration(Duration(milliseconds: state.bestTimesGames[GameType.magicSquareSmall] ?? 0))}"
+                      : 'Set best time!',
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) => const MagicSquarePage(
+                          size: GameSize.small,
+                          type: GameType.magicSquareSmall,
+                        ),
+                      ),
+                    );
+                  },
+                ),
+                TrainingSelectModeBox(
+                  title: '4x4',
+                  description: areBestTimeFetched &&
+                          state.bestTimesGames
+                              .containsKey(GameType.magicSquareBig)
+                      ? "Best time: ${formatDuration(Duration(milliseconds: state.bestTimesGames[GameType.magicSquareBig] ?? 0))}"
+                      : 'Set best time!',
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) => const MagicSquarePage(
+                          size: GameSize.big,
+                          type: GameType.magicSquareBig,
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ],
+            )
           ],
         );
       },

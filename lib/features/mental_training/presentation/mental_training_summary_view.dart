@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:math_training/features/trainings/domain/training_config.dart';
+import 'package:math_training/features/trainings/constants/training_config.dart';
 
 class MentalTrainingSummaryView extends StatelessWidget {
   final bool isAnswerCorrect;

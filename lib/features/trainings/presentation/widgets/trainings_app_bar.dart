@@ -13,7 +13,7 @@ class TrainingsAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AnimatedOpacity(
-      duration: const Duration(milliseconds: 100),
+      duration: const Duration(milliseconds: 150),
       curve: Curves.easeIn,
       opacity: _visible ? 1 : 0,
       child: Visibility(
