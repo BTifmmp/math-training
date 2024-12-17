@@ -11,14 +11,14 @@ class MentalTrainingStats {
 
   Map<String, Object?> toJson() {
     return {
-      'type': type,
-      'correct': numberOfCorrectAnswers,
+      'type': type.index,
+      'correctAnswers': numberOfCorrectAnswers,
     };
   }
 
   factory MentalTrainingStats.fromDatabaseJson(Map<String, dynamic> data) =>
       MentalTrainingStats(
-        type: data['type'],
-        numberOfCorrectAnswers: data['correct'],
+        type: MentalTrainingType.values[data['type']],
+        numberOfCorrectAnswers: data['correctAnswers'],
       );
 }

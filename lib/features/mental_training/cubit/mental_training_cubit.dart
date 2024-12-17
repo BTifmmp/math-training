@@ -9,7 +9,7 @@ part 'mental_training_state.dart';
 typedef MentalTrainingTask = ({List<String> text, num answer});
 
 class MentalTrainingCubit extends Cubit<MentalTrainingState> {
-  static const int totalTasksNumber = 10;
+  static const int totalTasksNumber = 2;
 
   final TrainingConfig trainingConfig;
 

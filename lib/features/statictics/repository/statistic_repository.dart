@@ -49,8 +49,8 @@ class StatisticRepository {
   }
 
   Future<Map<MentalTrainingType, MentalTrainingStats>>
-      getAllMentalTrainingStats(MentalTrainingType type) async {
-    final res = await _statsDao.getAllMentalTrainingStats(type);
+      getAllMentalTrainingStats() async {
+    final res = await _statsDao.getAllMentalTrainingStats();
     final Map<MentalTrainingType, MentalTrainingStats> formattedRes = {
       for (var mentalTraining in res) mentalTraining.type: mentalTraining
     };

@@ -107,7 +107,7 @@ class _HomeViewState extends State<HomeView> {
           },
           children: const <Widget>[
             SpeedTrainingsListPage(),
-            MentalTrainingsListView(),
+            MentalTrainingsListPage(),
             GamesListPage(),
           ],
         ),

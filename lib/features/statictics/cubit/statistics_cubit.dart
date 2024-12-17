@@ -57,9 +57,9 @@ class StatisitcsCubit extends Cubit<StatisticsState> {
     emit(StatisticsSuccessMentalTrainingStats(mentalStats: res));
   }
 
-  Future<void> getAllMentalTrainingStats(MentalTrainingType type) async {
+  Future<void> getAllMentalTrainingStats() async {
     emit(StatisticsLoading());
-    final res = await _statisticRepository.getAllMentalTrainingStats(type);
+    final res = await _statisticRepository.getAllMentalTrainingStats();
     emit(StatisticsSuccessAllMentalTrainingStats(allMentalStats: res));
   }
 

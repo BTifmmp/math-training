@@ -1,10 +1,13 @@
 import 'package:animated_flip_counter/animated_flip_counter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:math_training/database/models/training_types.dart';
 import 'package:math_training/features/countdown/cubit/count_down_cubit.dart';
 import 'package:math_training/features/countdown/presentation/countdown_widget.dart';
 import 'package:math_training/features/mental_training/cubit/mental_training_cubit.dart';
 import 'package:math_training/features/mental_training/presentation/mental_training_summary_view.dart';
+import 'package:math_training/features/statictics/cubit/statistics_cubit.dart';
+import 'package:math_training/features/statictics/repository/statistic_repository.dart';
 import 'package:math_training/features/trainings/constants/training_config.dart';
 import 'package:math_training/widgets/number_input/number_input.dart';
 import 'package:math_training/widgets/number_input/number_input_controller.dart';
@@ -12,8 +15,10 @@ import 'package:math_training/widgets/number_input/value_display.dart';
 
 class MentalTrainingPage extends StatelessWidget {
   final TrainingConfig trainingConfig;
+  final MentalTrainingType type;
 
-  const MentalTrainingPage({super.key, required this.trainingConfig});
+  const MentalTrainingPage(
+      {super.key, required this.trainingConfig, required this.type});
 
   @override
   Widget build(BuildContext context) {
@@ -22,12 +27,17 @@ class MentalTrainingPage extends StatelessWidget {
           create: (_) => MentalTrainingCubit(trainingConfig: trainingConfig)),
       BlocProvider<CountDownCubit>(
           create: (_) => CountDownCubit(count: 3)..start()),
-    ], child: const MentalTrainingView());
+      BlocProvider<StatisitcsCubit>(
+        create: (_) => StatisitcsCubit(
+            statisticRepository: context.read<StatisticRepository>()),
+      )
+    ], child: MentalTrainingView(type: type));
   }
 }
 
 class MentalTrainingView extends StatefulWidget {
-  const MentalTrainingView({super.key});
+  final MentalTrainingType type;
+  const MentalTrainingView({super.key, required this.type});
 
   @override
   State<MentalTrainingView> createState() => _MentalTrainingViewState();
@@ -65,16 +75,25 @@ class _MentalTrainingViewState extends State<MentalTrainingView> {
         backgroundColor: Colors.transparent,
       ),
       body: BlocConsumer<MentalTrainingCubit, MentalTrainingState>(
-        listener: (context, state) {
+        listener: (context, state) async {
           if (state is MentalTrainingFinished) {
-            // Pushes summary view if all task anwsered
-            Navigator.of(context).pushReplacement(MaterialPageRoute(
-                fullscreenDialog: true,
-                builder: (_) => MentalTrainingSummaryView(
-                      isAnswerCorrect: state.isAnswerCorrect,
-                      trainingConfig: state.trainingConfig,
-                      correctAnswer: state.correctAnswer,
-                    )));
+            await context
+                .read<StatisitcsCubit>()
+                .increaseMentalTrainingCorrectAnswers(widget.type);
+
+            if (context.mounted) {
+              // Pushes summary view if all task anwsered
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  fullscreenDialog: true,
+                  builder: (_) => MentalTrainingSummaryView(
+                    isAnswerCorrect: state.isAnswerCorrect,
+                    trainingConfig: state.trainingConfig,
+                    correctAnswer: state.correctAnswer,
+                  ),
+                ),
+              );
+            }
           } else if (state is MentalTrainingWaitingForAnswer &&
               (state.answerStatus == AnswerStatus.incorrect ||
                   state.answerStatus == AnswerStatus.correct)) {

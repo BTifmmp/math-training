@@ -108,8 +108,7 @@ class StatsDAO {
     return stats.isNotEmpty ? stats[0] : null;
   }
 
-  Future<List<MentalTrainingStats>> getAllMentalTrainingStats(
-      MentalTrainingType type) async {
+  Future<List<MentalTrainingStats>> getAllMentalTrainingStats() async {
     final db = await _dbProvider.database;
     var res = await db.query(MentalStatsTable.tableName);
 
@@ -148,7 +147,7 @@ class StatsDAO {
 
     final res = await db.rawInsert(
         '''INSERT INTO ${MentalStatsTable.tableName} (${MentalStatsTable.type}, ${MentalStatsTable.correctAnswers}) 
-        VALUES ($type, 1) ON CONFLICT(${MentalStatsTable.type}) 
+        VALUES (${type.index}, 1) ON CONFLICT(${MentalStatsTable.type}) 
         DO UPDATE SET ${MentalStatsTable.correctAnswers} = ${MentalStatsTable.correctAnswers} + 1;''');
 
     return res != 0;
