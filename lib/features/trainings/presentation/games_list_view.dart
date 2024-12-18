@@ -21,6 +21,7 @@ class GamesListPage extends StatelessWidget {
     statsCubit.refreshOnGamesChange(() {
       statsCubit.getAllBestGamesTimes();
     });
+    statsCubit.getAllBestGamesTimes();
     return BlocProvider.value(
       value: statsCubit,
       child: const GamesListView(),

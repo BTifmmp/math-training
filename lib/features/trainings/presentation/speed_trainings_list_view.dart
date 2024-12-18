@@ -20,6 +20,7 @@ class SpeedTrainingsListPage extends StatelessWidget {
     statsCubit.refreshOnSpeedChange(() {
       statsCubit.getAllBestSpeedTrainingTimes();
     });
+    statsCubit.getAllBestSpeedTrainingTimes();
     return BlocProvider.value(
       value: statsCubit,
       child: const SpeedTrainingsListView(),
