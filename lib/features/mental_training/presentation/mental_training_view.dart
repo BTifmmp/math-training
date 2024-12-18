@@ -90,6 +90,7 @@ class _MentalTrainingViewState extends State<MentalTrainingView> {
                     isAnswerCorrect: state.isAnswerCorrect,
                     trainingConfig: state.trainingConfig,
                     correctAnswer: state.correctAnswer,
+                    type: widget.type,
                   ),
                 ),
               );
