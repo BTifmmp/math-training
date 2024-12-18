@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:math_training/database/models/training_types.dart';
 import 'package:math_training/features/magic_square/presentation/magic_square_view.dart';
-import 'package:math_training/features/math_crossword/presentation/math_crossword_view.dart';
 import 'package:math_training/features/statictics/cubit/statistics_cubit.dart';
 import 'package:math_training/features/statictics/repository/statistic_repository.dart';
 import 'package:math_training/features/trainings/constants/training_config.dart';
@@ -53,7 +52,7 @@ class MagicSquareSummaryView extends StatelessWidget {
           imageConfig: TrainingImageConfig.fromGameType(type),
           title: 'Magic Square',
           additionalInfo: [
-            'Size: ${(size == GameSize.small ? "Small" : "Big")}',
+            'Size: ${(size == GameSize.small ? "3x3" : "4x4")}',
             'Best time: $bestTime'
           ],
           trainingResultInfo: [

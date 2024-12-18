@@ -6,6 +6,7 @@ import 'package:math_training/features/statictics/cubit/statistics_cubit.dart';
 import 'package:math_training/features/statictics/repository/statistic_repository.dart';
 import 'package:math_training/features/trainings/constants/training_config.dart';
 import 'package:math_training/utils/duration_formatter.dart';
+import 'package:math_training/widgets/training/training_summary_template.dart';
 
 class MathCrosswordSummaryPage extends StatelessWidget {
   final GameSize size;
@@ -35,125 +36,49 @@ class MathCrosswordSummaryView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-      ),
-      body: BlocBuilder<StatisitcsCubit, StatisticsState>(
+    return BlocBuilder<StatisitcsCubit, StatisticsState>(
         builder: (context, state) {
-          String text = 'Not Found';
-          if (state is StatisticsInitial) {
-            context.read<StatisitcsCubit>().getBestGameTime(type);
-            return const Scaffold();
-          } else if (state is StatisticsSuccessBestTimeGame &&
-              state.bestTimeGame != null) {
-            text = formatDuration(Duration(milliseconds: state.bestTimeGame!));
-          }
+      String bestTime = 'Not Found';
+      if (state is StatisticsInitial) {
+        context.read<StatisitcsCubit>().getBestGameTime(type);
+        return const Scaffold();
+      } else if (state is StatisticsSuccessBestTimeGame &&
+          state.bestTimeGame != null) {
+        bestTime = formatDuration(Duration(milliseconds: state.bestTimeGame!));
+      }
 
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Center(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Spacer(flex: 2),
-                  Card.filled(
-                    color: TrainingImageConfig.fromGameType(type).color,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Image.asset(
-                        TrainingImageConfig.fromGameType(type).imgPath,
-                        width: 55,
-                        height: 55,
-                        color: const Color.fromARGB(255, 22, 22, 22),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  const Text(
-                    'Crossword',
-                    style: TextStyle(
-                        fontSize: 35, fontWeight: FontWeight.w600, height: 1.3),
-                    textAlign: TextAlign.center,
-                  ),
-                  Text('Size: ${(size == GameSize.small ? "Small" : "Big")}',
-                      style: const TextStyle(
-                          fontSize: 20, fontWeight: FontWeight.w300)),
-                  Text('Best time: $text',
-                      style: const TextStyle(
-                          fontSize: 20, fontWeight: FontWeight.w300)),
-                  const Spacer(flex: 1),
-                  SizedBox(
-                    width: 250,
-                    child: Card.filled(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12.0),
-                      ),
-                      color: Theme.of(context).colorScheme.surfaceContainerLow,
-                      child: Padding(
-                        padding: const EdgeInsets.all(25.0),
-                        child: Column(
-                          children: [
-                            const Text('Your time',
-                                style: TextStyle(
-                                  overflow: TextOverflow.ellipsis,
-                                  fontSize: 22,
-                                  fontWeight: FontWeight.w300,
-                                )),
-                            Text(formatDuration(time),
-                                style: const TextStyle(
-                                  overflow: TextOverflow.ellipsis,
-                                  fontSize: 35,
-                                  fontWeight: FontWeight.w400,
-                                )),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  const Spacer(flex: 2),
-                  FilledButton(
-                    style: FilledButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12.0),
-                        ),
-                        backgroundColor: Theme.of(context)
-                            .colorScheme
-                            .onSurface
-                            .withOpacity(0.9)),
-                    onPressed: () {
-                      Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(
-                          builder: (_) => MathCrosswordPage(
-                            size: size,
-                            type: type,
-                          ),
-                        ),
-                      );
-                    },
-                    child: Container(
-                      width: 200,
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 10, horizontal: 12),
-                      child: Text(
-                        'Play Again',
-                        textAlign: TextAlign.center,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                            fontSize: 20,
-                            color:
-                                Theme.of(context).colorScheme.onInverseSurface,
-                            fontWeight: FontWeight.w400),
-                      ),
-                    ),
-                  ),
-                  const Spacer(flex: 5),
-                ],
+      return SummaryTemplate(
+        imageConfig: TrainingImageConfig.fromGameType(type),
+        title: 'Math Crossword',
+        additionalInfo: [
+          'Size: ${(size == GameSize.small ? "Small" : "Big")}',
+          'Best time: $bestTime'
+        ],
+        trainingResultInfo: [
+          const Text('Your time',
+              style: TextStyle(
+                overflow: TextOverflow.ellipsis,
+                fontSize: 22,
+                fontWeight: FontWeight.w300,
+              )),
+          Text(formatDuration(time),
+              style: const TextStyle(
+                overflow: TextOverflow.ellipsis,
+                fontSize: 35,
+                fontWeight: FontWeight.w400,
+              )),
+        ],
+        onPlayAgain: () {
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (_) => MathCrosswordPage(
+                size: size,
+                type: type,
               ),
             ),
           );
         },
-      ),
-    );
+      );
+    });
   }
 }
