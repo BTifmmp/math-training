@@ -9,6 +9,7 @@ import 'package:math_training/features/mental_training/presentation/mental_train
 import 'package:math_training/features/statictics/cubit/statistics_cubit.dart';
 import 'package:math_training/features/statictics/repository/statistic_repository.dart';
 import 'package:math_training/features/trainings/constants/training_config.dart';
+import 'package:math_training/features/trainings/presentation/widgets/top_down_switcher.dart';
 import 'package:math_training/widgets/number_input/number_input.dart';
 import 'package:math_training/widgets/number_input/number_input_controller.dart';
 import 'package:math_training/widgets/number_input/value_display.dart';
@@ -45,7 +46,7 @@ class MentalTrainingView extends StatefulWidget {
 
 class _MentalTrainingViewState extends State<MentalTrainingView> {
   final _numberInputController = NumberInputController();
-  double _opacity = 0;
+  Widget _taskDisplay = const SizedBox.shrink();
 
   @override
   void initState() {
@@ -75,8 +76,8 @@ class _MentalTrainingViewState extends State<MentalTrainingView> {
         backgroundColor: Colors.transparent,
       ),
       body: BlocConsumer<MentalTrainingCubit, MentalTrainingState>(
-        listener: (context, state) async {
-          if (state is MentalTrainingFinished) {
+        listener: (context, mentalState) async {
+          if (mentalState is MentalTrainingFinished) {
             await context
                 .read<StatisitcsCubit>()
                 .increaseMentalTrainingCorrectAnswers(widget.type);
@@ -87,33 +88,41 @@ class _MentalTrainingViewState extends State<MentalTrainingView> {
                 MaterialPageRoute(
                   fullscreenDialog: true,
                   builder: (_) => MentalTrainingSummaryView(
-                    isAnswerCorrect: state.isAnswerCorrect,
-                    trainingConfig: state.trainingConfig,
-                    correctAnswer: state.correctAnswer,
+                    isAnswerCorrect: mentalState.isAnswerCorrect,
+                    trainingConfig: mentalState.trainingConfig,
+                    correctAnswer: mentalState.correctAnswer,
                     type: widget.type,
                   ),
                 ),
               );
             }
-          } else if (state is MentalTrainingWaitingForAnswer &&
-              (state.answerStatus == AnswerStatus.incorrect ||
-                  state.answerStatus == AnswerStatus.correct)) {
+          } else if (mentalState is MentalTrainingRunning) {
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              setState(() {
+                _taskDisplay = MentalTaskDisplay(
+                    key: ValueKey(mentalState.currentTaskIndex),
+                    text: mentalState.currentTaskText);
+              });
+            });
+          } else if (mentalState is MentalTrainingWaitingForAnswer &&
+              (mentalState.answerStatus == AnswerStatus.incorrect ||
+                  mentalState.answerStatus == AnswerStatus.correct)) {
             // Schedules a delayed number input clear if answer was
             // incorrect or correct and clear is not scheduled
             _numberInputController
                 .delayedClear(const Duration(milliseconds: 200));
           }
         },
-        builder: (BuildContext context, MentalTrainingState state) {
-          if (state is MentalTrainingFinished) {
+        builder: (BuildContext context, MentalTrainingState mentalState) {
+          if (mentalState is MentalTrainingFinished) {
             return const SizedBox.shrink();
-          } else if (state is MentalTrainingWaitingForAnswer) {
+          } else if (mentalState is MentalTrainingWaitingForAnswer) {
             return Column(
               children: [
                 const Spacer(flex: 1),
                 const Text('Your Answer', style: TextStyle(fontSize: 30)),
                 const SizedBox(height: 5),
-                AnswerTriesDisplay(availableTries: state.availableTries),
+                AnswerTriesDisplay(availableTries: mentalState.availableTries),
                 const Spacer(flex: 1),
                 NumberInputValueDisplay(
                     numberInputController: _numberInputController),
@@ -128,15 +137,7 @@ class _MentalTrainingViewState extends State<MentalTrainingView> {
               listener: (context, state) {
                 // Checks if countdown has finished
                 if (state is CountDownFinished) {
-                  if (context.read<MentalTrainingCubit>().state
-                      is MentalTrainingInitial) {
-                    // Executes opacity change after frame has been build
-                    // to ensure that animated task display exist
-                    WidgetsBinding.instance.addPostFrameCallback((_) {
-                      setState(() {
-                        _opacity = 1;
-                      });
-                    });
+                  if (mentalState is MentalTrainingInitial) {
                     _numberInputController.clear();
                     context.read<MentalTrainingCubit>().start();
                   }
@@ -157,8 +158,11 @@ class _MentalTrainingViewState extends State<MentalTrainingView> {
                           ),
                         ),
                         const Spacer(flex: 1),
-                        AnimatedMentalTaskDisplay(
-                          opacity: _opacity,
+                        TopDownSwitcher(
+                          newChildKey: ValueKey(
+                              (mentalState as MentalTrainingRunning)
+                                  .currentTaskIndex),
+                          child: _taskDisplay,
                         ),
                         const Spacer(flex: 2),
                       ],
@@ -254,37 +258,32 @@ class MentalCurrentTaskDisplay extends StatelessWidget {
   }
 }
 
-class AnimatedMentalTaskDisplay extends StatelessWidget {
-  const AnimatedMentalTaskDisplay({
+class MentalTaskDisplay extends StatelessWidget {
+  final String text;
+  const MentalTaskDisplay({
     super.key,
-    required double opacity,
-  }) : _opacity = opacity;
-
-  final double _opacity;
+    required this.text,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedOpacity(
-      curve: Curves.easeInOut,
-      opacity: _opacity,
-      duration: const Duration(milliseconds: 150),
-      child: Column(
-        children: [
-          BlocBuilder<MentalTrainingCubit, MentalTrainingState>(
-            builder: (context, state) {
-              return Text(
-                state is MentalTrainingRunning ? state.currentTaskText : '',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    fontSize: 50,
-                    fontWeight: FontWeight.w300,
-                    color: Theme.of(context).colorScheme.onSurface),
-              );
-            },
+    return BlocBuilder<MentalTrainingCubit, MentalTrainingState>(
+      builder: (context, state) {
+        return SizedBox(
+          height: 250,
+          child: Center(
+            heightFactor: 0.5,
+            child: Text(
+              text,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontSize: 50,
+                  fontWeight: FontWeight.w300,
+                  color: Theme.of(context).colorScheme.onSurface),
+            ),
           ),
-          const SizedBox(height: 20),
-        ],
-      ),
+        );
+      },
     );
   }
 }
