@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:math_training/database/models/training_types.dart';
+import 'package:math_training/features/magic_square/presentation/magic_square_view.dart';
 import 'package:math_training/features/math_crossword/presentation/math_crossword_view.dart';
 import 'package:math_training/features/statictics/cubit/statistics_cubit.dart';
 import 'package:math_training/features/statictics/repository/statistic_repository.dart';
@@ -72,7 +73,7 @@ class MagicSquareSummaryView extends StatelessWidget {
           onPlayAgain: () {
             Navigator.of(context).pushReplacement(
               MaterialPageRoute(
-                builder: (_) => MathCrosswordPage(
+                builder: (_) => MagicSquarePage(
                   size: size,
                   type: type,
                 ),
