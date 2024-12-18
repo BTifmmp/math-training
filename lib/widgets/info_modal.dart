@@ -88,6 +88,9 @@ class InfoModalButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
+      highlightColor: Theme.of(context).colorScheme.onSurface.withOpacity(0.02),
+      splashColor: Theme.of(context).colorScheme.onSurface.withOpacity(0.06),
+      splashFactory: InkRipple.splashFactory,
       onTap: onTap,
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 13, horizontal: 20),
@@ -115,9 +118,11 @@ class InfoModalCategory extends StatelessWidget {
       child: Text(
         text,
         style: TextStyle(
-            fontSize: 15,
-            fontWeight: FontWeight.w500,
-            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7)),
+          fontSize: 13,
+          fontWeight: FontWeight.w600,
+          color:
+              Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(0.8),
+        ),
       ),
     );
   }
