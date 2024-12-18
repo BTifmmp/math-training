@@ -39,13 +39,10 @@ class AppView extends StatelessWidget {
           onSurfaceVariant: const Color.fromARGB(255, 182, 196, 216),
           onSecondaryContainer: const Color.fromARGB(255, 143, 158, 179),
         ),
-        pageTransitionsTheme: const PageTransitionsTheme(
-          builders: <TargetPlatform, PageTransitionsBuilder>{
-            TargetPlatform.android: ZoomPageTransitionsBuilder(
-              allowEnterRouteSnapshotting: false,
-            ),
-          },
-        ),
+        pageTransitionsTheme: const PageTransitionsTheme(builders: {
+          TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
+          TargetPlatform.android: CupertinoPageTransitionsBuilder(),
+        }),
         bottomSheetTheme: BottomSheetThemeData(
             dragHandleColor: Colors.white.withOpacity(0.3),
             dragHandleSize: const Size(50, 5)),
@@ -69,7 +66,7 @@ class AppView extends StatelessWidget {
           iconTheme: const WidgetStatePropertyAll<IconThemeData>(
             IconThemeData(
               color: Color.fromARGB(255, 255, 255, 255),
-              size: 24,
+              size: 22,
             ),
           ),
         ),
