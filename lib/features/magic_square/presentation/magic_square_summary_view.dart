@@ -41,7 +41,7 @@ class MagicSquareSummaryView extends StatelessWidget {
         String bestTime = 'Not Found';
         if (state is StatisticsInitial) {
           context.read<StatisitcsCubit>().getBestGameTime(type);
-          return const SizedBox.shrink();
+          return const Scaffold();
         } else if (state is StatisticsSuccessBestTimeGame &&
             state.bestTimeGame != null) {
           bestTime =

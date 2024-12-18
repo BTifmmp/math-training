@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:animated_flip_counter/animated_flip_counter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,6 +13,7 @@ import 'package:math_training/features/stopwatch/cubit/stopwatch_cubit.dart';
 import 'package:math_training/features/speed_training/cubit/speed_training_cubit.dart';
 import 'package:math_training/features/stopwatch/presentation/stopwatch_display.dart';
 import 'package:math_training/features/trainings/constants/training_config.dart';
+import 'package:math_training/features/trainings/presentation/widgets/top_down_switcher.dart';
 import 'package:math_training/widgets/number_input/number_input.dart';
 import 'package:math_training/features/speed_training/presentation/speed_training_summary_view.dart';
 import 'package:math_training/widgets/number_input/number_input_controller.dart';
@@ -49,7 +52,7 @@ class SpeedTrainingView extends StatefulWidget {
 
 class _SpeedTrainingViewState extends State<SpeedTrainingView> {
   final _numberInputController = NumberInputController();
-  double _opacity = 0;
+  Widget _taskDisplay = SizedBox.shrink();
 
   @override
   void initState() {
@@ -78,8 +81,8 @@ class _SpeedTrainingViewState extends State<SpeedTrainingView> {
         backgroundColor: Colors.transparent,
       ),
       body: BlocConsumer<SpeedTrainingCubit, SpeedTrainingState>(
-        listener: (context, trainState) async {
-          if (trainState is SpeedTrainingFinished) {
+        listener: (context, speedState) async {
+          if (speedState is SpeedTrainingFinished) {
             final time = context.read<StopwatchCubit>().state.timeElapsed;
 
             await context.read<StatisitcsCubit>().insertSpeedTrainingTime(
@@ -91,22 +94,39 @@ class _SpeedTrainingViewState extends State<SpeedTrainingView> {
               Navigator.of(context).pushReplacement(MaterialPageRoute(
                   fullscreenDialog: true,
                   builder: (_) => SpeedTrainingSummaryPage(
-                        trainingConfig: trainState.trainingConfig,
+                        trainingConfig: speedState.trainingConfig,
                         time: time,
                         type: widget.type,
                       )));
             }
-          } else if (trainState is SpeedTrainingRunning &&
-              (trainState.answerStatus == AnswerStatus.incorrect ||
-                  trainState.answerStatus == AnswerStatus.correct)) {
+          } else if (speedState is SpeedTrainingRunning &&
+              (speedState.answerStatus == AnswerStatus.incorrect ||
+                  speedState.answerStatus == AnswerStatus.correct)) {
             // Schedules a delayed number input clear if answer was
             // incorrect or correct and clear is not scheduled
             _numberInputController
                 .delayedClear(const Duration(milliseconds: 200));
           }
+
+          if (speedState is SpeedTrainingRunning) {
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              setState(() {
+                _taskDisplay = Text(
+                  key: ValueKey(speedState.currentTaskIndex),
+                  speedState.currentTaskText,
+                  style: TextStyle(
+                      fontSize: 50,
+                      fontWeight: FontWeight.w300,
+                      color: Theme.of(context).colorScheme.onSurface),
+                );
+              });
+            });
+          }
         },
-        builder: (BuildContext context, SpeedTrainingState state) {
-          if (state is SpeedTrainingFinished) return const SizedBox.shrink();
+        builder: (BuildContext context, SpeedTrainingState speedState) {
+          if (speedState is SpeedTrainingFinished) {
+            return const SizedBox.shrink();
+          }
           return Column(
             children: [
               const SizedBox(height: 10),
@@ -129,15 +149,7 @@ class _SpeedTrainingViewState extends State<SpeedTrainingView> {
                         is StopwatchInitial) {
                       context.read<StopwatchCubit>().start();
                     }
-                    if (context.read<SpeedTrainingCubit>().state
-                        is SpeedTrainingInitial) {
-                      // Executes opacity change after frame has been build
-                      // to ensure that animated task display exist
-                      WidgetsBinding.instance.addPostFrameCallback((_) {
-                        setState(() {
-                          _opacity = 1;
-                        });
-                      });
+                    if (speedState is SpeedTrainingInitial) {
                       _numberInputController.clear();
                       context.read<SpeedTrainingCubit>().start();
                     }
@@ -145,9 +157,21 @@ class _SpeedTrainingViewState extends State<SpeedTrainingView> {
                 },
                 builder: (context, state) {
                   return switch (state.runtimeType) {
-                    const (CountDownFinished) => AnimatedSpeedTaskDisplay(
-                        opacity: _opacity,
-                        numberInputController: _numberInputController),
+                    const (CountDownFinished) => Column(
+                        children: [
+                          TopDownSwitcher(
+                            offsetVertical: 0.15,
+                            newChildKey: ValueKey(
+                                (speedState as SpeedTrainingRunning)
+                                    .currentTaskIndex),
+                            child: _taskDisplay,
+                          ),
+                          const SizedBox(height: 20),
+                          NumberInputValueDisplay(
+                            numberInputController: _numberInputController,
+                          ),
+                        ],
+                      ),
                     _ => Countdown(count: (state as CountDownCounting).count)
                   };
                 },
@@ -195,46 +219,6 @@ class SpeedCurrentTaskDisplay extends StatelessWidget {
             '/${context.select<SpeedTrainingCubit, String>((cubit) => cubit.state.totalTasksNumber.toString())}',
             style: TextStyle(
                 fontSize: 16, color: Theme.of(context).colorScheme.onSurface),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class AnimatedSpeedTaskDisplay extends StatelessWidget {
-  const AnimatedSpeedTaskDisplay({
-    super.key,
-    required double opacity,
-    required NumberInputController numberInputController,
-  })  : _opacity = opacity,
-        _numberInputController = numberInputController;
-
-  final double _opacity;
-  final NumberInputController _numberInputController;
-
-  @override
-  Widget build(BuildContext context) {
-    return AnimatedOpacity(
-      curve: Curves.easeInOut,
-      opacity: _opacity,
-      duration: const Duration(milliseconds: 150),
-      child: Column(
-        children: [
-          BlocBuilder<SpeedTrainingCubit, SpeedTrainingState>(
-            builder: (context, state) {
-              return Text(
-                state is SpeedTrainingRunning ? state.currentTaskText : '',
-                style: TextStyle(
-                    fontSize: 50,
-                    fontWeight: FontWeight.w300,
-                    color: Theme.of(context).colorScheme.onSurface),
-              );
-            },
-          ),
-          const SizedBox(height: 20),
-          NumberInputValueDisplay(
-            numberInputController: _numberInputController,
           ),
         ],
       ),

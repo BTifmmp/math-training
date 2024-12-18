@@ -44,7 +44,7 @@ class MathCrosswordSummaryView extends StatelessWidget {
           String text = 'Not Found';
           if (state is StatisticsInitial) {
             context.read<StatisitcsCubit>().getBestGameTime(type);
-            return const SizedBox.shrink();
+            return const Scaffold();
           } else if (state is StatisticsSuccessBestTimeGame &&
               state.bestTimeGame != null) {
             text = formatDuration(Duration(milliseconds: state.bestTimeGame!));

@@ -48,7 +48,7 @@ class SpeedTrainingSummaryView extends StatelessWidget {
         String text = 'Not Found';
         if (state is StatisticsInitial) {
           context.read<StatisitcsCubit>().getBestSpeedTrainingTime(type);
-          return const SizedBox.shrink();
+          return const Scaffold();
         } else if (state is StatisticsSuccessBestTime &&
             state.bestTime != null) {
           text = formatDuration(Duration(milliseconds: state.bestTime!));

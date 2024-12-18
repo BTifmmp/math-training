@@ -159,6 +159,7 @@ class _MentalTrainingViewState extends State<MentalTrainingView> {
                         ),
                         const Spacer(flex: 1),
                         TopDownSwitcher(
+                          offsetVertical: 0.05,
                           newChildKey: ValueKey(
                               (mentalState as MentalTrainingRunning)
                                   .currentTaskIndex),
