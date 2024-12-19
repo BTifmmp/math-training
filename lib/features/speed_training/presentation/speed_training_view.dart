@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:animated_flip_counter/animated_flip_counter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -52,7 +50,7 @@ class SpeedTrainingView extends StatefulWidget {
 
 class _SpeedTrainingViewState extends State<SpeedTrainingView> {
   final _numberInputController = NumberInputController();
-  Widget _taskDisplay = SizedBox.shrink();
+  Widget _taskDisplay = const SizedBox.shrink();
 
   @override
   void initState() {

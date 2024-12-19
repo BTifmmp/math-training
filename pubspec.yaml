@@ -43,6 +43,7 @@ dependencies:
   meta: ^1.15.0
 
 dev_dependencies:
+  flutter_launcher_icons: "^0.13.1"
   flutter_test:
     sdk: flutter
 
@@ -60,6 +61,7 @@ dev_dependencies:
 flutter:
   assets:
     - assets/images/
+    - publish_assets/
 
   fonts:
     - family:  CustomIcons
@@ -101,3 +103,4 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
+
