@@ -88,8 +88,8 @@ class _HomeViewState extends State<HomeView> {
                       ? CrossFadeState.showFirst
                       : CrossFadeState.showSecond,
                   duration: const Duration(milliseconds: 200),
-                  firstChild: const Icon(CustomIcons.brain_filled),
-                  secondChild: Icon(CustomIcons.brain_outlined,
+                  firstChild: const Icon(CustomIcons.game_filled),
+                  secondChild: Icon(CustomIcons.game_outlined,
                       color:
                           Theme.of(context).colorScheme.onSecondaryContainer),
                 ),

@@ -106,12 +106,12 @@ class TrainingImageConfig {
 
   // Games
   static const crossword = TrainingImageConfig(
-    imgPath: 'assets/images/mixed.png',
+    imgPath: 'assets/images/crossword.png',
     color: Color.fromARGB(255, 245, 255, 154),
   );
 
   static const magicSqaure = TrainingImageConfig(
-    imgPath: 'assets/images/mixed.png',
+    imgPath: 'assets/images/magic_square.png',
     color: Color.fromARGB(255, 255, 154, 154),
   );
 }

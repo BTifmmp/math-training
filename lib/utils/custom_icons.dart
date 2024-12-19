@@ -13,10 +13,6 @@
 ///
 ///
 ///
-// ignore_for_file: constant_identifier_names
-
-library;
-
 import 'package:flutter/widgets.dart';
 
 class CustomIcons {
@@ -33,4 +29,8 @@ class CustomIcons {
       IconData(0xe902, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData brain_outlined =
       IconData(0xe903, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData game_filled =
+      IconData(0xe904, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData game_outlined =
+      IconData(0xe905, fontFamily: _kFontFam, fontPackage: _kFontPkg);
 }
