@@ -1,4 +1,4 @@
-package com.pixyguyworks.math_training
+package com.beturapps.math_training
 
 import io.flutter.embedding.android.FlutterActivity
 

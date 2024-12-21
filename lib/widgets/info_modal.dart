@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:in_app_review/in_app_review.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 Future<dynamic> showInfoModal(BuildContext context) {
   final dividerColor =
@@ -15,15 +17,24 @@ Future<dynamic> showInfoModal(BuildContext context) {
             const InfoModalCategory(text: 'PRIVACY'),
             InfoModalButton(
               text: 'Privacy Policy',
-              onTap: () {},
+              onTap: () async {
+                final uri = Uri.parse(
+                    "https://sites.google.com/view/beturapps/privacy-policy");
+                if (!await launchUrl(uri)) {
+                  throw Exception('Could not launch $uri');
+                }
+              },
             ),
             Divider(color: dividerColor),
             const InfoModalCategory(text: 'FEEDBACK'),
             InfoModalButton(
               text: 'Rate This App',
-              onTap: () {},
+              onTap: () {
+                final InAppReview inAppReview = InAppReview.instance;
+                inAppReview.openStoreListing();
+              },
             ),
-            const InfoModalRow(text1: 'E-mail', text2: 'mymail@comapny.com'),
+            const InfoModalRow(text1: 'E-mail', text2: 'beturapps@gmail.com'),
             Divider(color: dividerColor),
             const InfoModalCategory(text: 'ABOUT'),
             const InfoModalRow(text1: 'App Version', text2: '1.0.0'),

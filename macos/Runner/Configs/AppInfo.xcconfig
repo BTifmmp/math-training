@@ -8,7 +8,7 @@
 PRODUCT_NAME = math_training
 
 // The application's bundle identifier
-PRODUCT_BUNDLE_IDENTIFIER = com.pixyguyworks.mathTraining
+PRODUCT_BUNDLE_IDENTIFIER = com.beturapps.math_training
 
 // The copyright displayed in application information
-PRODUCT_COPYRIGHT = Copyright © 2024 com.pixyguyworks. All rights reserved.
+PRODUCT_COPYRIGHT = Copyright © 2024 com.beturapps. All rights reserved.
