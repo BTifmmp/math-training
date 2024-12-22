@@ -15,6 +15,10 @@ var darkTheme = ThemeData(
     onSurfaceVariant: const Color.fromARGB(255, 182, 196, 216),
     onSecondaryContainer: const Color.fromARGB(255, 143, 158, 179),
   ),
+  appBarTheme: const AppBarTheme(
+      actionsIconTheme: IconThemeData(
+    color: Color.fromARGB(255, 255, 255, 255),
+  )),
   pageTransitionsTheme: const PageTransitionsTheme(builders: {
     TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
     TargetPlatform.android: CupertinoPageTransitionsBuilder(),

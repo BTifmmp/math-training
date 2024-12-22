@@ -5,6 +5,7 @@ import 'package:math_training/database/models/training_types.dart';
 import 'package:math_training/features/board/cubit/board_cubit.dart';
 import 'package:math_training/features/board/presentation/board_widgets.dart';
 import 'package:math_training/features/magic_square/cubit/magic_square_cubit.dart';
+import 'package:math_training/features/magic_square/presentation/guides_dialogs.dart';
 import 'package:math_training/features/magic_square/presentation/magic_square_summary_view.dart';
 import 'package:math_training/features/statictics/cubit/statistics_cubit.dart';
 import 'package:math_training/features/statictics/repository/statistic_repository.dart';
@@ -69,6 +70,21 @@ class MagicSquareView extends StatelessWidget {
       child: Scaffold(
           appBar: AppBar(
             backgroundColor: Colors.transparent,
+            actions: [
+              IconButton(
+                icon: const Icon(Icons.info_outline),
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                        fullscreenDialog: true,
+                        builder: (_) => size == GameSize.small
+                            ? const MagicGuide3()
+                            : const MagicGuide4()),
+                  );
+                },
+              ),
+              const SizedBox(width: 10),
+            ],
           ),
           body: Column(
             children: [

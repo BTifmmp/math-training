@@ -233,7 +233,7 @@ class MentalCurrentTaskDisplay extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.surfaceContainer,
-        borderRadius: BorderRadius.circular(9999),
+        borderRadius: BorderRadius.circular(12),
       ),
       child: Row(
         children: [
