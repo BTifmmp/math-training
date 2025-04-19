@@ -1,16 +1,23 @@
-# math_training
+# Math IQ
 
-A new Flutter project.
+**Math IQ** is a simple app created to explore and learn Flutter development. It offers a variety of engaging math-based exercises to sharpen your brain and improve your mental agility.
 
-## Getting Started
+## Features
 
-This project is a starting point for a Flutter application.
+- 🧠 **Speed Training** – Solve quick math problems under time pressure.
+- 🧮 **Memory Training** – Boost your memory with number pattern challenges.
+- 🔲 **Magic Squares** – Solve classic magic square puzzles.
+- ✖️ **Math Crosswords** – Fun and challenging math crosswords.
 
-A few resources to get you started if this is your first Flutter project:
+## Screenshots
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+![Math IQ Screenshot](math_training/screenshots/s1.png)
+![Math IQ Screenshot](math_training/screenshots/s2.png)
+![Math IQ Screenshot](math_training/screenshots/s3.png)
+![Math IQ Screenshot](math_training/screenshots/s4.png)
+![Math IQ Screenshot](math_training/screenshots/s5.png)
+![Math IQ Screenshot](math_training/screenshots/s6.png)
+![Math IQ Screenshot](math_training/screenshots/s7.png)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Download
+App can be found on google play store https://play.google.com/store/apps/details?id=com.beturapps.math_training
