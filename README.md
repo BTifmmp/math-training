@@ -11,13 +11,16 @@
 
 ## Screenshots
 
-![Math IQ Screenshot](math_training/screenshots/s1.png)
-![Math IQ Screenshot](math_training/screenshots/s2.png)
-![Math IQ Screenshot](math_training/screenshots/s3.png)
-![Math IQ Screenshot](math_training/screenshots/s4.png)
-![Math IQ Screenshot](math_training/screenshots/s5.png)
-![Math IQ Screenshot](math_training/screenshots/s6.png)
-![Math IQ Screenshot](math_training/screenshots/s7.png)
+<p float="left">
+  <img src="screenshots/s1.png" width="auto" height=350/>
+  <img src="screenshots/s2.png" width="auto" height=350/>
+  <img src="screenshots/s3.png" width="auto" height=350/>
+</p>
+<p float="left">
+  <img src="screenshots/s4.png" width="auto" height=350/>
+  <img src="screenshots/s5.png" width="auto" height=350/>
+  <img src="screenshots/s6.png" width="auto" height=350/>
+</p>
 
 ## Download
 App can be found on google play store https://play.google.com/store/apps/details?id=com.beturapps.math_training
